@@ -52,14 +52,14 @@
             i;
 
         // Count the number of each item in the cart
-        for (i = 0; i < len; i++) {
-            total += items[i].get('quantity');
-        }
-
-        if (total < 3) {
-            alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
-            evt.preventDefault();
-        }
+        //for (i = 0; i < len; i++) {
+        //  total += items[i].get('quantity');
+        //}
+        //
+        //if (total < 3) {
+        //    alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
+        //    evt.preventDefault();
+        //}
     });
 </script>
 <!-- //cart-js -->
@@ -82,7 +82,9 @@
     }
 </script>
 <!-- //password-script -->
-
+<!-- quantity -->
+	<script src="/public/js/cartzoom.js"></script>
+	<!-- //quantity -->
 {{!-- Detail single --}}
 <!-- imagezoom -->
 <script src="/public/js/imagezoom.js"></script>

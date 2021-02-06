@@ -7,6 +7,10 @@ class HomeController{
     show(req, res){
         res.render('home/detail')
     }
+
+    showCart(req, res){
+        res.render('home/cart');
+    }
     show404(req, res){
         res.send('404 not found!');
     }
