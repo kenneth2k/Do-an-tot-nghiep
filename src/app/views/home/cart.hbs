@@ -15,7 +15,7 @@
 <!-- //page -->
 <!-- checkout page -->
 <div class="privacy py-sm-5 py-4">
-    <div class="container py-xl-4 py-lg-2">
+    <div class="container py-xl-4 py-lg-2" id="clear-cart-all"style="display:block">
         <!-- tittle heading -->
         <h3 class="tittle-w3l text-center mb-lg-5 mb-sm-4 mb-3">
             <span>S</span>ản phẩm của bạn
@@ -42,7 +42,7 @@
             </div>
         </div>
         
-        <div class="checkout-left">
+        <div class="checkout-left" id="checkout-cart">
             <div class=" mt-sm-5 mt-4" style="position: relative;">
                 <div class="checkout-right-basket " style="position: absolute;left: 0;">
                     <a href="/">Đặt Hàng
@@ -53,6 +53,11 @@
                 <div style="position: absolute;right: 0;"><span>Tổng:</span><span id="sumTotal">123VNĐ</span></div>
             </div>
         </div>
+    </div>
+    <div class="container py-xl-4 py-lg-2" id="clear-cart-emty" style="display:none">
+        <img src="/public/images/cart-mobile.png" alt="cart">
+        <div>Không có sản phẩm nào trong giỏ hàng</div>
+        <div> <a href="/"><button type="button" class="btn btn-outline-primary">Về trang chủ</button></a></div>
     </div>
 </div>
 <!-- //checkout page -->

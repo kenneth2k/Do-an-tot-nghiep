@@ -45,38 +45,52 @@ function setListProd(prod, index){
     `;
     return itemCart;
 }
-
-$(document).ready(function (c) {
-
+function sumTotal(){
+    let listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts'))) ;
+    let cartItem = listProd.value.items;
+    let sum = 0;
+    cartItem.forEach(function(cart, index){
+        sum += cart.amount * cart.quantity;
+    });
+    return sum;
+}
+function resetCart(){
     var listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts'))) ;
-    var CartItem = listProd.value.items;
-
+    var cartItem = listProd.value.items,
+    bodyCart = $('#clear-cart-all'),
+    emtyCart = $('#clear-cart-emty');
+    if(cartItem.length < 1) {
+        bodyCart[0].style.display = 'none';
+        emtyCart[0].style.display = 'block';
+    }
+}
+$(document).ready(function (c) {
+    
+    var listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts'))) ;
+    var CartItem;
+    if(!listProd) return;
+    CartItem = listProd.value.items;
     var table = $('#cart-list-prod');
 
     for(let i = 0 ; i < CartItem.length ; i++){
         table.append(setListProd(CartItem[i], i));
     }
+    var divSumTotal = $('#sumTotal');
+    divSumTotal.text(sumTotal().toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
     
 });
 $(document).ready(function (c){
-    $('#last-cart-prod').click(function (){
-        //window.location.assign("/cart")
-    })
-    $("#add-product-item").click(function(){
-        console.log($('#PPminicarts').find('button[data-minicarts-alt="undefined"]')[0])
-    });
-    $(document).ready(function () {
-        $('#form-cart-list-product').submit(function(e){
-            e.preventDefault();
-            window.location.assign("/cart")
-        });
-    });
     reloadCart();
     function reloadCart(){
+        let listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts'))) ;
+        if(!listProd) return;
+        let cartItem = listProd.value.items;
+        if(window.location.pathname == "/cart" && cartItem.length < 1){
+            window.location.href = "/";
+        }
         if(window.location.pathname == "/cart"){
             $('#last-cart-prod')[0].style.display = "none";
         }
-        
     };
     //tăng
     $('.value-plus').on('click', function () {
@@ -86,7 +100,8 @@ $(document).ready(function (c){
         let total;
         var divUpd = $(this).parent().find('.value'),
             newVal = parseInt(divUpd.text(), 10) + 1, 
-            divPrice = $(this).parents('tr').find('#money-prod');
+            divPrice = $(this).parents('tr').find('#money-prod'),
+            divSumTotal = $('#sumTotal');
         cartItem.forEach(function(cart){
             if(cart.add == id){
                 cart.quantity = newVal;
@@ -98,6 +113,7 @@ $(document).ready(function (c){
         listProd.value.items = cartItem;
         setSaveProd(listProd.value);
         divUpd.text(newVal);
+        divSumTotal.text(sumTotal().toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
     });
     //giảm
     $('.value-minus').on('click', function () {
@@ -107,7 +123,8 @@ $(document).ready(function (c){
         let total;
         var divUpd = $(this).parent().find('.value'),
             newVal = parseInt(divUpd.text(), 10) - 1,
-            divPrice = $(this).parents('tr').find('#money-prod');
+            divPrice = $(this).parents('tr').find('#money-prod'),
+            divSumTotal = $('#sumTotal');
         if (newVal >= 1) {
             cartItem.forEach(function(cart){
                 if(cart.add == id){
@@ -119,7 +136,8 @@ $(document).ready(function (c){
             });
             listProd.value.items = cartItem;
             setSaveProd(listProd.value);
-            divUpd.text(newVal)
+            divUpd.text(newVal);
+            divSumTotal.text(sumTotal().toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
         };
     });
     //xóa cart prod
@@ -138,8 +156,9 @@ $(document).ready(function (c){
                     return;
                 }
             });
-                listProd.value.items = cartItem;
-                setSaveProd(listProd.value);
+            listProd.value.items = cartItem;
+            setSaveProd(listProd.value);
+            resetCart();
         });
         
     });

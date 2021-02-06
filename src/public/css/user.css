@@ -29,3 +29,14 @@
 .textarea {
     resize: none
 }
+#clear-cart-emty{
+    width: 100%;
+    text-align: center;
+}
+#clear-cart-emty div a button{
+    margin-top: 10px;
+    width: 100%;
+}
+.comment-second{
+    padding-left: 30px;
+}
