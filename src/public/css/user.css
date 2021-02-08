@@ -40,3 +40,115 @@
 .comment-second{
     padding-left: 30px;
 }
+
+/* Profile */
+.bg-cus-user{
+    background-color: rgba(8,121,201, 0.1);
+    padding: 10px 0;
+    border-radius: 5px; 
+}
+.user-info{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding-left: 7px;
+    margin: 0px 0px 12px;
+}
+.user-info img{
+    width: 45px;
+    margin: 0px 12px 0px 0px;
+    border-radius: 50%;
+}
+.info-customer{
+    flex: 1 1 0%;
+    font-size: 13px;
+    line-height: 15px;
+    color: rgb(51, 51, 51);
+    font-weight: 300;
+}
+.info-customer strong{
+    font-size: 16px;
+    line-height: 19px;
+    font-weight: 400;
+    display: block;
+    margin: 4px 0px 0px;
+}
+
+.tabs {
+    position: relative;
+}
+.tab-item {
+    min-width: 80px;
+    padding: 16px 20px 11px 20px;
+    font-size: 13px;
+    color: #0879c9;
+    background-color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: 5px solid transparent;
+    opacity: 0.6;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+.tabs .line {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 6px;
+    border-radius: 15px;
+    background-color: #0879c9;
+    transition: all 0.2s ease;
+}
+.tab-icon {
+    font-size: 24px;
+    width: 32px;
+    position: relative;
+    top: 2px;
+  }
+.tab-item:hover {
+    opacity: 1;
+    background-color: rgba(8,121,201, 0.05);
+    border-color: rgba(8,121,201, 0.1);
+}
+.tab-item.active {
+    opacity: 1;
+    border-color: #0879c9;
+}
+.tab-pane {
+    color: #333;
+    display: none;
+}
+.tab-pane.active {
+    display: block;
+}
+.tab-pane h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+.form-gp{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    margin: 0px 0px 15px;
+}
+.input-label{
+    width: 110px;
+    min-width: 110px;
+    font-size: 13px;
+    color: rgb(51, 51, 51);
+}
+.gender-checked{
+    display: flex;
+    margin-right: 15px;
+    
+}
+.gender-checked input{
+    height:20px;
+    width: 20px;
+}
+.gender-checked span{
+    padding-left: 10px;
+    padding-top: 2px;
+    font-size: 16px;
+}
