@@ -7,7 +7,7 @@ $(document).ready(function (c) {
         token:"&^ksjga@#$daglifa$"
     };
     // set token
-    //window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(obj)));
+    window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(obj)));
     // get token
     var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
     if(user_token && user_token.name != null){
@@ -32,3 +32,31 @@ $(document).ready(function (c) {
         window.localStorage.removeItem('user_token')
     })
 });
+$(document).ready(function (c) {
+    reloadProfile();
+    function reloadProfile(){
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if(!user_token && window.location.pathname.indexOf("profile") != (-1)){
+            window.location.href = "/";
+        }
+        
+    };
+    const tabs = document.querySelectorAll(".tab-item");
+    const panes = document.querySelectorAll(".tab-pane");
+    
+    const tabActive = document.querySelector(".tab-item.active");
+    tabs.forEach((tab, index) => {
+      const pane = panes[index];
+    
+      tab.onclick = function () {
+        document.querySelector(".tab-item.active").classList.remove("active");
+        document.querySelector(".tab-pane.active").classList.remove("active");
+    
+        this.classList.add("active");
+        pane.classList.add("active");
+      };
+    });
+});
+
+
+
