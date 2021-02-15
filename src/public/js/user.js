@@ -11,7 +11,7 @@ $(document).ready(function (c) {
     // get token
     var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
     if(user_token && user_token.name != null){
-        divName[0].innerHTML = `<a href="#" class="text-white">${user_token.name}</a>`;
+        divName[0].innerHTML = `<a href="/profile/${'123'}" class="text-white">${user_token.name}</a>`;
         divLogout[0].innerHTML = `<a href="/" class="text-white" ><i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất</a>`;
     }
     else{

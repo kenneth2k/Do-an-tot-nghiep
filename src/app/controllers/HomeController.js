@@ -20,7 +20,7 @@ class HomeController{
         res.render('home/profile');
     }
     show404(req, res){
-        res.send('404 not found!');
+        res.render('home/notfound');
     }
 }
 module.exports = new HomeController;

@@ -250,3 +250,9 @@
     cursor: pointer;
     outline: 0px;
 }
+.bg-content-err{  
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: rgba(8,121,201, 0.5);
+}
