@@ -10,14 +10,17 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" method="post">
+                <form action="#" method="post" id="login-form">
+                    <div class="text-sm-center text-danger"></div>
                     <div class="form-group">
-                        <label class="col-form-label">Tài khoản</label>
-                        <input type="text" class="form-control" placeholder="Nhập tài khoản..." name="Name" required="">
+                        <label class="col-form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="Nhập email..." name="email" required="">
+                        <small id="usernameHelp" class="form-text text-danger"></small>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Mật khẩu</label>
-                        <input type="password" class="form-control" placeholder="Nhập mật khẩu..." name="Password" required="">
+                        <input type="password" class="form-control" placeholder="Nhập mật khẩu..." name="password" required="">
+                        <small id="passwordHelp" class="form-text text-danger"></small>
                     </div>
                     <div class="right-w3l">
                         <input type="submit" class="form-control" value="Đăng nhập">

@@ -1529,7 +1529,7 @@ li.subitem1 p {
 }
 
 .product-single-w3l ul li {
-    list-style: inside;
+    list-style: inherit;
     font-size: 14px;
     line-height: 1.7;
 }

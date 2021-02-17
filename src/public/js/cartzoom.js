@@ -17,7 +17,7 @@ function setListProd(prod, index){
     var itemCart = `
     <tr>
         <td class="invert">${index + 1}</td>
-        <td class="invert-image">
+        <td class="invert-image" style="max-width: 200px;">
             <a href="/">
                 <img src="/public/images/${prod.img}" alt=" " class="img-responsive">
             </a>
