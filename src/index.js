@@ -44,7 +44,34 @@ app.engine('hbs', handlebars({
             var priceToString = numberFormat.format(price) + '';
             return priceToString.slice(1 , priceToString.length);
         },
-
+        genderChecked: (gender) => {
+            if(gender == 'Nam'){
+                return `
+                    <label class="gender-checked">
+                        <input type="radio" name="gender" value="Nam" id="male" checked>
+                        <span class="label">Nam</span>
+                    </label>
+                    <label class="gender-checked">
+                        <input type="radio" name="gender" value="Nữ" id="female">
+                        <span class="label">Nữ</span>
+                    </label>`;
+            }
+            return `
+                    <label class="gender-checked">
+                        <input type="radio" name="gender" value="Nam" id="male">
+                        <span class="label">Nam</span>
+                    </label>
+                    <label class="gender-checked">
+                        <input type="radio" name="gender" value="Nữ" id="female" checked>
+                        <span class="label">Nữ</span>
+                    </label>`;
+        },
+        dateToString: (date) => {
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        },
+        renderAddress: () => {
+            
+        }
 
     }
 }));

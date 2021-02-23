@@ -18,8 +18,8 @@ function setListProd(prod, index){
     <tr>
         <td class="invert">${index + 1}</td>
         <td class="invert-image" style="max-width: 200px;">
-            <a href="/">
-                <img src="/public/images/${prod.img}" alt=" " class="img-responsive">
+            <a href="${prod.slug}">
+                <img src="/public/images/products/${prod.img}" alt=" " class="img-responsive">
             </a>
         </td>
         <td class="invert">

@@ -112,158 +112,46 @@
     <div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4">
         <h3 class="heading-tittle text-center font-italic">Sản phẩm tương tự</h3>
         <div class="row">
-            <div class="col-md-3 product-men mt-5">
-                <div class="men-pro-item simpleCart_shelfItem">
-                    <div class="men-thumb-item text-center">
-                        <img src="/public/images/products/m1.jpg" alt="">
-                        <div class="men-cart-pro">
-                            <div class="inner-men-cart-pro">
-                                <a href="single.html" class="link-product-add-cart">Xem thông tin</a>
+            {{#each phones}}
+                <div class="col-md-3 product-men mt-5">
+                    <div class="men-pro-item simpleCart_shelfItem">
+                        <div class="men-thumb-item text-center">
+                            <img src="/public/images/products/{{imageOne this.images}}" alt="cart image" width="100%">
+                            <div class="men-cart-pro">
+                                <div class="inner-men-cart-pro">
+                                    <a href="/{{this.categori}}/{{this.slug}}" class="link-product-add-cart">Xem thông tin</a>
+                                </div>
                             </div>
                         </div>
-                        <span class="product-new-top">New</span>
-                    </div>
-                    <div class="item-info-product text-center border-top mt-4">
-                        <h4 class="pt-1">
-                            <a href="single.html">Samsung Galaxy J7</a>
-                        </h4>
-                        <div class="info-product-price my-2">
-                            <span class="item_price">2.000.000 <sup>đ</sup></span>
-                            <del>2.500.000</del><sup>đ</sup>
-                        </div>
-                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                            <form action="#" method="post">
-                                <fieldset>
-                                    <input type="hidden" name="cmd" value="_cart" />
-                                    <input type="hidden" name="add" value="1" />
-                                    <input type="hidden" name="business" value=" " />
-                                    <input type="hidden" name="item_name" value="Samsung Galaxy J7" />
-                                    <input type="hidden" name="amount" value="2000000" />
-                                    <input type="hidden" name="discount_amount" value="0" />
-                                    <input type="hidden" name="currency_code" value="VND" />
-                                    <input type="hidden" name="return" value=" " />
-                                    <input type="hidden" name="cancel_return" value=" " />
-                                    <input type="submit" name="submit" value="Thêm vào giỏ" class="button btn" />
-                                </fieldset>
-                            </form>
+                        <div class="item-info-product text-center border-top mt-4">
+                            <h4 class="pt-1">
+                                <a href="/{{this.categori}}/{{this.slug}}">{{this.name}}</a>
+                            </h4>
+                            <div class="info-product-price my-2">
+                                <span class="item_price">{{convertToVND this.price}} <sup>đ</sup></span>
+                                <del>{{convertToVND this.price}}</del><sup>đ</sup>
+                            </div>
+                            <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
+                                <form action="#" method="post">
+                                    <fieldset>
+                                        <input type="hidden" name="cmd" value="_cart" />
+                                        <input type="hidden" name="add" value="{{this.slug}}" />
+                                        <input type="hidden" name="img" value="{{imageOne this.images}}" />
+                                        <input type="hidden" name="business" value="" />
+                                        <input type="hidden" name="item_name" value="{{this.name}}" />
+                                        <input type="hidden" name="amount" value="{{this.price}}" />
+                                        <input type="hidden" name="discount_amount" value="0" />
+                                        <input type="hidden" name="currency_code" value="VND" />
+                                        <input type="hidden" name="return" value=" " />
+                                        <input type="hidden" name="cancel_return" value=" " />
+                                        <input type="submit" name="submit" value="Thêm vào giỏ" class="button btn" />
+                                    </fieldset>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3 product-men mt-5">
-                <div class="men-pro-item simpleCart_shelfItem">
-                    <div class="men-thumb-item text-center">
-                        <img src="/public/images/products/m1.jpg" alt="">
-                        <div class="men-cart-pro">
-                            <div class="inner-men-cart-pro">
-                                <a href="single.html" class="link-product-add-cart">Xem thông tin</a>
-                            </div>
-                        </div>
-                        <span class="product-new-top">New</span>
-                    </div>
-                    <div class="item-info-product text-center border-top mt-4">
-                        <h4 class="pt-1">
-                            <a href="single.html">Samsung Galaxy J7</a>
-                        </h4>
-                        <div class="info-product-price my-2">
-                            <span class="item_price">2.000.000 <sup>đ</sup></span>
-                            <del>2.500.000</del><sup>đ</sup>
-                        </div>
-                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                            <form action="#" method="post">
-                                <fieldset>
-                                    <input type="hidden" name="cmd" value="_cart" />
-                                    <input type="hidden" name="add" value="1" />
-                                    <input type="hidden" name="business" value=" " />
-                                    <input type="hidden" name="item_name" value="Samsung Galaxy J7" />
-                                    <input type="hidden" name="amount" value="2000000" />
-                                    <input type="hidden" name="discount_amount" value="0" />
-                                    <input type="hidden" name="currency_code" value="VND" />
-                                    <input type="hidden" name="return" value=" " />
-                                    <input type="hidden" name="cancel_return" value=" " />
-                                    <input type="submit" name="submit" value="Thêm vào giỏ" class="button btn" />
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 product-men mt-5">
-                <div class="men-pro-item simpleCart_shelfItem">
-                    <div class="men-thumb-item text-center">
-                        <img src="/public/images/products/m1.jpg" alt="">
-                        <div class="men-cart-pro">
-                            <div class="inner-men-cart-pro">
-                                <a href="single.html" class="link-product-add-cart">Xem thông tin</a>
-                            </div>
-                        </div>
-                        <span class="product-new-top">New</span>
-                    </div>
-                    <div class="item-info-product text-center border-top mt-4">
-                        <h4 class="pt-1">
-                            <a href="single.html">Samsung Galaxy J7</a>
-                        </h4>
-                        <div class="info-product-price my-2">
-                            <span class="item_price">2.000.000 <sup>đ</sup></span>
-                            <del>2.500.000</del><sup>đ</sup>
-                        </div>
-                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                            <form action="#" method="post">
-                                <fieldset>
-                                    <input type="hidden" name="cmd" value="_cart" />
-                                    <input type="hidden" name="add" value="1" />
-                                    <input type="hidden" name="business" value=" " />
-                                    <input type="hidden" name="item_name" value="Samsung Galaxy J7" />
-                                    <input type="hidden" name="amount" value="2000000" />
-                                    <input type="hidden" name="discount_amount" value="0" />
-                                    <input type="hidden" name="currency_code" value="VND" />
-                                    <input type="hidden" name="return" value=" " />
-                                    <input type="hidden" name="cancel_return" value=" " />
-                                    <input type="submit" name="submit" value="Thêm vào giỏ" class="button btn" />
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 product-men mt-5">
-                <div class="men-pro-item simpleCart_shelfItem">
-                    <div class="men-thumb-item text-center">
-                        <img src="/public/images/products/m1.jpg" alt="">
-                        <div class="men-cart-pro">
-                            <div class="inner-men-cart-pro">
-                                <a href="single.html" class="link-product-add-cart">Xem thông tin</a>
-                            </div>
-                        </div>
-                        <span class="product-new-top">New</span>
-                    </div>
-                    <div class="item-info-product text-center border-top mt-4">
-                        <h4 class="pt-1">
-                            <a href="single.html">Samsung Galaxy J7</a>
-                        </h4>
-                        <div class="info-product-price my-2">
-                            <span class="item_price">2.000.000 <sup>đ</sup></span>
-                            <del>2.500.000</del><sup>đ</sup>
-                        </div>
-                        <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                            <form action="#" method="post">
-                                <fieldset>
-                                    <input type="hidden" name="cmd" value="_cart" />
-                                    <input type="hidden" name="add" value="1" />
-                                    <input type="hidden" name="business" value=" " />
-                                    <input type="hidden" name="item_name" value="Samsung Galaxy J7" />
-                                    <input type="hidden" name="amount" value="2000000" />
-                                    <input type="hidden" name="discount_amount" value="0" />
-                                    <input type="hidden" name="currency_code" value="VND" />
-                                    <input type="hidden" name="return" value=" " />
-                                    <input type="hidden" name="cancel_return" value=" " />
-                                    <input type="submit" name="submit" value="Thêm vào giỏ" class="button btn" />
-                                </fieldset>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {{/each}}
         </div>
     </div>
 </div>

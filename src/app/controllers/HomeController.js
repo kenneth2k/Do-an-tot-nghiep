@@ -1,4 +1,5 @@
 const Phone = require('../models/Phone');
+const Account = require('../models/Account');
 const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
 
 class HomeController{
@@ -16,13 +17,17 @@ class HomeController{
     // [GET] /:categori/:slug
     show(req, res, next){
 
-        Phone.findOne({
+
+        Promise.all([Phone.findOne({
             slug: req.params.slug,
             categori: req.params.categori
-        })
-            .then(phone => {
+        }), Phone.find({})])
+            .then(([phone, phones]) => {
                 if(phone){
-                    res.render('home/detail', { phone : singleMongooseToObject(phone)});
+                    res.render('home/detail', { 
+                        phone : singleMongooseToObject(phone),
+                        phones : multipleMongooseToObject(phones),
+                    });
                 }
                 else{
                     res.redirect('/')
@@ -43,7 +48,20 @@ class HomeController{
 
     // [GET] /profile/:slug
     showProfile(req, res, next){
-        res.render('home/profile');
+
+        Account.findOne({
+            slug: req.params.slug
+        })
+            .then(account => {
+                res.render('home/profile', {
+                    account: singleMongooseToObject(account),
+                });
+            })
+            .catch(next)
+
+        
+        
+        
     }
 
     show404(req, res, next){

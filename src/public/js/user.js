@@ -1,18 +1,10 @@
 $(document).ready(function (c) {
     
-    var obj = {
-        name: "Nguyễn Văn Trọng",
-        remember: true,
-        token:"&^ksjga@#$daglifa$"
-    };
-    // set token
-    
-
+   
     $('#login-form').submit(function(e){
         e.preventDefault();
         
         var flag = false;
-        var usernameHelp = this.querySelector('#usernameHelp');
         var passwordHelp = this.querySelector('#passwordHelp');
         var pass = this.querySelector('input[type="password"]').value;
         var loginError = this.querySelector('.text-sm-center.text-danger');
@@ -31,15 +23,12 @@ $(document).ready(function (c) {
                     loginError.textContent = "Thông tin đăng nhập không đúng!";
                     return;
                 }
-                console.log(data)
-                // window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
-                // getToken();
+                window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
+                //console.log(data)
+                window.location.href = "/";
             }
         });
-    })
-
-
-
+    });
     // get token
     getToken();
     function getToken(){
@@ -47,7 +36,7 @@ $(document).ready(function (c) {
         var divLogout = $('#name-user-logout');
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
         if(user_token && user_token.name != null){
-            divName[0].innerHTML = `<a href="/profile/${'123'}" class="text-white">${user_token.name}</a>`;
+            divName[0].innerHTML = `<a href="/profile/${user_token._slug}" class="text-white">${user_token.name}</a>`;
             divLogout[0].innerHTML = `<a href="/" class="text-white" ><i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất</a>`;
         }
         else{
@@ -76,8 +65,29 @@ $(document).ready(function (c) {
         if(!user_token && window.location.pathname.indexOf("profile") != (-1)){
             window.location.href = "/";
         }
-        
+        if(user_token && window.location.pathname.indexOf("profile") != (-1)){
+            profileUser(user_token);
+        }
     };
+    function profileUser(user_token){
+        const inputFullName = document.getElementById("fulName");
+        const inputPhone = document.getElementById("phoneNumber");
+        const inputDate = document.getElementById("date");
+        const inputCheckedMale = document.getElementById("male");
+        const inputCheckedFemale = document.getElementById("female");
+        
+        $.ajax({
+            type: "POST",
+            url: '/api/getProfile',
+            headers: {
+                "Authorization": user_token.token
+            },
+            success: function(data)
+            {
+                console.log(data);
+            }
+        });
+    }
     const tabs = document.querySelectorAll(".tab-item");
     const panes = document.querySelectorAll(".tab-pane");
     

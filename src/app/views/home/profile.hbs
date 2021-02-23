@@ -21,7 +21,7 @@
                 <img src="/public/images/customer/avatar.png" alt="Avatar customer">
                 <div class="info-customer">
                     Tài khoản của
-                    <strong>Nguyễn Văn Trọng</strong>
+                    <strong>{{account.fullname}}</strong>
                 </div>
             </div>
             <ul class="tabs nav flex-column">
@@ -54,26 +54,19 @@
                     <form>
                         <div class="form-gp">
                             <label for="fulName" class="input-label">Họ và tên</label>
-                            <input type="text" class="form-control" id="fulName" placeholder="Nhập họ tên...">
+                            <input type="text" class="form-control" id="fulName" placeholder="Nhập họ tên..." value="{{account.fullname}}">
                         </div>
                         <div class="form-gp">
                             <label for="phoneNumber" class="input-label">Số điện thoại</label>
-                            <input type="text" class="form-control" id="phoneNumber" placeholder="Nhập số điện thoại...">
+                            <input type="text" class="form-control" id="phoneNumber" placeholder="Nhập số điện thoại..." value="{{account.phone}}">
                         </div>
                         <div class="form-gp">
                             <label for="email" class="input-label">Email</label>
-                            <input type="text" class="form-control" id="email" placeholder="Nhập email...">
+                            <input type="text" class="form-control" id="email" placeholder="Nhập email..." value="{{account.email}}" readonly>
                         </div>
                         <div class="form-gp">
                             <label class="input-label">Giới tính</label>
-                            <label class="gender-checked">
-                                <input type="radio" name="gender" value="male">
-                                <span class="label">Nam</span>
-                            </label>
-                            <label class="gender-checked">
-                                <input type="radio" name="gender" value="female">
-                                <span class="label">Nữ</span>
-                            </label>
+                            {{{genderChecked account.gender}}}
                         </div>
                         <div class="form-gp">
                             <label for="date" class="input-label">Ngày sinh</label>
@@ -96,15 +89,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <a href="#">923528221</a>
-                                    </td>
-                                    <td>01/12/2020</td>
-                                    <td>Ốp lưng cho Xiaomi Redmi Note 9S - Note 9 Pro - iRON - MAN IRING TRONG SUỐT Nhựa PC cứng viền dẻo chống sốc - Đen</td>
-                                    <td>98.000 ₫</td>
-                                    <td>Giao hàng thành công</td>
-                                </tr>
+                                {{#each account.oders}}
+                                    <tr>
+                                        <td>
+                                            <a href="#">{{this._id}}</a>
+                                        </td>
+                                        <td>{{dateToString this.date}}</td>
+                                        <td>{{this.productName}}</td>
+                                        <td>{{convertToVND this.sum}} VNĐ</td>
+                                        <td>{{this.status}}</td>
+                                    </tr>
+                                {{/each}}
                             </tbody>
                         </table>
                     </div>
@@ -112,57 +107,48 @@
                 <div class="tab-pane">
                     <h2>Sổ địa chỉ</h2>
                     <div class="inner">
-                        <div class="item">
-                            <div class="info">
-                                <div class="name">Nguyễn Văn Trọng<span>
-                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 48c110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200-110.532 0-200-89.451-200-200 0-110.532 89.451-200 200-200m140.204 130.267l-22.536-22.718c-4.667-4.705-12.265-4.736-16.97-.068L215.346 303.697l-59.792-60.277c-4.667-4.705-12.265-4.736-16.97-.069l-22.719 22.536c-4.705 4.667-4.736 12.265-.068 16.971l90.781 91.516c4.667 4.705 12.265 4.736 16.97.068l172.589-171.204c4.704-4.668 4.734-12.266.067-16.971z"></path>
-                                    </svg>
-                                    <span>Địa chỉ mặc định</span>
-                                    </span>
-                                </div>
-                                <div class="address">
-                                    <span>Địa chỉ: </span>
-                                    65 Đường Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Phường Bến Nghé, Quận 1, Hồ Chí Minh</div>
-                                    <div class="phone">
-                                        <span>Điện thoại: </span>
-                                        0326440254
+                        {{#each account.address}}
+                            <div class="item">
+                                <div class="info">
+                                    <div class="name">Nguyễn Văn Trọng
+                                        <span>
+                                            {{#if this.active}}
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M256 8C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm0 48c110.532 0 200 89.451 200 200 0 110.532-89.451 200-200 200-110.532 0-200-89.451-200-200 0-110.532 89.451-200 200-200m140.204 130.267l-22.536-22.718c-4.667-4.705-12.265-4.736-16.97-.068L215.346 303.697l-59.792-60.277c-4.667-4.705-12.265-4.736-16.97-.069l-22.719 22.536c-4.705 4.667-4.736 12.265-.068 16.971l90.781 91.516c4.667 4.705 12.265 4.736 16.97.068l172.589-171.204c4.704-4.668 4.734-12.266.067-16.971z"></path>
+                                            </svg>
+                                            <span>Địa chỉ mặc định</span>
+                                            {{/if}}
+                                        </span>
                                     </div>
-                                </div>
-                                <div class="action">
-                                    <a class="edit" href="#">Mặc định</a>
-                                </div>
-                        </div>
-                        <div class="item">
-                            <div class="info">
-                                <div class="name">Nguyễn Văn Trọng
-                                   
-                                </div>
-                                <div class="address">
-                                    <span>Địa chỉ: </span>
-                                    65 Đường Huỳnh Thúc Kháng, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Phường Bến Nghé, Quận 1, Hồ Chí Minh</div>
-                                    <div class="phone">
-                                        <span>Điện thoại: </span>
-                                        0326440254
+                                    <div class="address">
+                                        <span>Địa chỉ: </span>
+                                        {{this.filladdress}}</div>
+                                        <div class="phone">
+                                            <span>Điện thoại: </span>
+                                            {{this.phone}}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="action">
-                                    <a class="edit" href="#">Mặc định</a>
-                                    <button class="detele-address">Xóa</button>
-                                </div>
-                        </div>
+                                    <div class="action">
+                                        <a class="edit" href="#">Mặc định</a>
+                                        {{#if this.active}}
+                                        {{else}}
+                                            <button class="detele-address" data-id="{{this._id}}">Xóa</button>
+                                        {{/if}}
+                                    </div>
+                            </div>
+                        {{/each}}
                     </div>
                 </div>
                 <div class="tab-pane">
                     <h2>Tạo sổ địa chỉ</h2>
                     <form>
                         <div class="form-gp">
-                            <label for="fulName" class="input-label">Họ và tên</label>
-                            <input type="text" class="form-control" id="fulName" placeholder="Nhập họ tên...">
+                            <label for="fulName2" class="input-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="fulName2" placeholder="Nhập họ tên...">
                         </div>
                         <div class="form-gp">
-                            <label for="phoneNumber" class="input-label">Số điện thoại</label>
-                            <input type="text" class="form-control" id="phoneNumber" placeholder="Nhập số điện thoại...">
+                            <label for="phoneNumber2" class="input-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="phoneNumber2" placeholder="Nhập số điện thoại...">
                         </div>
                         <div class="form-gp">
                             <label class="input-label">Tỉnh/Thành phố</label>
