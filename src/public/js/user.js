@@ -1,6 +1,24 @@
 $(document).ready(function (c) {
-    
-   
+    function checkLogin(){
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if(user_token){
+            $.ajax({
+                type: "POST",
+                url: '/api/checkLogin',
+                headers: {
+                    'Authorization': user_token.token,
+                },
+                success: function(data)
+                {
+                    if(!data.message){
+                        window.localStorage.removeItem('user_token');
+                        getToken();
+                    }
+                }
+            });
+        }
+    }
+    checkLogin();
     $('#login-form').submit(function(e){
         e.preventDefault();
         
@@ -58,7 +76,7 @@ $(document).ready(function (c) {
         })
     }
 });
-$(document).ready(function (c) {
+$(document).ready(function () {
     reloadProfile();
     function reloadProfile(){
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
@@ -84,7 +102,15 @@ $(document).ready(function (c) {
             },
             success: function(data)
             {
-                console.log(data);
+                inputFullName.value = data.fullname;
+                inputPhone.value = data.phone;
+                inputDate.value = data.dateOfBirth;
+               if(data.gender == 'Nam'){
+                   inputCheckedMale.checked = true;
+               }
+               else{
+                    inputCheckedFemale.checked = true;
+               }
             }
         });
     }
@@ -103,6 +129,36 @@ $(document).ready(function (c) {
         pane.classList.add("active");
       };
     });
+    
+    const formChangePass = $("#form-change-password");
+    formChangePass.submit(function(e){
+        e.preventDefault();
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        $.ajax({
+            type: "PUT",
+            url: '/api/getProfile/changePassword',
+            headers: {
+                'Authorization': user_token.token,
+            },
+            data: $(this).serialize(),
+            success: function(data)
+            {
+                if(data.message){
+                    alert('Cập nhật mật khẩu thành công, vui lòng đăng nhập lại!');
+                    window.localStorage.removeItem('user_token');
+                    window.location.href= "/";
+                }
+                else{
+                    alert('Cập nhật mật khẩu thất bại!');
+                }
+            }
+        });
+    });
+    //form-create-address
+    const formCreateAddress = $("#form-create-address");
+    formCreateAddress.submit(function(e){
+        e.preventDefault();
+    })
 });
 
 

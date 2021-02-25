@@ -1,16 +1,15 @@
 const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
+const methodOverride = require('method-override');
 const handlebars = require('express-handlebars');
 const { multipleMongooseToObject, singleMongooseToObject } = require('./util/mongoose');
 
 const route = require('./app/routes');
 const db = require('./app/config/db');
 
-
+// Connect Database
 db.connect();
-
-
 
 const app = express();
 const port = 3300;
@@ -26,6 +25,9 @@ app.use(express.urlencoded({
     extended: true
 }));
 app.use(express.json());
+
+// override with POST having
+app.use(methodOverride('_method'))
 
 //view engine
 app.engine('hbs', handlebars({

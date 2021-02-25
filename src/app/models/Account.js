@@ -25,7 +25,8 @@ const Account = new Schema({
         status : { type: String },
     }],
     token : { type: String },
-    
+},{
+    timestamps: true,
 });
 
 module.exports = mongoose.model('Account', Account);
