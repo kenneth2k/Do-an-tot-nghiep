@@ -256,3 +256,74 @@
     text-align: center;
     background-color: rgba(8,121,201, 0.5);
 }
+.prod_content, .payment_content, .user__info-content, .price__info-content{
+    padding: 15px 30px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.list-group-item{
+    display: flex;
+}
+.prod_content-img{
+    margin-right: 20px;
+}
+.prod_content-img img{
+    max-width: 80px;
+    max-height: 80px;
+}
+.prod_content-title{
+    width: 100%;
+}
+.prod_content-sub{
+    display: flex;
+    justify-content: space-between;
+}
+.list-group-item--motiffi{
+    border-color: #fff;
+}
+.list-group-item input{
+    opacity: 1;
+}
+.list-group-item label{
+    cursor: pointer;
+}
+.payment__name img{
+    width: 32px;
+    height: 32px;
+    margin: 0 5px;
+}
+.user__info-content-title, .price__info-content-title, .price__info-content-money{
+    font-size: .9rem;
+    line-height: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+.user__info-content-name{
+    margin: 2px 0;
+}
+.user__info-content-name h6{
+    font-weight: bold;
+}
+.user__info-content hr, .price__info-content hr{
+    border-color: #000;
+    margin: 9px 0;
+}
+.user__info-content-address p{
+    font-size: 0.8rem;
+    color: #000;
+    font-weight: 500;
+}
+.btn-outline-color{
+    border: 1px solid rgb(204, 204, 204);
+    font-size: 12px;
+    height: 30px;
+    outline-color: rgb(204, 204, 204);
+    background: linear-gradient(rgb(255, 255, 255), rgb(247, 247, 247));
+    border-radius: 2px;
+    color: rgb(51, 51, 51);
+}
+.user__info-content-address{
+    text-align: justify;
+}
+.price__info-content-money-content{
+    color: red;
+}
