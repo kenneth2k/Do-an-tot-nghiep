@@ -2,20 +2,20 @@ const Phone = require('../models/Phone');
 const Account = require('../models/Account');
 const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
 
-class HomeController{
+class HomeController {
     // [GET] /
-    index(req, res, next){
-        
+    index(req, res, next) {
+
         Phone.find({})
             .then(phones => {
-                res.render('home/index', { phones : multipleMongooseToObject(phones) });
+                res.render('home/index', { phones: multipleMongooseToObject(phones) });
             })
             .catch(next)
-        
+
     }
 
     // [GET] /:categori/:slug
-    show(req, res, next){
+    show(req, res, next) {
 
 
         Promise.all([Phone.findOne({
@@ -23,31 +23,36 @@ class HomeController{
             categori: req.params.categori
         }), Phone.find({})])
             .then(([phone, phones]) => {
-                if(phone){
-                    res.render('home/detail', { 
-                        phone : singleMongooseToObject(phone),
-                        phones : multipleMongooseToObject(phones),
+                if (phone) {
+                    res.render('home/detail', {
+                        phone: singleMongooseToObject(phone),
+                        phones: multipleMongooseToObject(phones),
                     });
                 }
-                else{
+                else {
                     res.redirect('/')
                 }
             })
             .catch(next)
     }
-    
+
     // [GET] /cart
-    showCart(req, res, next){
+    showCart(req, res, next) {
         res.render('home/cart');
     }
 
+    // [GET] /cart
+    showPayment(req, res, next) {
+        res.render('home/payment');
+    }
+
     // [GET] /search
-    showSearch(req, res, next){
+    showSearch(req, res, next) {
         res.render('home/search');
     }
 
     // [GET] /profile/:slug
-    showProfile(req, res, next){
+    showProfile(req, res, next) {
 
         Account.findOne({
             slug: req.params.slug
@@ -58,13 +63,9 @@ class HomeController{
                 });
             })
             .catch(next)
-
-        
-        
-        
     }
 
-    show404(req, res, next){
+    show404(req, res, next) {
         res.render('home/notfound');
     }
 }

@@ -11,6 +11,7 @@ router.put('/getProfile/changePassword', apiAccountController.changePassword);
 
 
 // get country vietnam
+router.get('/menu', apiHomeController.getMenu);
 router.get('/city', apiHomeController.getCity);
 router.get('/city/:city/district', apiHomeController.getDistrict);
 router.get('/district/:ward/ward', apiHomeController.getWard);

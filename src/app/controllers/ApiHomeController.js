@@ -2,9 +2,16 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
 const Account = require('../models/Account');
+const Menu = require('../models/Menu');
 const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
 
 class ApiHomeController{
+    // [POST] /api/getMenu
+    getMenu(req, res, next){
+        Menu.find({})
+            .then(menus => res.send({menus}))
+            .catch(next)
+    }
     // [POST] /api/getCity
     getCity(req, res, next){
         axios.get('https://thongtindoanhnghiep.co/api/city')
