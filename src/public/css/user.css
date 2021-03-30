@@ -326,4 +326,21 @@
 }
 .price__info-content-money-content{
     color: red;
+    font-weight: 700;
+}
+.pay__content{
+    text-align: center;
+    margin: 20px 0;
+    border: 1px solid #999;
+    padding: 30px;
+}
+.pay__content h1{
+    color: red;
+}
+.pay__content a{
+    width: 250px;
+    height: 60px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 1.8rem;
 }

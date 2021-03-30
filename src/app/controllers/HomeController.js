@@ -16,8 +16,6 @@ class HomeController {
 
     // [GET] /:categori/:slug
     show(req, res, next) {
-
-
         Promise.all([Phone.findOne({
             slug: req.params.slug,
             categori: req.params.categori
@@ -41,9 +39,14 @@ class HomeController {
         res.render('home/cart');
     }
 
-    // [GET] /cart
+    // [GET] /payment
     showPayment(req, res, next) {
         res.render('home/payment');
+    }
+
+    // [GET] /payment/success
+    showPaymentSuccess(req, res, next) {
+        res.render('home/paymentsuccess');
     }
 
     // [GET] /search
