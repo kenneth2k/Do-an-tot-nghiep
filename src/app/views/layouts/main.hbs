@@ -8,11 +8,14 @@
     {{> links}}
 </head>
 <body>
-    {{> header}}
-   
-    {{{body}}}
-    {{> footer}}
-    {{> copyright}}
-    {{> scripts}}
+    {{> spinner}}
+    <div id="wapper">
+        {{> header}}
+    
+        {{{body}}}
+        {{> footer}}
+        {{> copyright}}
+        {{> scripts}}
+    </div>
 </body>
 </html>
