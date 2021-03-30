@@ -3,6 +3,7 @@ const router = express.Router();
 const homeController = require('../controllers/HomeController');
 
 
+router.get('/payment/success', homeController.showPaymentSuccess);
 router.get('/profile/:slug', homeController.showProfile);
 router.get('/:categori/:slug', homeController.show);
 router.get('/cart', homeController.showCart);

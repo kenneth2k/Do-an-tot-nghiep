@@ -15,9 +15,9 @@ const app = express();
 const port = 3300;
 
 //Http logger
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 //static file
-app.use('/public',express.static(path.join(__dirname, "/public")));
+app.use('/public', express.static(path.join(__dirname, "/public")));
 
 //middleware
 app.use(express.urlencoded({
@@ -33,20 +33,20 @@ app.engine('hbs', handlebars({
     extname: '.hbs',
     helpers: {
         imageOne: (images) => {
-            for(let i = 0; i < images.length; i++){
+            for (let i = 0; i < images.length; i++) {
                 return images[i].image;
             }
         },
         convertToVND: (price) => {
             const numberFormat = new Intl.NumberFormat('vi-VN', {
                 style: 'currency',
-                currency: 'VND',    
+                currency: 'VND',
             });
             var priceToString = numberFormat.format(price) + '';
-            return priceToString.slice(1 , priceToString.length);
+            return priceToString.slice(1, priceToString.length);
         },
         genderChecked: (gender) => {
-            if(gender == 'Nam'){
+            if (gender == 'Nam') {
                 return `
                     <label class="gender-checked">
                         <input type="radio" name="gender" value="Nam" id="male" checked>
@@ -71,7 +71,7 @@ app.engine('hbs', handlebars({
             return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
         },
         renderAddress: () => {
-            
+
         }
 
     }
@@ -82,7 +82,7 @@ app.set("views", path.join(__dirname, 'app/views'));
 
 //Route
 route(app);
- 
-app.listen(port, ()=>{
+
+app.listen(port, () => {
     console.log("Connected Port:", port);
 });
