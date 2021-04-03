@@ -15,7 +15,7 @@ const app = express();
 const port = 3300;
 
 //Http logger
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
 //static file
 app.use('/public', express.static(path.join(__dirname, "/public")));
 

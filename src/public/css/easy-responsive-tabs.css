@@ -249,10 +249,18 @@ h2.resp-accordion:first-child {
     /* !important;*/
 }
 
+@media (min-width: 1080px) {
+    table.timetable_sub{
+        width: 99% !important;
+    }
+}
 @media (max-width: 1080px) {
     .resp-tabs-list li {
         font-size: 18px;
         padding: 13px 36.8px;
+    }
+    table.timetable_sub{
+        width: 99% !important;
     }
 }
 
@@ -263,6 +271,9 @@ h2.resp-accordion:first-child {
     }
     .resp-tab-content {
         padding: 40px 35px;
+    }
+    table.timetable_sub{
+        width: 106% !important;
     }
 }
 
@@ -310,6 +321,9 @@ h2.resp-accordion:first-child {
         margin-top: 0 !important;
         min-height: auto;
         margin-bottom: 0px;
+    }
+    table.timetable_sub{
+        width: 150% !important;
     }
 }
 
