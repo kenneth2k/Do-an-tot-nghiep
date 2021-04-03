@@ -37,7 +37,7 @@ function setListProd(prod, index){
         <td class="invert">${prod.item_name}</td>
         <td class="invert" id="money-prod">${x}</td>
         <td class="invert">
-            <div class="rem">
+            <div class="rem" style="left: 10px;">
                 <div class="close1" id="close"> </div>
             </div>
         </td>
