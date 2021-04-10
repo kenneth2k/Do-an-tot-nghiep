@@ -14,19 +14,13 @@ $(document).ready(function () {
                     var label = `<label class="input-label">Tỉnh/Thành phố</label>`;
                     var startSelect = `<select required="" name="chooseCity"><option value="">Chọn Tỉnh/Thành phố</option>`;
                     var endSelect = `</select>`;
-                    data.city.LtsItem.forEach(value =>{
-                        if(value.ID == 4){
-                            startSelect += `<option value="${value.ID}" selected>${value.Title}</option>`;
-                        }
-                        else{
-                            startSelect += `<option value="${value.ID}">${value.Title}</option>`;
-                        }
+                    data.city.forEach(value =>{
+                        startSelect += `<option value="${value.province_id}">${value.province_name}</option>`;
                     })
                     if(city){
                         city.innerHTML = label + startSelect + endSelect;
                     
                         var select = $(city.querySelector('select'));
-                        getDistrict(4);
                         select.change(function(){
                             getDistrict($(this).val());
                         })
@@ -51,7 +45,7 @@ $(document).ready(function () {
                     var startSelect = `<select required="" name="chooseCity"><option value="">Chọn Quận/Huyện</option>`;
                     var endSelect = `</select>`;
                     data.city.forEach(value =>{
-                        startSelect += `<option value="${value.ID}">${value.Title}</option>`;
+                        startSelect += `<option value="${value.district_id}">${value.district_name}</option>`;
                     })
                     district.innerHTML = "";
                     district.innerHTML = label + startSelect + endSelect;
@@ -87,7 +81,7 @@ $(document).ready(function () {
                     var startSelect = `<select required="" name="chooseCity"><option value="">Chọn Phường/Xã</option>`;
                     var endSelect = `</select>`;
                     data.city.forEach(value =>{
-                        startSelect += `<option value="${value.ID}">${value.Title}</option>`;
+                        startSelect += `<option value="${value.ward_id}">${value.ward_name}</option>`;
                     })
                     ward.innerHTML = "";
                     ward.innerHTML = label + startSelect + endSelect;
