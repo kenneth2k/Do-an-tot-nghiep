@@ -14,10 +14,10 @@ class ApiHomeController{
     }
     // [POST] /api/getCity
     getCity(req, res, next){
-        axios.get('https://thongtindoanhnghiep.co/api/city')
+        axios.get('https://vapi.vnappmob.com/api/province')
             .then(function (response) {
-                var isValid = response.data ? res.send({
-                    city: response.data,
+                var isValid = response.data.results ? res.send({
+                    city: response.data.results,
                     message: true,
                 }) : res.send({message: false});
             })
@@ -25,11 +25,12 @@ class ApiHomeController{
     }
     // [POST] /api/:city/getDistrict/
     getDistrict(req, res, next){
-        var apiDistrict = "https://thongtindoanhnghiep.co/api/city/" + req.params.city + "/district";
+        
+        var apiDistrict = "https://vapi.vnappmob.com/api/province/district/" + req.params.city;
         axios.get(apiDistrict)
             .then(function (response) {
-                var isValid = response.data ? res.send({
-                    city: response.data,
+                var isValid = response.data.results ? res.send({
+                    city: response.data.results,
                     message: true,
                 }) : res.send({message: false});
             })
@@ -37,11 +38,11 @@ class ApiHomeController{
     }
     // [POST] /api/:district/getWard
     getWard(req, res, next){
-        var apiWard = "https://thongtindoanhnghiep.co/api/district/" + req.params.ward + "/ward";
+        var apiWard = "https://vapi.vnappmob.com/api/province/ward/" + req.params.ward;
         axios.get(apiWard)
             .then(function (response) {
-                var isValid = response.data ? res.send({
-                    city: response.data,
+                var isValid = response.data.results ? res.send({
+                    city: response.data.results,
                     message: true,
                 }) : res.send({message: false});
             })
