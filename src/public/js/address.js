@@ -1,4 +1,11 @@
 $(document).ready(function () {
+    reloadProfile();
+    function reloadProfile(){
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if(!user_token && window.location.pathname.indexOf("profile") != (-1)){
+            window.location.href = "/";
+        }
+    };
     const city = document.getElementById('select-city');
     const district = document.getElementById('select-district');
     const ward = document.getElementById('select-ward');

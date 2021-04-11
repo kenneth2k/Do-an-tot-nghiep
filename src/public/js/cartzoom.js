@@ -163,3 +163,42 @@ $(document).ready(function (c){
         
     });
 });
+$(document).ready(function (c){
+
+
+
+    var listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts'))) ;
+    var CartItem;
+    if(!listProd) return;
+    CartItem = listProd.value.items;
+    var prodUl = $('#prod_list-item');
+
+    for(let i = 0 ; i < CartItem.length ; i++){
+        prodUl.append(setListProd2(CartItem[i]));
+    }
+    var divSumTotal = $('.price__info-content-money-content');
+    divSumTotal.text(sumTotal().toLocaleString('it-IT', {style : 'currency', currency : 'VND'}));
+    function setListProd2(prod){
+        var x = prod.amount;
+        x = x.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+        var itemCart = `
+            <li class="list-group-item">
+                <div class="prod_content-img">
+                    <img src="/public/images/products/${prod.img}" alt="">
+                </div>
+                <div class="prod_content-title">
+                    ${prod.item_name}
+                    <div class="prod_content-sub">
+                        <div class="prod_content-sub-quantity">
+                            <span>SL: x<strong>${prod.quantity}</strong></span>
+                        </div>
+                        <div class="prod_content-sub-price">
+                            <span>${x}</span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        `;
+        return itemCart;
+    }
+});
