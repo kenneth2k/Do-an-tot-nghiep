@@ -163,6 +163,26 @@ $(document).ready(function () {
         e.preventDefault();
     })
 });
+$(document).ready(function (c) {
+    getUser()
+    function getUser(){
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if(!user_token && window.location.pathname.indexOf("payment") != (-1)){
+            window.location.href = "/";
+        }
+        $.ajax({
+            type: "POST",
+            url: '/api/getProfile',
+            headers: {
+                "Authorization": user_token.token
+            },
+            success: function(data)
+            {
+                console.log(data);
+            }
+        });
+    }
+});
 
 
 
