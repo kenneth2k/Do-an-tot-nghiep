@@ -92,6 +92,7 @@ class ApiAccountController{
                         fullname: account.fullname,
                         gender: account.gender,
                         phone: account.phone,
+                        address: account.address[0],
                         dateOfBirth: account.dateOfBirth.getFullYear() + '-' + (account.dateOfBirth.getMonth() + 1) + '-' + account.dateOfBirth.getDate(),
                     })
                 })
