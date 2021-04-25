@@ -510,6 +510,14 @@
     transition: all 0.5s ease-out 0s;
 }
 
+.inner-men-cart-pro {
+    height: 85%;
+}
+
+span.item_price {
+    font-size: 15px;
+}
+
 
 /* navigation */
 

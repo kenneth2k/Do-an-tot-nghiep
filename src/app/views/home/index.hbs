@@ -19,7 +19,7 @@
                         <h3 class="heading-tittle text-center font-italic">Điện Thoại Nổi Bật</h3>
                         <div class="row">
                             {{#each phones}}
-                                <div class="col-md-3 product-men mt-5">
+                                <div class="col-md-3 pl-1 pr-1 product-men mt-5">
                                     <div class="men-pro-item simpleCart_shelfItem">
                                         <div class="men-thumb-item text-center">
                                             <img src="/public/images/products/{{imageOne this.images}}" alt="cart image" width="100%">
@@ -36,24 +36,6 @@
                                             <div class="info-product-price my-2">
                                                 <span class="item_price">{{convertToVND this.price}} <sup>đ</sup></span>
                                                 <del>{{convertToVND this.price}}</del><sup>đ</sup>
-                                            </div>
-                                            <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                                                <form action="#" method="post">
-                                                    <fieldset>
-                                                        <input type="hidden" name="cmd" value="_cart" />
-                                                        <input type="hidden" name="add" value="{{this.slug}}" />
-                                                        <input type="hidden" name="img" value="{{imageOne this.images}}" />
-                                                        <input type="hidden" name="slug" value="/{{this.categori}}/{{this.slug}}" />
-                                                        <input type="hidden" name="business" value="" />
-                                                        <input type="hidden" name="item_name" value="{{this.name}}" />
-                                                        <input type="hidden" name="amount" value="{{this.price}}" />
-                                                        <input type="hidden" name="discount_amount" value="0" />
-                                                        <input type="hidden" name="currency_code" value="VND" />
-                                                        <input type="hidden" name="return" value=" " />
-                                                        <input type="hidden" name="cancel_return" value=" " />
-                                                        <input type="submit" name="submit" value="Thêm vào giỏ" class="button btn" />
-                                                    </fieldset>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
