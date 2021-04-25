@@ -1,7 +1,7 @@
-$(document).ready(function (){
+$(document).ready(function() {
     const carouselInner = document.querySelector('.carousel-inner');
-    const menu = document.querySelector('#nav-header-bottom');
-    if(carouselInner){
+    const menu = document.querySelector('#nav-header-bottoms');
+    if (carouselInner) {
         carouselInner.innerHTML = `
         <div class="carousel-item item1 active">
             <div class="container">
@@ -65,20 +65,22 @@ $(document).ready(function (){
         </div>
         `;
     }
-    if(menu){
-        var href = window.location.pathname == '/' ? '/': (window.location.pathname).replace('/','');
+    if (menu) {
+        var href = window.location.pathname == '/' ? '/' : (window.location.pathname).replace('/', '');
         $.ajax({
             type: "GET",
             url: '/api/menu',
-            success: function(data)
-            {
+            success: function(data) {
                 var menus = data.menus;
-                
                 var eleMenus = ``;
-                menus.forEach(function(val){
-                    eleMenus += `<li class="nav-item ${(val.slug == href)? 'active': ''} mr-lg-2 mb-lg-0 mb-2">
+                menus.forEach(function(val) {
+                    eleMenus += `<li class="nav-item nav-border-relative ${(val.slug == href)? 'active': ''} mr-lg-2 mb-lg-0 mb-2">
                                         <a class="nav-link" href="${val.slug}">${val.name}
                                         </a>
+                                        <ul class="list-group group-show">
+                                            <li class="list-group-item "><a class="nav-link href="/>">left1</a></li>
+                                            <li class="list-group-item "><a class="nav-link href="/">left</a></li>
+                                        </ul>
                                     </li>`;
                 })
                 menu.innerHTML = eleMenus;
