@@ -518,6 +518,17 @@ span.item_price {
     font-size: 15px;
 }
 
+.carousel-control-prev,
+.carousel-control-next {
+    width: 3%;
+}
+
+.carousel-control-prev i,
+.carousel-control-next i {
+    transform: scale(1.5);
+    background-color: #333;
+}
+
 
 /* navigation */
 
