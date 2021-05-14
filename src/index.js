@@ -84,5 +84,5 @@ app.set("views", path.join(__dirname, 'app/views'));
 route(app);
 
 app.listen(port, () => {
-    console.log("Connected Port:", port);
+    console.log("Connected Port:", `http://localhost:${port}`);
 });
