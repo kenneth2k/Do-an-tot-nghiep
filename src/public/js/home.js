@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    const carouselInner = document.querySelector('.carousel-inner');
+    const carouselInner = document.querySelector('#banner-carousel-inner');
     const menu = document.querySelector('#nav-header-bottoms');
     if (carouselInner) {
         carouselInner.innerHTML = `
@@ -7,13 +7,10 @@ $(document).ready(function() {
             <div class="container">
                 <div class="w3l-space-banner">
                     <div class="carousel-caption p-lg-5 p-sm-4 p-3">
-                        <p>Nhận
-                            <span>10%</span> Hoàn tiền</p>
-                        <h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">Giảm
-                            <span>Giá</span>
-                            Lớn
+                        <p>Nhận 10% Hoàn tiền</p>
+                        <h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">
+                        <span>Giảm giá Ngay hôm nay</span>
                         </h3>
-                        <a class="button2" href="product.html">Mua ngay </a>
                     </div>
                 </div>
             </div>
@@ -22,13 +19,11 @@ $(document).ready(function() {
             <div class="container">
                 <div class="w3l-space-banner">
                     <div class="carousel-caption p-lg-5 p-sm-4 p-3">
-                        <p>Tai nghe
-                            <span>Không dây</span> Tiên tiến</p>
+                        <p>Tai nghe không dây Tiên tiến</p>
                         <h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">
-                            <span>Tai Nghe</span>
-                            Tốt nhất
+                        <span>Giảm giá Ngay hôm nay</span>
                         </h3>
-                        <a class="button2" href="product.html">Mua ngay </a>
+                        
                     </div>
                 </div>
             </div>
@@ -37,13 +32,11 @@ $(document).ready(function() {
             <div class="container">
                 <div class="w3l-space-banner">
                     <div class="carousel-caption p-lg-5 p-sm-4 p-3">
-                        <p>Nhận
-                            <span>10%</span> Hoàn tiền</p>
-                        <h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">Giảm
-                            <span>Giá</span>
-                            Lớn
+                        <p>Nhận 10% Hoàn tiền</p>
+                        <h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">
+                        <span>Giảm giá Ngay hôm nay</span>
                         </h3>
-                        <a class="button2" href="product.html">Mua ngay </a>
+                        
                     </div>
                 </div>
             </div>
@@ -52,13 +45,11 @@ $(document).ready(function() {
             <div class="container">
                 <div class="w3l-space-banner">
                     <div class="carousel-caption p-lg-5 p-sm-4 p-3">
-                        <p>Mua ngay Giảm
-                            <span>40%</span></p>
+                        <p>Mua ngay Giảm 40%</p>
                         <h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">
-                            <span>Giảm giá</span>
-                            Ngay hôm nay
+                            <span>Giảm giá Ngay hôm nay</span>
                         </h3>
-                        <a class="button2" href="product.html">Mua ngay </a>
+                        
                     </div>
                 </div>
             </div>
@@ -87,4 +78,34 @@ $(document).ready(function() {
             }
         })
     }
+});
+$(document).ready(function() {
+    (
+        function() {
+            const pageNaigation = document.querySelector('#page_navigation');
+            if (pageNaigation) {
+                var htmls = `
+                <ul class="pagination">
+                        <li class="page-item">
+                            <span class="page-link" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </span>
+                        </li>
+                        <li class="page-item"><span class="page-link">1</span></li>
+                        <li class="page-item active"><span class="page-link">2</span></li>
+                        <li class="page-item"><span class="page-link">3</span></li>
+                        <li class="page-item"><span class="page-link">...</span></li>
+                        <li class="page-item">
+                            <span class="page-link" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </span>
+                        </li>
+                    </ul>
+                `;
+                pageNaigation.innerHTML = htmls;
+            }
+        }
+    )()
 })

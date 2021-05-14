@@ -939,7 +939,7 @@ input.checked {
     color: #000;
     letter-spacing: 1px;
     margin-left: 3px;
-    vertical-align: top;
+    vertical-align: text-top;
 }
 
 

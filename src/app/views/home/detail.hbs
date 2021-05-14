@@ -24,17 +24,18 @@
                     <div class="flexslider">
                         <ul class="slides">
                             {{#each phone.images}}
-                                <li data-thumb="/public/images/products/{{this.image}}">
-                                    <div class="thumb-image">
-                                        <img src="/public/images/products/{{this.image}}" data-imagezoom="true" class="img-fluid" alt=""> </div>
-                                </li>
+                            <li data-thumb="/public/images/products/{{this.image}}">
+                                <div class="thumb-image">
+                                    <img src="/public/images/products/{{this.image}}" data-imagezoom="true"
+                                        class="img-fluid" alt="">
+                                </div>
+                            </li>
                             {{/each}}
                         </ul>
                         <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-7 single-right-left simpleCart_shelfItem">
                 <h3 class="mb-3">Điện thoại {{phone.name}}</h3>
                 <p class="mb-3">
@@ -44,24 +45,22 @@
                 </p>
                 <div class="single-infoagile">
                     <ul>
-                        <li class="mb-3">   
-                            Thanh toán 
+                        <li class="mb-3">
+                            Thanh toán
                         </li>
                         <li class="mb-3">
                             Giao hàng nhanh.
-                        </li>
-                        <li class="mb-3">
-                            Ưu đãi tất cả ngân hàng Giảm giá đặc biệt 5%.
                         </li>
                     </ul>
                 </div>
                 <div class="product-single-w3l">
                     <p class="my-3">
                         <i class="far fa-hand-point-right mr-2"></i>
-                        <label>1 Năm</label> Bảo hành chính hãng</p>
+                        <label>1 Năm</label> Bảo hành chính hãng
+                    </p>
                     <ul>
                         <li class="mb-1">
-                           {{phone.RAM}} RAM | {{phone.MemoryIn}} ROM | {{phone.HDH}}
+                            {{phone.RAM}} RAM | {{phone.MemoryIn}} ROM | {{phone.HDH}}
                         </li>
                         <li class="mb-1">
                             {{phone.sreen}}
@@ -83,6 +82,7 @@
                         <i class="fas fa-retweet mr-3"></i>Net banking & Credit/ Debit/ ATM card
                     </p>
                 </div>
+                <div class="product-single-w3l"></div>
                 <div class="occasion-cart">
                     <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
                         <form action="#" method="post">
@@ -107,56 +107,364 @@
     </div>
 </div>
 <!-- //Single Page -->
-
 <div class="container">
     <div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4">
-        <h3 class="heading-tittle text-center font-italic">Sản phẩm tương tự</h3>
-        <div class="row">
-            {{#each phones}}
-                <div class="col-md-3 product-men mt-5">
-                    <div class="men-pro-item simpleCart_shelfItem">
-                        <div class="men-thumb-item text-center">
-                            <img src="/public/images/products/{{imageOne this.images}}" alt="cart image" width="100%">
-                            <div class="men-cart-pro">
-                                <div class="inner-men-cart-pro">
-                                    <a href="/{{this.categori}}/{{this.slug}}" class="link-product-add-cart">Xem thông tin</a>
+        <div class="col-lg-12">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"
+                        aria-controls="nav-home" aria-selected="true">Bài viết</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                        aria-controls="nav-profile" aria-selected="false">Bình luận</a>
+                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                        aria-controls="nav-contact" aria-selected="false">Đánh giá</a </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane p-3 border-right border-bottom border-left fade show active" id="nav-home"
+                    role="tabpanel" aria-labelledby="nav-home-tab">
+                    Bài viết
+                </div>
+                <div class="tab-pane p-3 border-right border-bottom border-left fade" id="nav-profile" role="tabpanel"
+                    aria-labelledby="nav-profile-tab">
+                    Bình luận
+                    {{!-- comment --}}
+                    {{> comment}}
+                    {{!-- // comment --}}
+                </div>
+                <div class="tab-pane p-3 border-right border-bottom border-left fade" id="nav-contact" role="tabpanel"
+                    aria-labelledby="nav-contact-tab">
+                    Đánh giá
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="product-sec1 px-sm-4 px-3 py-sm-5  py-3 mb-4">
+        <h3 class="heading-tittle text-center font-italic">Sản Phẩm Nổi Bật</h3>
+        <div id="phoneTop" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row m-1">
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="item-info-product text-center border-top mt-4">
-                            <h4 class="pt-1">
-                                <a href="/{{this.categori}}/{{this.slug}}">{{this.name}}</a>
-                            </h4>
-                            <div class="info-product-price my-2">
-                                <span class="item_price">{{convertToVND this.price}} <sup>đ</sup></span>
-                                <del>{{convertToVND this.price}}</del><sup>đ</sup>
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 col-12 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-                                <form action="#" method="post">
-                                    <fieldset>
-                                        <input type="hidden" name="cmd" value="_cart" />
-                                        <input type="hidden" name="add" value="{{this.slug}}" />
-                                        <input type="hidden" name="img" value="{{imageOne this.images}}" />
-                                        <input type="hidden" name="business" value="" />
-                                        <input type="hidden" name="item_name" value="{{this.name}}" />
-                                        <input type="hidden" name="amount" value="{{this.price}}" />
-                                        <input type="hidden" name="discount_amount" value="0" />
-                                        <input type="hidden" name="currency_code" value="VND" />
-                                        <input type="hidden" name="return" value=" " />
-                                        <input type="hidden" name="cancel_return" value=" " />
-                                        <input type="submit" name="submit" value="Thêm vào giỏ" class="button btn" />
-                                    </fieldset>
-                                </form>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 col-12 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            {{/each}}
+                <div class="carousel-item">
+                    <div class="row m-1">
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 col-12 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 col-12 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row m-1">
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 col-12 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 col-12 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
+                            <div class="men-pro-item simpleCart_shelfItem">
+                                <div class="men-thumb-item text-center">
+                                    <img src="/public/images/products/iphone-12-pro-max-512gb.jpg" alt="cart image"
+                                        width="100%">
+                                    <div class="men-cart-pro">
+                                        <div class="inner-men-cart-pro">
+                                            <a href="/dien_thoai/iphone_12_pro_max_512gb"
+                                                class="link-product-add-cart">Xem
+                                                thông
+                                                tin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-info-product text-center border-top mt-4">
+                                    <h4 class="pt-1">
+                                        <a href="/dien_thoai/iphone_12_pro_max_512gb">iPhone 12 Pro Max 512GB</a>
+                                    </h4>
+                                    <div class="info-product-price my-2">
+                                        <span class="item_price">42,690,000 <sup>đ</sup></span>
+                                        <del>42,690,000</del><sup>đ</sup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#phoneTop" role="button" data-slide="prev">
+                    <span aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#phoneTop" role="button" data-slide="next">
+                    <span aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>
-
-{{!-- comment --}}
-{{> comment}}
-{{!-- // comment --}}
-

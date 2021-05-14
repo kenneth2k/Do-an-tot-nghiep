@@ -41,6 +41,16 @@
 
 #wapper {
     display: none;
+    animation: wapperOpacity 2s ease-in-out;
+}
+
+@keyframes wapperOpacity {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 .date {
@@ -527,6 +537,10 @@ span.item_price {
 .carousel-control-next i {
     transform: scale(1.5);
     background-color: #333;
+    line-height: 3;
+    width: 20px;
+    position: absolute;
+    border-radius: 10px;
 }
 
 
@@ -534,4 +548,82 @@ span.item_price {
 
 .bd-right:not(:last-child) {
     border-right: 1px solid #dee2e6 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: snackbarfadein 0.5s, snackbarfadeout 0.5s 2.5s;
+    animation: snackbarfadein 0.5s, snackbarfadeout 0.5s 2.5s;
+}
+
+#snackbar.primary {
+    background-color: blue;
+}
+
+#snackbar.second {
+    background-color: red;
+}
+
+@-webkit-keyframes snackbarfadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes snackbarfadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes snackbarfadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+@keyframes snackbarfadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
 }
