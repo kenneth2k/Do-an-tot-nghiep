@@ -12,7 +12,7 @@ const db = require('./app/config/db');
 db.connect();
 
 const app = express();
-const port = 3300;
+const port = process.env.PORT || 3300;
 
 //Http logger
 // app.use(morgan('combined'));
