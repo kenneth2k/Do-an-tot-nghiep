@@ -180,7 +180,7 @@ $(document).ready(function(c) {
                 "Authorization": user_token.token
             },
             success: function(data) {
-                console.log(data);
+                // console.log(data);
             }
         });
     }

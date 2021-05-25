@@ -576,11 +576,11 @@ span.item_price {
     animation: snackbarfadein 0.5s, snackbarfadeout 0.5s 2.5s;
 }
 
-#snackbar.primary {
+#snackbar.info {
     background-color: blue;
 }
 
-#snackbar.second {
+#snackbar.error {
     background-color: red;
 }
 
