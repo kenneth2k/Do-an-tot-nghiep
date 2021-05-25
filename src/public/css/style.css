@@ -588,6 +588,13 @@ h3.tittle-w3l span {
     bottom: -17px !important;
 }
 
+#PPminicarts .minicarts-warning {
+    font-size: 15px;
+    padding-bottom: 10px;
+    padding-top: 5px;
+    color: red;
+}
+
 #PPminicarts {
     left: 44% !important;
 }
@@ -599,7 +606,7 @@ h3.tittle-w3l span {
 
 #PPminicarts .minicarts-footer {
     position: relative;
-    width: 80%;
+    width: 100%;
 }
 
 .men-pro-item {
@@ -3285,6 +3292,24 @@ div#testimonials h4.m-title {
     .occasion-cart .snipcart-details {
         width: 45%;
     }
+}
+
+.disabled,
+.disabled:hover {
+    background-color: #E5E5E5 !important;
+    color: #A9A9A9;
+    cursor: default;
+}
+
+.disabled::before,
+.disabled::after {
+    background: #A9A9A9 !important;
+}
+
+#sumTotal {
+    padding-right: 10px;
+    font-weight: bold;
+    padding-left: 10px;
 }
 
 

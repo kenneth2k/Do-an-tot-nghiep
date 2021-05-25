@@ -15,7 +15,6 @@ function setSaveProd(data) {
 function setListProd(prod, index) {
     var x = prod.amount * prod.quantity;
     x = x.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-    console.log("prod", prod);
     var itemCart = `
     <tr>
         <td class="invert">${index + 1}</td>
@@ -28,11 +27,11 @@ function setListProd(prod, index) {
             <div class="quantity">
                 <div class="quantity-select">
                     <input id="idPro" type="hidden" value="${prod.add}">
-                    <div class="entry value-minus">&nbsp;</div>
+                    <div class="entry value-minus ${(prod.quantity === 1) ? 'disabled' : ''}">&nbsp;</div>
                     <div class="entry value">
                         <span>${prod.quantity}</span>
                     </div>
-                    <div class="entry value-plus active">&nbsp;</div>
+                    <div class="entry value-plus ${(prod.quantity === 5) ? 'disabled' : ''}">&nbsp;</div>
                 </div>
             </div>
         </td>
@@ -91,12 +90,35 @@ $(document).ready(function(c) {
         if (!listProd) return;
         let cartItem = listProd.value.items;
         if (window.location.pathname == "/cart" && cartItem.length < 1) {
-            window.location.href = "/";
+            $('#clear-cart-all')[0].style.display = 'none';
+            $('#clear-cart-emty')[0].style.display = "block";
         }
         if (window.location.pathname == "/cart") {
             $('#last-cart-prod')[0].style.display = "none";
         }
     };
+
+    function setInputFilter(textbox, inputFilter) {
+        if (textbox) {
+            ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
+                textbox.addEventListener(event, function() {
+                    if (inputFilter(this.value)) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    } else {
+                        this.value = "";
+                    }
+                });
+            });
+        }
+    }
+    setInputFilter(document.getElementById("input[class='minicarts-quantity']"), function(value) {
+        return /^\d*$/.test(value) && (value === "" || parseInt(value) <= 5);
+    });
     //tăng
     $('.value-plus').on('click', function() {
         let listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
@@ -107,21 +129,28 @@ $(document).ready(function(c) {
             newVal = parseInt(divUpd.text(), 10) + 1,
             divPrice = $(this).parents('tr').find('#money-prod'),
             divSumTotal = $('#sumTotal');
-        cartItem.forEach(function(cart) {
-            if (cart.add == id) {
-                cart.quantity = newVal;
-                total = cart.amount * cart.quantity;
-                divPrice.text(total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
-                return;
-            }
-        });
-        listProd.value.items = cartItem;
-        setSaveProd(listProd.value);
-        divUpd.text(newVal);
-        divSumTotal.text(sumTotal().toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
+        if (newVal <= 5) {
+            $('.value-minus').removeClass('disabled');
+            cartItem.forEach(function(cart) {
+                if (cart.add == id) {
+                    cart.quantity = newVal;
+                    total = cart.amount * cart.quantity;
+                    divPrice.text(total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
+                    return;
+                }
+            });
+            listProd.value.items = cartItem;
+            setSaveProd(listProd.value);
+            divUpd.text(newVal);
+            divSumTotal.text(sumTotal().toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
+        }
+        if (newVal === 5) {
+            $(this)[0].classList.add('disabled');
+        }
     });
     //giảm
     $('.value-minus').on('click', function() {
+        $(this)[0].style.disibles;
         let listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
         let cartItem = listProd.value.items;
         let id = $(this).parent().find('#idPro').val();
@@ -131,6 +160,7 @@ $(document).ready(function(c) {
             divPrice = $(this).parents('tr').find('#money-prod'),
             divSumTotal = $('#sumTotal');
         if (newVal >= 1) {
+            $('.value-plus').removeClass('disabled');
             cartItem.forEach(function(cart) {
                 if (cart.add == id) {
                     cart.quantity = newVal;
@@ -144,6 +174,9 @@ $(document).ready(function(c) {
             divUpd.text(newVal);
             divSumTotal.text(sumTotal().toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
         };
+        if (newVal === 1) {
+            $(this)[0].classList.add('disabled');
+        }
     });
     //xóa cart prod
     $(document).ready(function(c) {
@@ -169,9 +202,6 @@ $(document).ready(function(c) {
     });
 });
 $(document).ready(function(c) {
-
-
-
     var listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
     var CartItem;
     if (!listProd) return;
