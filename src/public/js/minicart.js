@@ -2621,7 +2621,7 @@
                 let listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
                 let cartItem = listProd.value.items;
                 for (let i = 0; i < cartItem.length; i++) {
-                    if (cartItem[i].add === data.add) {
+                    if (cartItem[i].item_name === data.item_name) {
                         if (cartItem[i].quantity >= 5) {
                             myFunction("Sản phẩm vược quá giới hạn!", "error")
                             return {};

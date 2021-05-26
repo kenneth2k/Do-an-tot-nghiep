@@ -83,15 +83,36 @@
                     </p>
                 </div>
                 <div class="product-single-w3l"></div>
+                <div class="product-color_img mt-3 mb-3" >
+                    <div style="display: flex;">
+                    <div style="padding-top: 10px;padding-right: 10px;font-weight: bold;">Chọn màu:</div>
+                        <div class="pro_img">
+                            <input hidden type="radio" id="a123" name="color" value="123" checked>
+                            <label for="a123"><img src="/public/images/a.jpg" alt=""></label>
+                            <span>Xanh lá</span>
+                        </div>
+                        <div class="pro_img">
+                            <input hidden type="radio" id="a223" name="color" value="456">
+                            <label for="a223"><img src="/public/images/a3.jpg" alt=""></label>
+                            <span>Xanh Dương</span>
+                        </div>
+                        <div class="pro_img">
+                            <input hidden type="radio" id="a233" name="color" value="789">
+                            <label for="a233"><img src="/public/images/a3.jpg" alt=""></label>
+                            <span>Đỏ</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="occasion-cart">
                     <div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
                         <form action="#" method="post">
                             <fieldset>
                                 <input type="hidden" name="cmd" value="_cart" />
                                 <input type="hidden" name="add" value="{{phone.slug}}" />
+                                <input type="hidden" name="addColor" value="123" />
                                 <input type="hidden" name="img" value="{{imageOne phone.images}}" />
                                 <input type="hidden" name="business" value="" />
-                                <input type="hidden" name="item_name" value="{{phone.name}}" />
+                                <input type="hidden" name="item_name" value="{{phone.name}} - Xanh lá" />
                                 <input type="hidden" name="amount" value="{{phone.price}}" />
                                 <input type="hidden" name="discount_amount" value="0" />
                                 <input type="hidden" name="currency_code" value="VND" />
