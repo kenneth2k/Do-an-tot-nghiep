@@ -72,7 +72,6 @@ $(document).ready(function(c) {
     var listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
     var CartItem;
     if (!listProd) return;
-    console.log("listProd", listProd);
     CartItem = listProd.value.items;
     var table = $('#cart-list-prod');
 
