@@ -183,5 +183,59 @@ $(document).ready(function(c) {
                 // console.log(data);
             }
         });
-    }
+    };
+    $(function() {
+        // Multiple images preview in browser
+        var imagesPreview = function(input, placeToInsertImagePreview) {
+            if (input.files) {
+                var filesAmount = (input.files.length > 3) ? 3 : input.files.length;
+                if (input.files.length > 3) {
+                    myFunction("Chỉ cho phép tối đa 3 ảnh.", "warning")
+                }
+                $(placeToInsertImagePreview).text("");
+                for (i = 0; i < filesAmount; i++) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+                    }
+
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+
+        };
+
+        $('#content-images').on('change', function() {
+            imagesPreview(this, '.textarea-bottom .gallery');
+        });
+    });
+    $(function() {
+        var raiting = $('#noidung-danhgia');
+        if (raiting) {
+            var star = $(raiting).find('.star');
+            star.click(function() {
+                var star_list = $(star).find('span');
+                var onStar = $(this).find("input").val();
+                for (var i = 0; i < star_list.length; i++) {
+                    if (i < onStar) {
+                        $(star_list[i]).css("color", "orange");
+                    } else {
+                        $(star_list[i]).css("color", "#dee2e6");
+                    }
+                }
+            });
+        }
+        var viewMore = $(".btn-view-more");
+        if (viewMore) {
+            var btn = $(viewMore).find("button");
+            btn.click(function() {
+                var css = $(".view-content").css("display");
+                if (css !== "block") {
+                    $(".view-content").css("display", "block");
+                } else {
+                    $(".view-content").css("display", "-webkit-box");
+                }
+            })
+        }
+    });
 });
