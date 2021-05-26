@@ -26,7 +26,7 @@ function setListProd(prod, index) {
         <td class="invert">
             <div class="quantity">
                 <div class="quantity-select">
-                    <input id="idPro" type="hidden" value="${prod.add}">
+                    <input id="idPro" type="hidden" value="${prod.item_name}">
                     <div class="entry value-minus ${(prod.quantity === 1) ? 'disabled' : ''}">&nbsp;</div>
                     <div class="entry value">
                         <span>${prod.quantity}</span>
@@ -72,6 +72,7 @@ $(document).ready(function(c) {
     var listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
     var CartItem;
     if (!listProd) return;
+    console.log("listProd", listProd);
     CartItem = listProd.value.items;
     var table = $('#cart-list-prod');
 
@@ -130,9 +131,9 @@ $(document).ready(function(c) {
             divPrice = $(this).parents('tr').find('#money-prod'),
             divSumTotal = $('#sumTotal');
         if (newVal <= 5) {
-            $('.value-minus').removeClass('disabled');
+            $(this).parent(".quantity-select").find(".value-minus").removeClass('disabled');
             cartItem.forEach(function(cart) {
-                if (cart.add == id) {
+                if (cart.item_name == id) {
                     cart.quantity = newVal;
                     total = cart.amount * cart.quantity;
                     divPrice.text(total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
@@ -160,9 +161,9 @@ $(document).ready(function(c) {
             divPrice = $(this).parents('tr').find('#money-prod'),
             divSumTotal = $('#sumTotal');
         if (newVal >= 1) {
-            $('.value-plus').removeClass('disabled');
+            $(this).parent(".quantity-select").find(".value-plus").removeClass('disabled');
             cartItem.forEach(function(cart) {
-                if (cart.add == id) {
+                if (cart.item_name == id) {
                     cart.quantity = newVal;
                     total = cart.amount * cart.quantity;
                     divPrice.text(total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
@@ -189,7 +190,7 @@ $(document).ready(function(c) {
             let listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
             let cartItem = listProd.value.items;
             cartItem.forEach(function(cart, index) {
-                if (cart.add == id) {
+                if (cart.item_name == id) {
                     cartItem.splice(index, 1);
                     return;
                 }
@@ -238,3 +239,27 @@ $(document).ready(function(c) {
         return itemCart;
     }
 });
+$(document).ready(function() {;
+    (function() {
+        var imgColor = $(".pro_img img");
+        if (imgColor) {
+            imgColor.click(function(e) {
+                let input = $(this).parent().parent().find("input");
+                let color = $(this).parent().parent().find("span");
+                let addColor = $("form fieldset input[name='addColor']");
+                let textColor = $("form fieldset input[name='text_color']");
+                let itemName = $("form fieldset input[name='item_name']");
+
+                // let add = $("form fieldset input[name='add']");
+                // let vt = add.val().indexOf("-");
+                // let id = add.val().substr(0, vt);
+                // add.val(`${id}-${input.val()}`);
+
+
+                itemName.val(`${itemName.val().substr(0, itemName.val().indexOf("-"))}- ${color.text()}`);
+                addColor.val(input.val());
+                textColor.val(color.text());
+            });
+        }
+    })()
+})
