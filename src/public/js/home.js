@@ -58,6 +58,7 @@ $(document).ready(function() {
     }
     if (menu) {
         var href = window.location.pathname == '/' ? '/' : (window.location.pathname).replace('/', '');
+        return;
         $.ajax({
             type: "GET",
             url: '/api/menu',
