@@ -2,6 +2,7 @@ $(document).ready(function(c) {
     function checkLogin() {
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
         if (user_token) {
+            return;
             $.ajax({
                 type: "POST",
                 url: '/api/checkLogin',
@@ -101,7 +102,7 @@ $(document).ready(function() {
         const inputDate = document.getElementById("date");
         const inputCheckedMale = document.getElementById("male");
         const inputCheckedFemale = document.getElementById("female");
-
+        return;
         $.ajax({
             type: "POST",
             url: '/api/getProfile',
@@ -173,6 +174,7 @@ $(document).ready(function(c) {
             window.location.href = "/";
         }
         if (!user_token) return;
+        return;
         $.ajax({
             type: "POST",
             url: '/api/getProfile',
