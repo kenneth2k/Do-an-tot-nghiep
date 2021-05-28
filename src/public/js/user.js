@@ -41,13 +41,16 @@ $(document).ready(function(c) {
             url: '/api/login',
             data: $(this).serialize(),
             success: function(data) {
-                if (!data.message) {
-                    loginError.textContent = "Thông tin đăng nhập không đúng!";
-                    return;
+                console.log("data", data)
+                if (data.login) {
+                    window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
+                    ShowToastMessage(data.message, "success");
+                    setTimeout(function() {
+                        window.location.href = "/";
+                    }, 1500);
+                } else {
+                    return loginError.textContent = data.message;
                 }
-                window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
-                //console.log(data)
-                window.location.href = "/";
             }
         });
     });
@@ -192,7 +195,7 @@ $(document).ready(function(c) {
             if (input.files) {
                 var filesAmount = (input.files.length > 3) ? 3 : input.files.length;
                 if (input.files.length > 3) {
-                    myFunction("Chỉ cho phép tối đa 3 ảnh.", "warning")
+                    ShowToastMessage("Chỉ cho phép tối đa 3 ảnh.", "warning")
                 }
                 $(placeToInsertImagePreview).text("");
                 for (i = 0; i < filesAmount; i++) {
