@@ -1,7 +1,9 @@
-const homeRouter = require('./home')
-const apiRouter = require('./api')
+const homeRouter = require('./home');
+const adminRouter = require('./admin');
+const apiRouter = require('./api');
 
-function route(app){
+function route(app) {
+    app.use('/admin', adminRouter);
     app.use('/api', apiRouter);
     app.use('/', homeRouter);
 }

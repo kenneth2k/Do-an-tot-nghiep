@@ -41,18 +41,88 @@ $(document).ready(function(c) {
             url: '/api/login',
             data: $(this).serialize(),
             success: function(data) {
-                console.log("data", data)
                 if (data.login) {
-                    window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
-                    ShowToastMessage(data.message, "success");
-                    setTimeout(function() {
-                        window.location.href = "/";
-                    }, 1500);
+                    if (data.type === 'user') {
+                        window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
+                        ShowToastMessage(data.message, "success");
+                        setTimeout(function() {
+                            window.location.href = "/";
+                        }, 1500);
+                    } else {
+                        window.sessionStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
+                        ShowToastMessage(data.message, "success");
+                        setTimeout(function() {
+                            window.location.href = "/admin";
+                        }, 1500);
+                    }
                 } else {
                     return loginError.textContent = data.message;
                 }
             }
         });
+    });
+
+    function validateEmail(email) {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+    $("#register-form").submit(function(e) {
+        e.preventDefault();
+        $(this).find("input").removeClass('is-invalid');
+        $(this).find("input").removeClass('is-valid');
+        $(this).find("input").addClass('is-valid');
+        var count = 0;
+        var name = $(this).find("input[name='fullname']");
+        var email = $(this).find("input[name='email']");
+        var address = $(this).find("input[name='address']");
+        var password = $(this).find("input[name='password']");
+        var confirmPassword = $(this).find("input[name='confirmPassword']");
+        var acctive = $(this).find("input[name='acctive']");
+        if (name.val().length < 3) {
+            $(name).addClass('is-invalid');
+            count++;
+        }
+        if (!validateEmail(email.val())) {
+            $(email).addClass('is-invalid');
+            count++;
+        }
+        if (address.val().length < 10) {
+            $(address).addClass('is-invalid');
+            count++;
+        }
+        if (password.val().length < 8) {
+            $(password).addClass('is-invalid');
+            count++;
+        }
+        if (password.val() != confirmPassword.val() || (password.val() == confirmPassword.val() && password.val().length < 8)) {
+            $(confirmPassword).addClass('is-invalid');
+            count++;
+        }
+        if (!acctive[0].checked) {
+            $(acctive).addClass('is-invalid');
+            count++;
+        }
+        if (count === 0) {
+            $.ajax({
+                type: "POST",
+                url: '/api/register',
+                data: $(this).serialize(),
+                success: function(data) {
+                    if (data.register) {
+                        if (data.type === 'user') {
+                            window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
+                            ShowToastMessage(data.message, "success");
+                            setTimeout(function() {
+                                window.location.href = "/";
+                            }, 1500);
+                        }
+                    } else {
+                        $(email).addClass('is-invalid');
+                        $(email).parent().find('.invalid-feedback').text(data.message);
+                    }
+                }
+            });
+        }
     });
     // get token
     getToken();
