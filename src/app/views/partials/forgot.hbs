@@ -1,0 +1,42 @@
+<!-- modals -->
+<!-- log in -->
+<div class="modal fade" id="forgotpassword" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Quên mật khẩu<h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" id="forgot-form">
+                    <div class="text-sm-center text-danger"></div>
+                    <div class="form-group">
+                        <label class="col-form-label">Vui lòng nhập email</label>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Nhập email..." name="email"
+                                required="">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary">Lấy OTP</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Vui lòng nhập mã OTP</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Nhập mã OTP..." name="otp"
+                                required="">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary">Kiểm tra</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right-w3l">
+                        <input type="submit" class="form-control" value="Lấy lại mật khẩu" disabled="true">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

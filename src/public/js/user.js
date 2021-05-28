@@ -238,4 +238,13 @@ $(document).ready(function(c) {
             })
         }
     });
+    (function() {
+        var modal = $('#quen-mat-khau');
+        if (modal) {
+            modal.click(function() {
+                var parent = $("#exampleModal").find('button[class="close"]');
+                parent.click();
+            })
+        }
+    })()
 });
