@@ -9,31 +9,40 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" method="post">
+                <form action="#" method="post" id="register-form">
                     <div class="form-group">
                         <label class="col-form-label">Tên của bạn</label>
-                        <input type="text" class="form-control" placeholder="VD: Nguyễn Văn A" name="Name" required="">
+                        <input type="text" class="form-control" placeholder="VD: Nguyễn Văn A" name="fullname"> 
+                        <div class="invalid-feedback">Tên ít nhất 3 kí tự</div>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Email</label>
-                        <input type="email" class="form-control" placeholder="VD: abc@email.com" name="Email" required="">
+                        <input type="text" class="form-control" placeholder="VD: abc@email.com" name="email">
+                        <div class="invalid-feedback">Email không đúng định dạng</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Địa chỉ</label>
+                        <input type="text" class="form-control" placeholder="số nhà, phường/xã, thị trấn..." name="address">
+                        <div class="invalid-feedback">Địa chỉ ít nhất 10 kí tự</div>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Mật khẩu</label>
-                        <input type="password" class="form-control" placeholder=" " name="Password" id="password1" required="">
+                        <input type="password" class="form-control" placeholder="" name="password">
+                        <div class="invalid-feedback">Mật khẩu ít nhất 8 kí tự</div>
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label">Nhập lại mật khẩu</label>
-                        <input type="password" class="form-control" placeholder=" " name="Confirm Password" id="password2" required="">
+                        <label class="col-form-label">Nhập lại mật khẩu</label> 
+                        <input type="password" class="form-control" placeholder="" name="confirmPassword">
+                        <div class="invalid-feedback">Mật khẩu không khớp</div>
                     </div>
                     <div class="sub-w3l">
                         <div class="custom-control custom-checkbox mr-sm-2">
-                            <input type="checkbox" class="custom-control-input" id="customControlAutosizing2">
-                            <label class="custom-control-label" for="customControlAutosizing2">Tôi đồng ý với điều khoản và dịch vụ</label>
+                            <input checked="checked" type="checkbox" id="checked" class="custom-control-input" name="acctive">
+                            <label class="custom-control-label" for="checked">Tôi đồng ý với <a href="#">điều khoản và dịch vụ</a></label>
                         </div>
                     </div>
                     <div class="right-w3l">
-                        <input type="submit" class="form-control" value="Register">
+                        <input type="submit" class="form-control">
                     </div>
                     
                 </form>

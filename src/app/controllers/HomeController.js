@@ -63,7 +63,7 @@ class HomeController {
     // }
 
     show404(req, res, next) {
-        res.render('home/notfound');
+        res.render('home/notfound', { layout: false });
     }
 }
 module.exports = new HomeController;
