@@ -12,6 +12,7 @@ const User = new Schema({
     gender: { type: String },
     dateOfBirth: { type: Date },
     address: { type: String },
+    otp: { type: String, default: null },
     decentralization: { type: String, default: 1 },
     token: { type: String },
 }, {

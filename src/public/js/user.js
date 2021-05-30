@@ -124,6 +124,53 @@ $(document).ready(function(c) {
             });
         }
     });
+    $('#add-otp').click(function(e) {
+        var email = $("#forgot-form").find("input[name='email']");
+        $(email).removeClass('is-invalid');
+        $(email).removeClass('is-valid');
+        if (!validateEmail(email.val())) {
+            $(email).addClass('is-invalid');
+            $(email).parent().find('.invalid-feedback').text('Email không đúng định dạng');
+        } else {
+            $(email).addClass('is-valid');
+            $.ajax({
+                type: "POST",
+                url: '/api/checkEmail',
+                data: { email: email.val() },
+                success: function(data) {
+                    $('#forgot-form').find('.text-sm-center.text-danger').text(data.message);
+                }
+            });
+        }
+    });
+    $("#forgot-form").submit(function(e) {
+        e.preventDefault();
+        var email = $("#forgot-form").find("input[name='email']");
+        var otp = $("#forgot-form").find("input[name='otp']");
+        $(this).find("input").removeClass('is-invalid');
+        $(this).find("input").removeClass('is-valid');
+        let count = 0;
+        if (!validateEmail(email.val())) {
+            $(email).addClass('is-invalid');
+            $(email).parent().find('.invalid-feedback').text('Email không đúng định dạng');
+            count++;
+        }
+        if (otp.val().length == 0) {
+            $(otp).addClass('is-invalid');
+            $(otp).parent().find('.invalid-feedback').text('Vui lòng nhập otp');
+            count++;
+        }
+        if (count == 0) {
+            $.ajax({
+                type: "POST",
+                url: '/api/sendNewPassword',
+                data: { email: email.val(), otp: otp.val() },
+                success: function(data) {
+                    $('#forgot-form').find('.text-sm-center.text-danger').text(data.message);
+                }
+            });
+        }
+    });
     // get token
     getToken();
 

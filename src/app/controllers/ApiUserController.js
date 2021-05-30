@@ -2,7 +2,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
+const { sendCodeMail, sendWelcomeMail, sendNewPasswordMail } = require('../../util/email/email');
 const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
+const { randomToBetween, randomCharacter } = require('../../helper/random');
 
 class ApiUserController {
     // // [POST] /api/checkLogin
@@ -82,6 +84,7 @@ class ApiUserController {
                             return user.save();
                         })
                         .then((user) => {
+                            sendWelcomeMail(user.email, user.fullname);
                             return res.send({
                                 _slug: user.slug,
                                 type: 'user',
@@ -95,6 +98,73 @@ class ApiUserController {
                 }
             })
             .catch(next);
+    };
+    // [POST] /api/checkEmail
+    checkEmail(req, res, next) {
+        User.findOne({ email: req.body.email })
+            .then(user => {
+                if (user !== null) {
+                    user.otp = randomToBetween(process.env.RANDOM_MIN, process.env.RANDOM_MAX);
+                    User.updateOne({ _id: user._id }, user)
+                        .then(() => {
+                            try {
+                                sendCodeMail(user.email, user.otp);
+                                return res.send({
+                                    checkEmail: true,
+                                    message: "Đã gửi mã OTP, vui lòng kiểm tra email!"
+                                });
+                            } catch (e) {
+                                console.log(e)
+                            }
+                        })
+                } else {
+                    return res.send({
+                        checkEmail: false,
+                        message: "Email chưa đăng ký!"
+                    });
+                }
+            })
+            .catch(next)
+    };
+    // [POST] /api/sendNewPassword
+    sendNewPassword(req, res, next) {
+        User.findOne({ email: req.body.email })
+            .then(user => {
+                if (user !== null) {
+                    if (user.otp == null || user.otp == "null") {
+                        return res.send({
+                            newPassword: false,
+                            message: "Vui lòng lấy mã OTP!"
+                        });
+                    } else if (user.otp != req.body.otp) {
+                        return res.send({
+                            newPassword: false,
+                            message: "Mã OTP không chính xác!"
+                        });
+                    }
+                    let newPassword = randomCharacter(10);
+                    user.password = bcrypt.hashSync(newPassword, 8);
+                    user.otp = null;
+                    User.updateOne({ _id: user._id }, user)
+                        .then(() => {
+                            try {
+                                sendNewPasswordMail(user.email, newPassword);
+                                return res.send({
+                                    newPassword: true,
+                                    message: "Đã gửi mật khẩu mới, vui lòng kiểm tra email!"
+                                });
+                            } catch (e) {
+                                console.log(e)
+                            }
+                        })
+                } else {
+                    return res.send({
+                        newPassword: false,
+                        message: "Email chưa đăng ký!"
+                    });
+                }
+            })
+            .catch(next)
     };
     // // [POST] /api/getProfile/changePassword
     // changePassword(req, res, next){

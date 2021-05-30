@@ -15,25 +15,21 @@
                     <div class="form-group">
                         <label class="col-form-label">Vui lòng nhập email</label>
                         <div class="input-group">
-                            <input type="email" class="form-control" placeholder="Nhập email..." name="email"
-                                required="">
+                            <input type="email" class="form-control" placeholder="Nhập email..."
+                                name="email">
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-primary">Lấy OTP</button>
+                                <button id="add-otp" type="button" class="btn btn-primary">Lấy OTP</button>
                             </div>
+                            <div class="invalid-feedback"></div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label">Vui lòng nhập mã OTP</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Nhập mã OTP..." name="otp"
-                                required="">
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary">Kiểm tra</button>
-                            </div>
-                        </div>
+                        <input type="text" class="form-control" placeholder="Nhập mã OTP..." name="otp">
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="right-w3l">
-                        <input type="submit" class="form-control" value="Lấy lại mật khẩu" disabled="true">
+                        <input type="submit" class="form-control" value="Lấy lại mật khẩu">
                     </div>
                 </form>
             </div>

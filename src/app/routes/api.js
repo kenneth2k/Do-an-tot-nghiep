@@ -6,6 +6,8 @@ const apiHomeController = require('../controllers/ApiHomeController');
 
 router.post('/login', ApiUserController.login);
 router.post('/register', ApiUserController.register);
+router.post('/checkEmail', ApiUserController.checkEmail);
+router.post('/sendNewPassword', ApiUserController.sendNewPassword);
 // router.post('/checkLogin', ApiUserController.checkLogin);
 // router.post('/getProfile', ApiUserController.getProfile);
 // router.put('/getProfile/changePassword', ApiUserController.changePassword);
