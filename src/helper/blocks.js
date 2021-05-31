@@ -194,5 +194,21 @@ module.exports = {
                 <button type="button" class="btn btn-primary">Xem thêm</button>
             </div>
         ` : 'Không có nội dung!';
+    },
+    starRaitings: (raitings) => {
+        let xhtml = ``;
+        let sum = 0;
+        for (let i = 0; i < raitings.length; i++) {
+            sum += raitings[i].star;
+        };
+        let avg = parseFloat((sum / raitings.length) + '').toFixed(0);
+        for (let i = 0; i < 5; i++) {
+            if (i < avg) {
+                xhtml += `<span class="fa fa-star checked"></span>`;
+            } else {
+                xhtml += `<span class="fa fa-star"></span>`;
+            }
+        }
+        return xhtml;
     }
 }
