@@ -5,7 +5,8 @@ const handlebars = require('express-handlebars');
 const route = require('./app/routes');
 const db = require('./app/config/db');
 const dotenv = require('dotenv');
-
+const blocks = require('./helper/blocks');
+// const morgan = require('morgan');
 // Connect .env
 dotenv.config();
 // Connect Database
@@ -30,53 +31,11 @@ app.use(express.json());
 app.use(methodOverride('_method'));
 
 //view engine
-app.engine('hbs', handlebars({
+const helper = {
     extname: '.hbs',
-    helpers: {
-        imageOne: (images) => {
-            for (let i = 0; i < images.length; i++) {
-                return images[i].image;
-            }
-        },
-        convertToVND: (price) => {
-            const numberFormat = new Intl.NumberFormat('vi-VN', {
-                style: 'currency',
-                currency: 'VND',
-            });
-            var priceToString = numberFormat.format(price) + '';
-            return priceToString.slice(1, priceToString.length);
-        },
-        genderChecked: (gender) => {
-            if (gender == 'Nam') {
-                return `
-                    <label class="gender-checked">
-                        <input type="radio" name="gender" value="Nam" id="male" checked>
-                        <span class="label">Nam</span>
-                    </label>
-                    <label class="gender-checked">
-                        <input type="radio" name="gender" value="Nữ" id="female">
-                        <span class="label">Nữ</span>
-                    </label>`;
-            }
-            return `
-                    <label class="gender-checked">
-                        <input type="radio" name="gender" value="Nam" id="male">
-                        <span class="label">Nam</span>
-                    </label>
-                    <label class="gender-checked">
-                        <input type="radio" name="gender" value="Nữ" id="female" checked>
-                        <span class="label">Nữ</span>
-                    </label>`;
-        },
-        dateToString: (date) => {
-            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-        },
-        renderAddress: () => {
-
-        }
-
-    }
-}));
+    helpers: blocks
+}
+app.engine('hbs', handlebars(helper));
 app.set("view engine", 'hbs');
 app.set("views", path.join(__dirname, 'app/views'));
 

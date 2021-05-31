@@ -1,12 +1,33 @@
 const Product = require('../models/Product');
 const User = require('../models/User');
 const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
-
+const { randomToBetween } = require('../../helper/random');
 class HomeController {
     // [GET] /
     index(req, res, next) {
-        res.render('home/index');
-
+        // Product.delete({
+        //     _id: '60b4a850f120fc15a67df174'
+        // }).then((err, result) => {
+        //     console.log("products result", result);
+        // })
+        var count = 0;
+        Product.find({})
+            .then(products => {
+                count = products.length;
+            });
+        Promise.all([
+                Product.find({}).limit(8).skip(randomToBetween(0, ((count > 20) ? (count - 10) : 1))),
+                Product.find({
+                    hot: true
+                }).limit(12).skip(0)
+            ])
+            .then(([products, productsHot]) => {
+                res.render('home/index', {
+                    products: multipleMongooseToObject(products),
+                    productsHot: multipleMongooseToObject(productsHot),
+                });
+            })
+            .catch(next)
     }
 
     // // [GET] /:categori/:slug
