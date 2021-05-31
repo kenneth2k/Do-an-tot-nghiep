@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const User = require('../models/User');
+const Raiting = require('../models/Raiting');
 const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
 const { randomToBetween } = require('../../helper/random');
 class HomeController {
@@ -39,13 +40,24 @@ class HomeController {
                 }),
                 Product.find({
                     categori: req.params.categori
-                }).limit(12).skip(0)
+                }).limit(12).skip(0),
+                Raiting.aggregate([{
+                        $lookup: {
+                            from: 'users',
+                            localField: 'userSlug',
+                            foreignField: 'slug',
+                            as: 'userdetails'
+                        }
+                    },
+                    { $match: { proSlug: req.params.slug } }
+                ])
             ])
-            .then(([phone, phones]) => {
+            .then(([phone, phones, raitings]) => {
                 if (phone) {
                     res.render('home/detail', {
                         phone: singleMongooseToObject(phone),
                         productsHot: multipleMongooseToObject(phones),
+                        raitings: raitings,
                     });
                 } else {
                     res.redirect('/');

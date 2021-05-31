@@ -48,7 +48,7 @@ module.exports = {
             <div class="col-lg-3 col-md-6 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
                 <div class="men-pro-item simpleCart_shelfItem">
                     <div class="men-thumb-item text-center">
-                        <img src="/public/images/products/${product.colors[0].bigImg}" alt="*.jpg"
+                        <img src="${process.env.IMAGES_PRODUCT}${product.colors[0].bigImg}" alt="*.jpg"
                             width="100%">
                         <div class="men-cart-pro">
                             <div class="inner-men-cart-pro">
@@ -94,9 +94,9 @@ module.exports = {
         let xhtml = ``;
         let xhtmlContent = (img) => {
             return `
-                <li data-thumb="/public/images/products/${img}">
+                <li data-thumb="${process.env.IMAGES_PRODUCT}${img}">
                     <div class="thumb-image">
-                        <img src="/public/images/products/${img}" data-imagezoom="true"
+                        <img src="${process.env.IMAGES_PRODUCT}${img}" data-imagezoom="true"
                             class="img-fluid" alt="">
                     </div>
                 </li>
@@ -119,4 +119,80 @@ module.exports = {
     nameImageOne: (colors) => {
         return colors[0].name;
     },
+    commentProduct: (raitings) => {
+        let xhtml = ``;
+        let starContent = (number) => {
+            let xhtml = ``;
+            for (let i = 0; i < 5; i++) {
+                if (i < number) {
+                    xhtml += `<span class="fa fa-star checked"></span>`;
+                } else {
+                    xhtml += `<span class="fa fa-star"></span>`;
+                }
+            }
+            return xhtml;
+        }
+        let imagesContent = (images) => {
+            if (images.length < 1) return ``;
+            let xhtml = ``;
+            for (let i = 0; i < images.length; i++) {
+                xhtml += `<img src="${process.env.IMAGES_COMMENT}${images[i]}" width="100" height="100" alt="">`;
+            }
+            return xhtml;
+        }
+        let commentContent = (coment) => {
+            return `
+            <div class="comment">
+                <div class="comment-item">
+                    <div class="item-top">
+                        <p class="comment-item__name">${coment.userdetails[0].fullname}</p>
+                    </div>
+                    <div class="item-rate">
+                        ${starContent(coment.star)}
+                    </div>
+                    <div class="comment-content">
+                        ${coment.content}
+                    </div>
+                    <div class="comment-content">
+                        ${imagesContent(coment.images)}
+                    </div>
+                    <hr style="border:1px solid #f1f1f1">
+                </div>
+            </div>
+        `;
+        }
+        for (let i = 0; i < raitings.length; i++) {
+            xhtml += commentContent(raitings[i]);
+        }
+        return xhtml;
+    },
+    lenghtRaitings: (raitings) => {
+        return raitings.length;
+    },
+    avgRaitings: (raitings) => {
+        let sum = 0;
+        for (let i = 0; i < raitings.length; i++) {
+            sum += raitings[i].star;
+        }
+        return parseFloat((sum / raitings.length) + '').toFixed(1);
+    },
+    percentRaitings: (raitings, number) => {
+        let sum = 0;
+        for (let i = 0; i < raitings.length; i++) {
+            if (raitings[i].star == number) {
+                sum += 1;
+            }
+        }
+        return parseFloat(((sum / raitings.length) * 100) + '').toFixed(0);
+    },
+    checkContentProduct: (content) => {
+        return content ? `
+            <div class="view-content">
+                ${content}
+            </div>
+            <div class="btn-view-more">
+                <button type="button" class="btn btn-primary">Xem thêm</button>
+            </div>
+        ` : 'Không có nội dung!';
+    }
 }
