@@ -24,7 +24,7 @@ const Product = new Schema({
         _id: { type: String },
     }],
     colors: [{
-        _id: { type: String },
+        _id: { type: String, default: Date.now() },
         name: { type: String },
         quantity: { type: Number, default: 0 },
         bigImg: { type: String, default: null },

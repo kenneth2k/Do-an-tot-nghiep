@@ -853,3 +853,8 @@ span.item_price {
     -webkit-box-orient: vertical;
     display: -webkit-box;
 }
+
+.text-inline-block {
+    display: inline-block;
+    width: 125px;
+}

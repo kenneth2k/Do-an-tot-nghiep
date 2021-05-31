@@ -30,29 +30,34 @@ class HomeController {
             .catch(next)
     }
 
-    // // [GET] /:categori/:slug
-    // show(req, res, next) {
-    //     Promise.all([Phone.findOne({
-    //             slug: req.params.slug,
-    //             categori: req.params.categori
-    //         }), Phone.find({})])
-    //         .then(([phone, phones]) => {
-    //             if (phone) {
-    //                 res.render('home/detail', {
-    //                     phone: singleMongooseToObject(phone),
-    //                     phones: multipleMongooseToObject(phones),
-    //                 });
-    //             } else {
-    //                 res.redirect('/')
-    //             }
-    //         })
-    //         .catch(next)
-    // }
+    // [GET] /:categori/:slug
+    show(req, res, next) {
+        Promise.all([
+                Product.findOne({
+                    slug: req.params.slug,
+                    categori: req.params.categori
+                }),
+                Product.find({
+                    categori: req.params.categori
+                }).limit(12).skip(0)
+            ])
+            .then(([phone, phones]) => {
+                if (phone) {
+                    res.render('home/detail', {
+                        phone: singleMongooseToObject(phone),
+                        productsHot: multipleMongooseToObject(phones),
+                    });
+                } else {
+                    res.redirect('/');
+                }
+            })
+            .catch(next)
+    }
 
-    // // [GET] /cart
-    // showCart(req, res, next) {
-    //     res.render('home/cart');
-    // }
+    // [GET] /cart
+    showCart(req, res, next) {
+        res.render('home/cart');
+    }
 
     // // [GET] /payment
     // showPayment(req, res, next) {
