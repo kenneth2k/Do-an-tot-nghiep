@@ -141,22 +141,23 @@ class ApiUserController {
                             newPassword: false,
                             message: "Mã OTP không chính xác!"
                         });
+                    } else {
+                        let newPassword = randomCharacter(10);
+                        user.password = bcrypt.hashSync(newPassword, 8);
+                        user.otp = null;
+                        User.updateOne({ _id: user._id }, user)
+                            .then(() => {
+                                try {
+                                    sendNewPasswordMail(user.email, newPassword);
+                                    return res.send({
+                                        newPassword: true,
+                                        message: "Đã gửi mật khẩu mới, vui lòng kiểm tra email!"
+                                    });
+                                } catch (e) {
+                                    console.log(e)
+                                }
+                            })
                     }
-                    let newPassword = randomCharacter(10);
-                    user.password = bcrypt.hashSync(newPassword, 8);
-                    user.otp = null;
-                    User.updateOne({ _id: user._id }, user)
-                        .then(() => {
-                            try {
-                                sendNewPasswordMail(user.email, newPassword);
-                                return res.send({
-                                    newPassword: true,
-                                    message: "Đã gửi mật khẩu mới, vui lòng kiểm tra email!"
-                                });
-                            } catch (e) {
-                                console.log(e)
-                            }
-                        })
                 } else {
                     return res.send({
                         newPassword: false,
