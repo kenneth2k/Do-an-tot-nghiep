@@ -174,7 +174,7 @@ module.exports = {
         for (let i = 0; i < raitings.length; i++) {
             sum += raitings[i].star;
         }
-        return parseFloat((sum / raitings.length) + '').toFixed(1);
+        return parseFloat((raitings.length == 0) ? 0 : (sum / raitings.length) + '').toFixed(1);
     },
     percentRaitings: (raitings, number) => {
         let sum = 0;
@@ -183,7 +183,7 @@ module.exports = {
                 sum += 1;
             }
         }
-        return parseFloat(((sum / raitings.length) * 100) + '').toFixed(0);
+        return (raitings.length == 0) ? 0 : parseFloat(((sum / raitings.length) * 100) + '').toFixed(0);
     },
     checkContentProduct: (content) => {
         return content ? `
