@@ -90,7 +90,7 @@ $(document).ready(function(c) {
             $(address).addClass('is-invalid');
             count++;
         }
-        if (password.val().length < 8) {
+        if (password.val().length < 6 || password.val().length > 16) {
             $(password).addClass('is-invalid');
             count++;
         }
@@ -112,7 +112,6 @@ $(document).ready(function(c) {
                         $("#register-form").find("input").removeClass('is-invalid');
                         $("#register-form").find("input").removeClass('is-valid');
                         $("#register-form")[0].reset();
-                        $("#exampleModal2").modal("hide");
                         setTimeout(function() {
                             ShowToastMessage(data.message, "success");
                         }, 1000);
