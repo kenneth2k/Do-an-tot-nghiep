@@ -24,6 +24,63 @@ function sendCodeMail(email, code) {
         })
 }
 
+function sendActiveMail(email, activeToken) {
+    const msg = {
+        to: email,
+        from: {
+            name: 'EPHONE STORE',
+            email: `${process.env.SENDGRID_EMAIL}`
+        },
+        subject: 'Send Link Acount Active form Ephone Store',
+        text: 'Send Link Acount Active form Ephone Store',
+        html: `
+        <tbody>
+            <tr>
+                <td style="padding:0;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;font-size:20px;vertical-align:top;" valign="top">
+                    <p style="margin:0;margin-bottom:30px;color:#294661;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;font-size:20px;font-weight:300;"><small>Đường dẫn kích hoạt tài khoản ephone store.</small></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="box-sizing:border-box;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:20px;vertical-align:top;padding:30px" valign="top">
+                <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%">
+                    <tbody>
+                        <tr>
+                            <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top" valign="top">
+                            <table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border-spacing:0;width:100%;border-collapse:separate!important" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td align="center" style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;padding-bottom:15px" valign="top">
+                                        <table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border-spacing:0;width:auto;border-collapse:separate!important">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="center" bgcolor="#348eda" style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#348eda;border-radius:2px;text-align:center" valign="top"><a style="box-sizing:border-box;border-color:#348eda;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#348eda;border:solid 1px #348eda;border-radius:2px;font-size:14px;padding:12px 45px" href="${process.env.ADDRESS_WEB}active/${activeToken}">Nhấn vào đây!</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </td>
+            </tr>
+        </tbody>
+        `,
+    };
+    //ES6
+    return sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent active account.');
+        })
+        .catch((error) => {
+            console.error(error)
+        });
+}
+
 function sendWelcomeMail(email, name) {
     const msg = {
         to: email,
@@ -70,5 +127,6 @@ function sendNewPasswordMail(email, password) {
 module.exports = {
     sendCodeMail,
     sendWelcomeMail,
-    sendNewPasswordMail
+    sendNewPasswordMail,
+    sendActiveMail
 }

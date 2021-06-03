@@ -109,13 +109,13 @@ $(document).ready(function(c) {
                 data: $(this).serialize(),
                 success: function(data) {
                     if (data.register) {
-                        if (data.type === 'user') {
-                            window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
+                        $("#register-form").find("input").removeClass('is-invalid');
+                        $("#register-form").find("input").removeClass('is-valid');
+                        $("#register-form")[0].reset();
+                        $("#exampleModal2").modal("hide");
+                        setTimeout(function() {
                             ShowToastMessage(data.message, "success");
-                            setTimeout(function() {
-                                window.location.href = "/";
-                            }, 1500);
-                        }
+                        }, 1000);
                     } else {
                         $(email).addClass('is-invalid');
                         $(email).parent().find('.invalid-feedback').text(data.message);

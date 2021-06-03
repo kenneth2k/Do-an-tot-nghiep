@@ -571,8 +571,8 @@ span.item_price {
 
 #snackbar.show {
     visibility: visible;
-    -webkit-animation: snackbarfadein 0.5s, snackbarfadeout 0.5s 2.5s;
-    animation: snackbarfadein 0.5s, snackbarfadeout 0.5s 2.5s;
+    -webkit-animation: snackbarfadein 0.5s, snackbarfadeout 0.5s 3.7s;
+    animation: snackbarfadein 0.5s, snackbarfadeout 0.5s 3.7s;
 }
 
 #snackbar.success {

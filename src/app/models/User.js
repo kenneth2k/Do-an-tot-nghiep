@@ -15,6 +15,8 @@ const User = new Schema({
     address: { type: String },
     otp: { type: String, default: null },
     decentralization: { type: String, default: 1 },
+    active: { type: Boolean, default: false },
+    activeToken: { type: String, default: null },
     token: { type: String },
 }, {
     timestamps: true,

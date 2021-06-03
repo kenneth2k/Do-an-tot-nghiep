@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
-const { sendCodeMail, sendWelcomeMail, sendNewPasswordMail } = require('../../util/email/email');
+const { sendCodeMail, sendWelcomeMail, sendNewPasswordMail, sendActiveMail } = require('../../util/email/email');
 const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
 const { randomToBetween, randomCharacter } = require('../../helper/random');
 
@@ -37,6 +37,13 @@ class ApiUserController {
                 if (!user) {
                     return res.send({ login: false, message: "Tài khoản chưa đăng ký!" });
                 };
+                if (!user.active) {
+                    let temp = new User(user);
+                    temp.activeToken = Date.now() + randomCharacter(16);
+                    temp.save();
+                    sendActiveMail(user.email, temp.activeToken);
+                    return res.send({ login: false, message: "Tài khoản của bạn chưa được kích hoạt, vui lòng kiểm tra email để kích hoạt tài khoản!" });
+                }
                 if (user.deleted) {
                     return res.send({ login: false, message: "Tài khoản của bạn bị khóa, vui lòng liên hệ Admin để hổ trợ!" });
                 }
@@ -82,16 +89,14 @@ class ApiUserController {
                     user.save()
                         .then((user) => {
                             user.token = jwt.sign({ _id: user.slug }, "electroStore");
+                            user.activeToken = Date.now() + '.' + randomCharacter(16);
                             return user.save();
                         })
                         .then((user) => {
                             sendWelcomeMail(user.email, user.fullname);
+                            sendActiveMail(user.email, user.activeToken);
                             return res.send({
-                                _slug: user.slug,
-                                type: 'user',
-                                name: user.fullname,
-                                token: "Bearer " + user.token,
-                                message: "Đăng ký thành công!",
+                                message: "Đăng ký thành công, vui lòng kiểm tra email để kích hoạt tài khoản!",
                                 register: true,
                             });
                         })
