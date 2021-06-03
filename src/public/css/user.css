@@ -450,13 +450,11 @@
 
 .pay__content {
     text-align: center;
-    margin: 20px 0;
-    border: 1px solid #999;
-    padding: 30px;
+    padding-top: 10px;
 }
 
-.pay__content h1 {
-    color: red;
+.pay__content h3 {
+    color: var(--success);
 }
 
 .pay__content a {

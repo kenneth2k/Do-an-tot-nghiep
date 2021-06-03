@@ -327,6 +327,7 @@ $(document).ready(function() {
         }
         return xhtml;
     }
+    // search input header
     $('.focus-input input').keyup(function() {
         if ($(this).val().length > 1) {
             $.ajax({
@@ -347,15 +348,22 @@ $(document).ready(function() {
             $(".search-content").css("display", "none");
         }, 100)
     });
+    // payment success
+    $("#payment-order").click(function() {
+        $("#payment-succes").modal('show');
+    });
+    $("#payment-succes").blur(function() {
+        window.location.href = '/';
+    });
 });
 $(document).ready(function(c) {
-    getUser()
+    getUserPayment();
 
-    function getUser() {
+    function getUserPayment() {
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
-        if (!user_token && window.location.pathname.indexOf("payment") != (-1)) {
-            window.location.href = "/";
-        }
+        // if (!user_token && window.location.pathname.indexOf("payment") != (-1)) {
+        //     window.location.href = "/";
+        // }
         if (!user_token) return;
         return;
         $.ajax({
@@ -369,6 +377,13 @@ $(document).ready(function(c) {
             }
         });
     };
+    $(".checkout-right-basket a").click(function(e) {
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if (!user_token) {
+            e.preventDefault();
+            ShowToastMessage("Vui lòng đăng nhập để thanh toán giỏ hàng!", "warning")
+        }
+    })
     $(function() {
         // Multiple images preview in browser
         var imagesPreview = function(input, placeToInsertImagePreview) {
@@ -426,9 +441,12 @@ $(document).ready(function(c) {
     (function() {
         var modal = $('#quen-mat-khau');
         if (modal) {
-            modal.click(function() {
-                var parent = $("#exampleModal").find('button[class="close"]');
-                parent.click();
+            modal.click(function(e) {
+                e.preventDefault();
+                $("#exampleModal").modal('hide');
+                setTimeout(function() {
+                    $("#forgotpassword").modal('show');
+                }, 500)
             })
         }
     })();

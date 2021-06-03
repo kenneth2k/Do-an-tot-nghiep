@@ -71,15 +71,15 @@ class HomeController {
         res.render('home/cart');
     }
 
-    // // [GET] /payment
-    // showPayment(req, res, next) {
-    //     res.render('home/payment');
-    // }
+    // [GET] /payment
+    showPayment(req, res, next) {
+        res.render('home/payment');
+    }
 
-    // // [GET] /payment/success
-    // showPaymentSuccess(req, res, next) {
-    //     res.render('home/paymentsuccess');
-    // }
+    // [GET] /payment/success
+    showPaymentSuccess(req, res, next) {
+        res.render('home/paymentsuccess');
+    }
 
     // // [GET] /search
     // showSearch(req, res, next) {
