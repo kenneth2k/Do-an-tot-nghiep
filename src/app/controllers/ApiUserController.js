@@ -30,13 +30,16 @@ class ApiUserController {
 
     // [POST] /api/login
     login(req, res, next) {
-        User.findOne({
+        User.findOneWithDeleted({
                 email: req.body.email,
             })
             .then(user => {
                 if (!user) {
                     return res.send({ login: false, message: "Tài khoản chưa đăng ký!" });
                 };
+                if (user.deleted) {
+                    return res.send({ login: false, message: "Tài khoản của bạn bị khóa, vui lòng liên hệ Admin để hổ trợ!" });
+                }
                 let isValid = bcrypt.compareSync(req.body.password, user.password);
                 if (!isValid) {
                     return res.send({ login: false, message: "Tài khoản hoặc mật khẩu không chính xác!" });
@@ -66,11 +69,9 @@ class ApiUserController {
     // [POST] /api/register
     register(req, res, next) {
         const formData = req.body;
-
-        User.findOne({ email: req.body.email })
+        User.findOneWithDeleted({ email: req.body.email })
             .then(user => {
                 if (user !== null) {
-                    console.log(user)
                     return res.send({
                         register: false,
                         message: "Email này đã đăng ký!"
@@ -101,7 +102,7 @@ class ApiUserController {
     };
     // [POST] /api/checkEmail
     checkEmail(req, res, next) {
-        User.findOne({ email: req.body.email })
+        User.findOneWithDeleted({ email: req.body.email })
             .then(user => {
                 if (user !== null) {
                     user.otp = randomToBetween(process.env.RANDOM_MIN, process.env.RANDOM_MAX);
@@ -128,7 +129,7 @@ class ApiUserController {
     };
     // [POST] /api/sendNewPassword
     sendNewPassword(req, res, next) {
-        User.findOne({ email: req.body.email })
+        User.findOneWithDeleted({ email: req.body.email })
             .then(user => {
                 if (user !== null) {
                     if (user.otp == null || user.otp == "null") {

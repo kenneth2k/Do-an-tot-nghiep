@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 const ApiUserController = require('../controllers/ApiUserController');
 const apiHomeController = require('../controllers/ApiHomeController');
+const apiController = require('../controllers/ApiHomeController');
 
 
 router.post('/login', ApiUserController.login);
 router.post('/register', ApiUserController.register);
 router.post('/checkEmail', ApiUserController.checkEmail);
 router.post('/sendNewPassword', ApiUserController.sendNewPassword);
+router.get('/search/:search', apiController.showSearch);
 // router.post('/checkLogin', ApiUserController.checkLogin);
 // router.post('/getProfile', ApiUserController.getProfile);
 // router.put('/getProfile/changePassword', ApiUserController.changePassword);

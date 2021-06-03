@@ -46,7 +46,7 @@ $(document).ready(function(c) {
                         window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
                         ShowToastMessage(data.message, "success");
                         setTimeout(function() {
-                            window.location.href = "/";
+                            window.location.reload();
                         }, 1500);
                     } else {
                         window.sessionStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
@@ -171,6 +171,17 @@ $(document).ready(function(c) {
             });
         }
     });
+    //collapse detail products
+
+    $("#collapse-raitings").click(function() {
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if (user_token) {
+            $('#noidung-danhgia').collapse("toggle");
+        } else {
+            ShowToastMessage("Vui lòng đăng nhập để đánh giá sản phẩm!", "warning")
+        }
+    })
+
     // get token
     getToken();
 
@@ -283,7 +294,59 @@ $(document).ready(function() {
     const formCreateAddress = $("#form-create-address");
     formCreateAddress.submit(function(e) {
         e.preventDefault();
-    })
+    });
+    // search on keyup
+    function searchContents(products) {
+        var xhtml = ``;
+        var xhtmlContent = function(product) {
+            return `
+            <div class="search-item">
+                <a href="/${product.categori}/${product.slug}">
+                    <div class="item-img">
+                        <img src="/public/images/products/${product.colors[0].bigImg}" alt="">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-content__name">
+                            ${product.name}
+                        </div>
+                        <div class="item-content__price">
+                            <div class="item-content__price-main">
+                                <span class="item_price">${(new Intl.NumberFormat().format((product.price - (product.price*(product.sale/100)))))} <sup>đ</sup></span>
+                            </div>
+                            <div class="item-content__price-sale">
+                            <del>${(new Intl.NumberFormat().format(product.price))}</del><sup>đ</sup>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        `
+        };
+        for (let i = 0; i < products.length; i++) {
+            xhtml += xhtmlContent(products[i]);
+        }
+        return xhtml;
+    }
+    $('.focus-input input').keyup(function() {
+        if ($(this).val().length > 1) {
+            $.ajax({
+                type: "GET",
+                url: '/api/search/' + $(this).val(),
+                success: function(data) {
+                    console.log(data);
+                    $(".search-content").html(searchContents(data.products));
+                    $(".search-content").css("display", "block");
+                }
+            });
+        } else {
+            $(".search-content").css("display", "none");
+        }
+    });
+    $('.focus-input input').blur(function() {
+        setTimeout(function() {
+            $(".search-content").css("display", "none");
+        }, 100)
+    });
 });
 $(document).ready(function(c) {
     getUser()
@@ -368,5 +431,6 @@ $(document).ready(function(c) {
                 parent.click();
             })
         }
-    })()
+    })();
+
 });

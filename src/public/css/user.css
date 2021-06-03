@@ -568,6 +568,7 @@ span.item_price {
     left: 50%;
     bottom: 30px;
     font-size: 17px;
+    border-radius: 10px;
 }
 
 #snackbar.show {
@@ -860,4 +861,53 @@ span.item_price {
 
 #noidung-danhgia {
     padding: 10px 5px;
+}
+
+.search-content {
+    position: absolute;
+    z-index: 999;
+    background-color: #fff;
+    width: calc(100% - 140px);
+}
+
+.search-item {
+    border: 1px solid #dee2e6;
+    padding: 5px;
+}
+
+.item-img img {
+    width: 60px;
+    height: 60px;
+}
+
+.search-item a,
+.item-content__price {
+    display: flex;
+}
+
+.search-item a {
+    border: 1px solid;
+    border-color: transparent;
+    padding: 5px;
+}
+
+.search-item a:hover {
+    border-color: #333;
+}
+
+.item-content {
+    padding-left: 15px;
+}
+
+.item-content__name {
+    color: #000;
+}
+
+.item-content__price-main .item_price {
+    font-weight: bold;
+}
+
+.item-content__price-sale {
+    padding-left: 20px;
+    font-size: 90%;
 }
