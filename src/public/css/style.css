@@ -597,6 +597,7 @@ h3.tittle-w3l span {
 
 #PPminicarts {
     left: 44% !important;
+    z-index: 9999;
 }
 
 .minicarts-showing #PPminicarts form {
@@ -881,13 +882,13 @@ h3.tittle-w3l span {
     outline: none;
     padding: 11px 10px 10px 10px;
     font-size: 13px;
-    color: #c4c4c4;
+    color: #333;
 }
 
 .search-hotel form input[type="submit"] {
     background: url(../images/search.png) no-repeat 13px 11px #0879c9;
     width: 44px;
-    height: 39px;
+    height: 40px;
     border: none;
     padding: 0;
     margin-top: 0;

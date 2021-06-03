@@ -37,6 +37,7 @@
 {{> login}}
 {{> register}}
 {{> forgot}}
+{{> paymentSucces}}
 <!-- header-bottom-->
 <div class="header-bot">
     <div class="container">
@@ -54,12 +55,38 @@
             <div class="col-md-9 header mt-4 mb-md-0 mb-4">
                 <div class="row">
                     <!-- search -->
-                    <div class="col-10 agileits_search">
-                        <form class="form-inline" action="#" method="post">
-                            <input class="form-control" type="search" placeholder="Tìm kiếm..." aria-label="Search"
-                                required>
-                            <button class="btn my-2 my-sm-0" type="submit">Tìm kiếm</button>
+                    <div class="col-10 agileits_search position-relative">
+                        <form class="form-inline focus-input" action="#" method="get">
+                            <div class="input-group w-100">
+                                <input type="text" class="form-control" placeholder="Tìm kiếm..." aria-label="Search">
+                                <div class="input-group-append" style="width: 110px;">
+                                    <button class="btn btn-danger w-100" type="submit"
+                                        style="padding: 10px 20px 10px 20px;">Tìm kiếm</button>
+                                </div>
+                            </div>
                         </form>
+                        <div class="search-content" style="display: none;">
+                            <div class="search-item">
+                                <a href="#">
+                                    <div class="item-img">
+                                        <img src="/public/images/a.jpg" alt="">
+                                    </div>
+                                    <div class="item-content">
+                                        <div class="item-content__name">
+                                            Samsung Galaxy s7 plus+
+                                        </div>
+                                        <div class="item-content__price">
+                                            <div class="item-content__price-main">
+                                                <span class="item_price">18,891,000 <sup>đ</sup></span>
+                                            </div>
+                                            <div class="item-content__price-sale">
+                                               <del>20,990,000</del><sup>đ</sup>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <!-- //search -->
                     <!-- cart details -->

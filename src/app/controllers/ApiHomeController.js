@@ -3,6 +3,7 @@ const axios = require('axios');
 
 const User = require('../models/User');
 const Category = require('../models/Category');
+const Product = require('../models/Product');
 const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
 
 class ApiHomeController {
@@ -48,5 +49,15 @@ class ApiHomeController {
     //         })
     //         .catch(next)
     // }
+    // [GET] /search/:search
+    showSearch(req, res, next) {
+        Product.find({ name: { $regex: new RegExp(req.params.search, "i") } }).limit(5).skip(0)
+            .then(products => {
+                return res.send({
+                    products: multipleMongooseToObject(products)
+                })
+            })
+            .catch(next)
+    }
 }
 module.exports = new ApiHomeController;

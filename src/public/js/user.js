@@ -46,7 +46,7 @@ $(document).ready(function(c) {
                         window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
                         ShowToastMessage(data.message, "success");
                         setTimeout(function() {
-                            window.location.href = "/";
+                            window.location.reload();
                         }, 1500);
                     } else {
                         window.sessionStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
@@ -109,13 +109,13 @@ $(document).ready(function(c) {
                 data: $(this).serialize(),
                 success: function(data) {
                     if (data.register) {
-                        if (data.type === 'user') {
-                            window.localStorage.setItem("user_token", encodeURIComponent(JSON.stringify(data)));
+                        $("#register-form").find("input").removeClass('is-invalid');
+                        $("#register-form").find("input").removeClass('is-valid');
+                        $("#register-form")[0].reset();
+                        $("#exampleModal2").modal("hide");
+                        setTimeout(function() {
                             ShowToastMessage(data.message, "success");
-                            setTimeout(function() {
-                                window.location.href = "/";
-                            }, 1500);
-                        }
+                        }, 1000);
                     } else {
                         $(email).addClass('is-invalid');
                         $(email).parent().find('.invalid-feedback').text(data.message);
@@ -171,6 +171,17 @@ $(document).ready(function(c) {
             });
         }
     });
+    //collapse detail products
+
+    $("#collapse-raitings").click(function() {
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if (user_token) {
+            $('#noidung-danhgia').collapse("toggle");
+        } else {
+            ShowToastMessage("Vui lòng đăng nhập để đánh giá sản phẩm!", "warning")
+        }
+    })
+
     // get token
     getToken();
 
@@ -283,16 +294,76 @@ $(document).ready(function() {
     const formCreateAddress = $("#form-create-address");
     formCreateAddress.submit(function(e) {
         e.preventDefault();
-    })
+    });
+    // search on keyup
+    function searchContents(products) {
+        var xhtml = ``;
+        var xhtmlContent = function(product) {
+            return `
+            <div class="search-item">
+                <a href="/${product.categori}/${product.slug}">
+                    <div class="item-img">
+                        <img src="/public/images/products/${product.colors[0].bigImg}" alt="">
+                    </div>
+                    <div class="item-content">
+                        <div class="item-content__name">
+                            ${product.name}
+                        </div>
+                        <div class="item-content__price">
+                            <div class="item-content__price-main">
+                                <span class="item_price">${(new Intl.NumberFormat().format((product.price - (product.price*(product.sale/100)))))} <sup>đ</sup></span>
+                            </div>
+                            <div class="item-content__price-sale">
+                            <del>${(new Intl.NumberFormat().format(product.price))}</del><sup>đ</sup>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        `
+        };
+        for (let i = 0; i < products.length; i++) {
+            xhtml += xhtmlContent(products[i]);
+        }
+        return xhtml;
+    }
+    // search input header
+    $('.focus-input input').keyup(function() {
+        if ($(this).val().length > 1) {
+            $.ajax({
+                type: "GET",
+                url: '/api/search/' + $(this).val(),
+                success: function(data) {
+                    console.log(data);
+                    $(".search-content").html(searchContents(data.products));
+                    $(".search-content").css("display", "block");
+                }
+            });
+        } else {
+            $(".search-content").css("display", "none");
+        }
+    });
+    $('.focus-input input').blur(function() {
+        setTimeout(function() {
+            $(".search-content").css("display", "none");
+        }, 100)
+    });
+    // payment success
+    $("#payment-order").click(function() {
+        $("#payment-succes").modal('show');
+    });
+    $("#payment-succes").blur(function() {
+        window.location.href = '/';
+    });
 });
 $(document).ready(function(c) {
-    getUser()
+    getUserPayment();
 
-    function getUser() {
+    function getUserPayment() {
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
-        if (!user_token && window.location.pathname.indexOf("payment") != (-1)) {
-            window.location.href = "/";
-        }
+        // if (!user_token && window.location.pathname.indexOf("payment") != (-1)) {
+        //     window.location.href = "/";
+        // }
         if (!user_token) return;
         return;
         $.ajax({
@@ -306,6 +377,13 @@ $(document).ready(function(c) {
             }
         });
     };
+    $(".checkout-right-basket a").click(function(e) {
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if (!user_token) {
+            e.preventDefault();
+            ShowToastMessage("Vui lòng đăng nhập để thanh toán giỏ hàng!", "warning")
+        }
+    })
     $(function() {
         // Multiple images preview in browser
         var imagesPreview = function(input, placeToInsertImagePreview) {
@@ -363,10 +441,14 @@ $(document).ready(function(c) {
     (function() {
         var modal = $('#quen-mat-khau');
         if (modal) {
-            modal.click(function() {
-                var parent = $("#exampleModal").find('button[class="close"]');
-                parent.click();
+            modal.click(function(e) {
+                e.preventDefault();
+                $("#exampleModal").modal('hide');
+                setTimeout(function() {
+                    $("#forgotpassword").modal('show');
+                }, 500)
             })
         }
-    })()
+    })();
+
 });

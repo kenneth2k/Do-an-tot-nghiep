@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
-const slug = require('mongoose-slug-generator');
-mongoose.plugin(slug);
 const Schema = mongoose.Schema;
+
+const slug = require('mongoose-slug-generator');
+const mongooseDelete = require('mongoose-delete');
 
 const User = new Schema({
     password: { type: String },
@@ -14,9 +15,16 @@ const User = new Schema({
     address: { type: String },
     otp: { type: String, default: null },
     decentralization: { type: String, default: 1 },
+    active: { type: Boolean, default: false },
+    activeToken: { type: String, default: null },
     token: { type: String },
 }, {
     timestamps: true,
 });
-
+// add plugin
+mongoose.plugin(slug);
+User.plugin(mongooseDelete, {
+    deletedAt: true,
+    overrideMethods: true
+});
 module.exports = mongoose.model('User', User);

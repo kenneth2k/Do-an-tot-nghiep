@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
-const { sendCodeMail, sendWelcomeMail, sendNewPasswordMail } = require('../../util/email/email');
+const { sendCodeMail, sendWelcomeMail, sendNewPasswordMail, sendActiveMail } = require('../../util/email/email');
 const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
 const { randomToBetween, randomCharacter } = require('../../helper/random');
 
@@ -30,13 +30,23 @@ class ApiUserController {
 
     // [POST] /api/login
     login(req, res, next) {
-        User.findOne({
+        User.findOneWithDeleted({
                 email: req.body.email,
             })
             .then(user => {
                 if (!user) {
                     return res.send({ login: false, message: "Tài khoản chưa đăng ký!" });
                 };
+                if (!user.active) {
+                    let temp = new User(user);
+                    temp.activeToken = Date.now() + randomCharacter(16);
+                    temp.save();
+                    sendActiveMail(user.email, temp.activeToken);
+                    return res.send({ login: false, message: "Tài khoản của bạn chưa được kích hoạt, vui lòng kiểm tra email để kích hoạt tài khoản!" });
+                }
+                if (user.deleted) {
+                    return res.send({ login: false, message: "Tài khoản của bạn bị khóa, vui lòng liên hệ Admin để hổ trợ!" });
+                }
                 let isValid = bcrypt.compareSync(req.body.password, user.password);
                 if (!isValid) {
                     return res.send({ login: false, message: "Tài khoản hoặc mật khẩu không chính xác!" });
@@ -66,11 +76,9 @@ class ApiUserController {
     // [POST] /api/register
     register(req, res, next) {
         const formData = req.body;
-
-        User.findOne({ email: req.body.email })
+        User.findOneWithDeleted({ email: req.body.email })
             .then(user => {
                 if (user !== null) {
-                    console.log(user)
                     return res.send({
                         register: false,
                         message: "Email này đã đăng ký!"
@@ -81,16 +89,14 @@ class ApiUserController {
                     user.save()
                         .then((user) => {
                             user.token = jwt.sign({ _id: user.slug }, "electroStore");
+                            user.activeToken = Date.now() + '.' + randomCharacter(16);
                             return user.save();
                         })
                         .then((user) => {
                             sendWelcomeMail(user.email, user.fullname);
+                            sendActiveMail(user.email, user.activeToken);
                             return res.send({
-                                _slug: user.slug,
-                                type: 'user',
-                                name: user.fullname,
-                                token: "Bearer " + user.token,
-                                message: "Đăng ký thành công!",
+                                message: "Đăng ký thành công, vui lòng kiểm tra email để kích hoạt tài khoản!",
                                 register: true,
                             });
                         })
@@ -101,7 +107,7 @@ class ApiUserController {
     };
     // [POST] /api/checkEmail
     checkEmail(req, res, next) {
-        User.findOne({ email: req.body.email })
+        User.findOneWithDeleted({ email: req.body.email })
             .then(user => {
                 if (user !== null) {
                     user.otp = randomToBetween(process.env.RANDOM_MIN, process.env.RANDOM_MAX);
@@ -128,7 +134,7 @@ class ApiUserController {
     };
     // [POST] /api/sendNewPassword
     sendNewPassword(req, res, next) {
-        User.findOne({ email: req.body.email })
+        User.findOneWithDeleted({ email: req.body.email })
             .then(user => {
                 if (user !== null) {
                     if (user.otp == null || user.otp == "null") {
