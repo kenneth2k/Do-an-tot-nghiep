@@ -927,6 +927,10 @@ h3.agileits-sear-head {
     letter-spacing: 1px;
 }
 
+.w3l-range ul li a.active {
+    color: red;
+}
+
 
 /*-- check input --*/
 

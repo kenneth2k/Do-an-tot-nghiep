@@ -6,18 +6,13 @@ const { randomToBetween } = require('../../helper/random');
 class HomeController {
     // [GET] /
     index(req, res, next) {
-        // Product.delete({
-        //     _id: '60b4a850f120fc15a67df174'
-        // }).then((err, result) => {
-        //     console.log("products result", result);
-        // })
         var count = 0;
         Product.find({})
             .then(products => {
                 count = products.length;
             });
         Promise.all([
-                Product.find({}).limit(8).skip(randomToBetween(0, ((count > 20) ? (count - 10) : 1))),
+                Product.find({}).limit(15).skip(randomToBetween(0, ((count > 20) ? (count - 10) : 1))),
                 Product.find({
                     hot: true
                 }).limit(12).skip(0)
@@ -81,10 +76,10 @@ class HomeController {
         res.render('home/paymentsuccess');
     }
 
-    // // [GET] /search
-    // showSearch(req, res, next) {
-    //     res.render('home/search');
-    // }
+    // [GET] /search
+    showSearch(req, res, next) {
+        res.render('home/search');
+    }
 
     // // [GET] /profile/:slug
     // showProfile(req, res, next) {

@@ -58,6 +58,14 @@ class ApiHomeController {
                 })
             })
             .catch(next)
-    }
+    };
+    // [GET] /menu
+    menu(req, res, next) {
+        Category.find({})
+            .then(categories => {
+                return res.status(200).json({ categories: categories });
+            })
+            .catch(next);
+    };
 }
 module.exports = new ApiHomeController;
