@@ -90,7 +90,7 @@ $(document).ready(function(c) {
             $(address).addClass('is-invalid');
             count++;
         }
-        if (password.val().length < 8) {
+        if (password.val().length < 6 || password.val().length > 16) {
             $(password).addClass('is-invalid');
             count++;
         }
@@ -112,7 +112,6 @@ $(document).ready(function(c) {
                         $("#register-form").find("input").removeClass('is-invalid');
                         $("#register-form").find("input").removeClass('is-valid');
                         $("#register-form")[0].reset();
-                        $("#exampleModal2").modal("hide");
                         setTimeout(function() {
                             ShowToastMessage(data.message, "success");
                         }, 1000);
@@ -143,6 +142,37 @@ $(document).ready(function(c) {
             });
         }
     });
+    //nav bar clicked
+    (function() {
+        const li = function(menu) {
+            return `
+            <li class="nav-item bd-right mr-lg-2 mb-lg-0 mb-2">
+                <a class="nav-link" href="/${menu.slug}">${menu.name}
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            `
+        }
+        $.ajax({
+            type: "GET",
+            url: '/api/menu',
+            success: function(data) {
+                let cate = data.categories;
+                let xhtml = ``;
+                cate.forEach(menu => {
+                    xhtml += li(menu);
+                });
+                $("#navbarSupportedContent").html(xhtml);
+            }
+        });
+    })();
+    //nav bar clicked
+    $(".w3l-range ul li a").click(function(e) {
+        e.preventDefault();
+        $(".w3l-range ul li a").removeClass('active');
+        $(this).addClass('active');
+    });
+    // form forgot
     $("#forgot-form").submit(function(e) {
         e.preventDefault();
         var email = $("#forgot-form").find("input[name='email']");

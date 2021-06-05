@@ -294,7 +294,7 @@ button.w3view-cart {
 /*-- navigation-dropdown --*/
 
 .agile_inner_drop_nav_info {
-    min-width: 673px;
+    /* min-width: 673px; */
 }
 
 ul.multi-column-dropdown li {
@@ -925,6 +925,10 @@ h3.agileits-sear-head {
     font-size: 14px;
     color: #000;
     letter-spacing: 1px;
+}
+
+.w3l-range ul li a.active {
+    color: red;
 }
 
 
@@ -2382,7 +2386,7 @@ div#testimonials h4.m-title {
         padding: 11px 10px;
     }
     .agile_inner_drop_nav_info {
-        min-width: 564px;
+        /* min-width: 564px; */
     }
     .carousel-caption p {
         letter-spacing: 3px;
@@ -2480,7 +2484,7 @@ div#testimonials h4.m-title {
         font-size: 34px;
     }
     .agile_inner_drop_nav_info {
-        min-width: 530px;
+        /* min-width: 530px; */
     }
     .page-head_agile_info_w3l {
         min-height: 250px;
@@ -2740,7 +2744,7 @@ div#testimonials h4.m-title {
         font-size: 22px;
     }
     .agile_inner_drop_nav_info {
-        min-width: 474px;
+        /* min-width: 474px; */
     }
     .number-paymk {
         margin-top: 2em;
@@ -2912,7 +2916,7 @@ div#testimonials h4.m-title {
         width: 50%;
     }
     .agile_inner_drop_nav_info {
-        min-width: 396px;
+        /* min-width: 396px; */
     }
 }
 
@@ -2965,7 +2969,7 @@ div#testimonials h4.m-title {
     }
     /* //faqs */
     .agile_inner_drop_nav_info {
-        min-width: 364px;
+        /* min-width: 364px; */
     }
 }
 
@@ -3001,7 +3005,7 @@ div#testimonials h4.m-title {
         width: 9% !important;
     }
     .agile_inner_drop_nav_info {
-        min-width: 324px;
+        /* min-width: 324px; */
     }
     label.anim {
         font-size: 14px;
@@ -3104,7 +3108,7 @@ div#testimonials h4.m-title {
         font-size: 18px;
     }
     .agile_inner_drop_nav_info {
-        min-width: 300px;
+        /* min-width: 300px; */
     }
     .agile_inner_drop_nav_info.p-4 h5 {
         font-size: 18px;
@@ -3132,7 +3136,7 @@ div#testimonials h4.m-title {
         font-size: 13px;
     }
     .agile_inner_drop_nav_info {
-        min-width: 290px;
+        /* min-width: 290px; */
     }
 }
 
@@ -3278,7 +3282,7 @@ div#testimonials h4.m-title {
         width: 80%;
     }
     .agile_inner_drop_nav_info {
-        min-width: 242px;
+        /* min-width: 242px; */
     }
     .agile_inner_drop_nav_info.p-4 h5 {
         font-size: 17px;
