@@ -282,4 +282,27 @@ module.exports = {
         }
         return xhtml;
     },
+    pageNaigation: (products, totalPage) => {
+        let OnePage = 15;
+        let count = products.length;
+        let xhtml = ``;
+        for (let i = 0; i < totalPage; i++) {
+            xhtml += `<li class="page-item ${(i== 0)? 'active': ''}"><span class="page-link">${i+1}</span></li>`;
+        }
+        return `
+            <ul class="pagination">
+                ${xhtml}
+            ${
+                (totalPage < 2)? '' : `
+                <li class="page-item">
+                    <span class="page-link" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </span>
+                </li>
+                ` 
+            }
+            </ul>
+        `;
+    }
 }

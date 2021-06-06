@@ -81,32 +81,32 @@ $(document).ready(function() {
     }
 });
 $(document).ready(function() {
-    (
-        function() {
-            const pageNaigation = document.querySelector('#page_navigation');
-            if (pageNaigation) {
-                var htmls = `
-                <ul class="pagination">
-                        <li class="page-item">
-                            <span class="page-link" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </span>
-                        </li>
-                        <li class="page-item"><span class="page-link">1</span></li>
-                        <li class="page-item active"><span class="page-link">2</span></li>
-                        <li class="page-item"><span class="page-link">3</span></li>
-                        <li class="page-item"><span class="page-link">...</span></li>
-                        <li class="page-item">
-                            <span class="page-link" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </span>
-                        </li>
-                    </ul>
-                `;
-                pageNaigation.innerHTML = htmls;
-            }
-        }
-    )()
+    // (
+    //     function() {
+    //         const pageNaigation = document.querySelector('#page_navigation');
+    //         if (pageNaigation) {
+    //             var htmls = `
+    //             <ul class="pagination">
+    //                     <li class="page-item">
+    //                         <span class="page-link" aria-label="Previous">
+    //                             <span aria-hidden="true">&laquo;</span>
+    //                             <span class="sr-only">Previous</span>
+    //                         </span>
+    //                     </li>
+    //                     <li class="page-item"><span class="page-link">1</span></li>
+    //                     <li class="page-item active"><span class="page-link">2</span></li>
+    //                     <li class="page-item"><span class="page-link">3</span></li>
+    //                     <li class="page-item"><span class="page-link">...</span></li>
+    //                     <li class="page-item">
+    //                         <span class="page-link" aria-label="Next">
+    //                             <span aria-hidden="true">&raquo;</span>
+    //                             <span class="sr-only">Next</span>
+    //                         </span>
+    //                     </li>
+    //                 </ul>
+    //             `;
+    //             pageNaigation.innerHTML = htmls;
+    //         }
+    //     }
+    // )()
 })

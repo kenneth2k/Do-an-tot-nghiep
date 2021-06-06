@@ -1,7 +1,7 @@
 const Product = require('../models/Product');
 const User = require('../models/User');
 const Raiting = require('../models/Raiting');
-const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
+const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../util/mongoose');
 const { randomToBetween } = require('../../helper/random');
 class HomeController {
     // [GET] /
@@ -78,7 +78,26 @@ class HomeController {
 
     // [GET] /search
     showSearch(req, res, next) {
-        res.render('home/search');
+        if (['all'].includes(req.params.search)) {
+            Product.find({ name: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") } })
+                .then(products => {
+                    return res.render('home/search', {
+                        totalPage: Math.ceil(products.length / 12),
+                        products: multipleMongooseToObjectOnLimit(products, 12)
+                    });
+                })
+                .catch(next)
+        } else {
+            Product.find({ categori: req.params.search })
+                .then(products => {
+                    return res.render('home/search', {
+                        totalPage: Math.ceil(products.length / 12),
+                        products: multipleMongooseToObjectOnLimit(products, 12)
+                    });
+                })
+                .catch(next)
+
+        }
     }
 
     // // [GET] /profile/:slug

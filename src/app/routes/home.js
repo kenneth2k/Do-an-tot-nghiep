@@ -10,8 +10,8 @@ router.get('/active/:key', userController.activeUser);
 router.get('/:categori/:slug', homeController.show);
 // router on one params
 router.get('/cart', homeController.showCart);
-router.get('/search', homeController.showSearch);
 router.get('/payment', homeController.showPayment);
+router.get('/:search', homeController.showSearch);
 router.get('/', homeController.index);
 // router on all params
 router.get('*', homeController.show404);
