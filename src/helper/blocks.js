@@ -282,27 +282,17 @@ module.exports = {
         }
         return xhtml;
     },
-    pageNaigation: (products, totalPage) => {
-        let OnePage = 15;
-        let count = products.length;
-        let xhtml = ``;
-        for (let i = 0; i < totalPage; i++) {
-            xhtml += `<li class="page-item ${(i== 0)? 'active': ''}"><span class="page-link">${i+1}</span></li>`;
-        }
-        return `
-            <ul class="pagination">
-                ${xhtml}
-            ${
-                (totalPage < 2)? '' : `
-                <li class="page-item">
-                    <span class="page-link" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </span>
-                </li>
-                ` 
-            }
-            </ul>
-        `;
+    viewMoreBtn: (products, totalProduct) => {
+        return ((totalProduct - products.length) <= 0)?'':`
+        <div class="view-more">
+            <button type="button" data-page="2" class="btn btn-primary">Xem thêm ${totalProduct - products.length} điện thoại <svg
+                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+                </svg>
+            </button>
+        </div>
+    `;
     }
 }

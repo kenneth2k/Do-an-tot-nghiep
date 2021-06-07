@@ -5,6 +5,7 @@ const apiHomeController = require('../controllers/ApiHomeController');
 const apiController = require('../controllers/ApiHomeController');
 
 router.get('/menu', apiHomeController.menu);
+router.get('/mutipleSearch', apiHomeController.mutipleSearch);
 router.post('/login', ApiUserController.login);
 router.post('/register', ApiUserController.register);
 router.post('/checkEmail', ApiUserController.checkEmail);

@@ -909,3 +909,9 @@ span.item_price {
     padding-left: 20px;
     font-size: 90%;
 }
+
+.view-more {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
