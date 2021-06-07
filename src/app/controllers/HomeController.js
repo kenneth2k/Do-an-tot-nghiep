@@ -1,7 +1,8 @@
 const Product = require('../models/Product');
 const User = require('../models/User');
 const Raiting = require('../models/Raiting');
-const { multipleMongooseToObject, singleMongooseToObject } = require('../../util/mongoose');
+const Category = require('../models/Category');
+const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../util/mongoose');
 const { randomToBetween } = require('../../helper/random');
 class HomeController {
     // [GET] /
@@ -78,7 +79,40 @@ class HomeController {
 
     // [GET] /search
     showSearch(req, res, next) {
-        res.render('home/search');
+        if (['lien-he'].includes(req.params.search)) {
+            return res.render('home/contact');
+        }
+        let maxProduct = 12;
+        if (['all'].includes(req.params.search)) {
+            Promise.all([
+                    Product.find({ name: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") } }).sort({
+                        price: -1
+                    }),
+                    Category.find({ slug: { $nin: ['', 'lien-he'] } })
+                ])
+                .then(([products, categories]) => {
+                    return res.render('home/search', {
+                        categories: multipleMongooseToObject(categories),
+                        totalProduct: products.length,
+                        products: multipleMongooseToObjectOnLimit(products, maxProduct, 0)
+                    });
+                })
+                .catch(next)
+        } else {
+            Promise.all([
+                    Product.find({ categori: req.params.search }).sort({
+                        price: -1
+                    }),
+                    Category.find({ slug: { $nin: ['', 'lien-he'] } })
+                ])
+                .then(([products, categories]) => {
+                    return res.render('home/search', {
+                        categories: multipleMongooseToObject(categories),
+                        totalProduct: products.length,
+                        products: multipleMongooseToObjectOnLimit(products, maxProduct, 0)
+                    });
+                })
+        }
     }
 
     // // [GET] /profile/:slug
