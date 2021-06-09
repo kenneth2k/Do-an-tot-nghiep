@@ -19,22 +19,30 @@ $(document).ready(function(c) {
         }
     }
     checkLogin();
+    $("#login-form input[name='password']").prop('maxlength', '16');
     $('#login-form').submit(function(e) {
         e.preventDefault();
 
-        var flag = false;
+        var count = 0;
         var passwordHelp = this.querySelector('#passwordHelp');
         var pass = this.querySelector('input[type="password"]').value;
+        var usernameHelp = this.querySelector('#usernameHelp');
+        var username = this.querySelector('input[name="email"]').value;
         var loginError = this.querySelector('.text-sm-center.text-danger');
 
         if (pass.length < 6 || pass.length > 16) {
             passwordHelp.textContent = "Nhập mật khẩu >= 6 và  <= 16 kí tự!";
-            flag = false;
+            count++;
         } else {
             passwordHelp.textContent = "";
-            flag = true;
         };
-        if (!flag) return;
+        if (!validateEmail(username)) {
+            usernameHelp.textContent = "Email không đúng định dạng";
+            count++;
+        } else {
+            usernameHelp.textContent = "";
+        };
+        if (count > 0) return;
 
         $.ajax({
             type: "POST",
@@ -61,11 +69,37 @@ $(document).ready(function(c) {
             }
         });
     });
+    // validate form register
+    (function($) {
+        $.fn.inputFilter = function(inputFilter) {
+            return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+                if (inputFilter(this.value)) {
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                }
+            });
+        };
+    }(jQuery));
+
+    function IsPhoneNumber(phone) {
+        const regex = /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/g;
+        const result = regex.test(phone);
+        return result ? true : false;
+    };
 
     function validateEmail(email) {
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());
     }
+    $("#register-form input[name='phone']").inputFilter(function(value) { return /^\d*$/.test(value); });
+    $("#register-form input[name='phone']").prop('maxlength', '10');
+    $("#register-form input[name='fullname']").prop('maxlength', '35');
+    $("#register-form input[name='password']").prop('maxlength', '16');
+    $("#register-form input[name='confirmPassword']").prop('maxlength', '16');
     $("#register-form").submit(function(e) {
         e.preventDefault();
         $(this).find("input").removeClass('is-invalid');
@@ -74,6 +108,7 @@ $(document).ready(function(c) {
         var count = 0;
         var name = $(this).find("input[name='fullname']");
         var email = $(this).find("input[name='email']");
+        var phone = $(this).find("input[name='phone']");
         var address = $(this).find("input[name='address']");
         var password = $(this).find("input[name='password']");
         var confirmPassword = $(this).find("input[name='confirmPassword']");
@@ -84,6 +119,10 @@ $(document).ready(function(c) {
         }
         if (!validateEmail(email.val())) {
             $(email).addClass('is-invalid');
+            count++;
+        }
+        if (!IsPhoneNumber(phone.val())) {
+            $(phone).addClass('is-invalid');
             count++;
         }
         if (address.val().length < 10) {
@@ -116,8 +155,14 @@ $(document).ready(function(c) {
                             ShowToastMessage(data.message, "success");
                         }, 1000);
                     } else {
-                        $(email).addClass('is-invalid');
-                        $(email).parent().find('.invalid-feedback').text(data.message);
+                        if (!data.userPhone) {
+                            $(phone).addClass('is-invalid');
+                            $(phone).parent().find('.invalid-feedback').text(data.messagePhone);
+                        }
+                        if (!data.userEmail) {
+                            $(email).addClass('is-invalid');
+                            $(email).parent().find('.invalid-feedback').text(data.messageEmail);
+                        }
                     }
                 }
             });
@@ -190,6 +235,7 @@ $(document).ready(function(c) {
                 url: '/api/sendNewPassword',
                 data: { email: email.val(), otp: otp.val() },
                 success: function(data) {
+                    $('#forgot-form')[0].reset();
                     $('#forgot-form').find('.text-sm-center.text-danger').text(data.message);
                 }
             });
@@ -374,7 +420,7 @@ $(document).ready(function() {
     });
     // payment success
     $("#payment-order").click(function() {
-        $("#payment-succes").modal('show');
+        // $("#payment-succes").modal('show');
     });
     $("#payment-succes").blur(function() {
         window.location.href = '/';

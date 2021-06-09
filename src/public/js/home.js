@@ -3,7 +3,7 @@ $(document).ready(function() {
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
         if (!user_token && window.location.pathname.indexOf("payment") != (-1)) {
             return window.location.href = "/";
-        } else {
+        } else if (user_token && window.location.pathname.indexOf("payment") != (-1)) {
             $.ajax({
                 type: "GET",
                 url: '/api/getProfile',
@@ -11,7 +11,9 @@ $(document).ready(function() {
                     "Authorization": user_token.token
                 },
                 success: function(data) {
-                    console.log("data", data);
+                    $(".user__info-content-name h6").text(data.fullname);
+                    $(".user__info-content-address p:first-child").text(data.address);
+                    $(".user__info-content-address p span").text(data.phone);
                 }
             });
         }

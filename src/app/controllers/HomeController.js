@@ -115,19 +115,19 @@ class HomeController {
         }
     }
 
-    // // [GET] /profile/:slug
-    // showProfile(req, res, next) {
+    // [GET] /profile/:slug
+    showProfile(req, res, next) {
 
-    //     User.findOne({
-    //             slug: req.params.slug
-    //         })
-    //         .then(account => {
-    //             res.render('home/profile', {
-    //                 account: singleMongooseToObject(account),
-    //             });
-    //         })
-    //         .catch(next)
-    // }
+        User.findOne({
+                slug: req.params.slug
+            })
+            .then(account => {
+                res.render('home/profile', {
+                    account: singleMongooseToObject(account),
+                });
+            })
+            .catch(next)
+    }
 
     show404(req, res, next) {
         res.render('home/notfound', { layout: false });
