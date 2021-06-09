@@ -166,12 +166,6 @@ $(document).ready(function(c) {
             }
         });
     })();
-    //nav bar clicked
-    $(".w3l-range ul li a").click(function(e) {
-        e.preventDefault();
-        $(".w3l-range ul li a").removeClass('active');
-        $(this).addClass('active');
-    });
     // form forgot
     $("#forgot-form").submit(function(e) {
         e.preventDefault();
@@ -376,7 +370,7 @@ $(document).ready(function() {
     $('.focus-input input').blur(function() {
         setTimeout(function() {
             $(".search-content").css("display", "none");
-        }, 100)
+        }, 500)
     });
     // payment success
     $("#payment-order").click(function() {

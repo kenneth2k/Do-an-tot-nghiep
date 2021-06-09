@@ -283,9 +283,9 @@ module.exports = {
         return xhtml;
     },
     viewMoreBtn: (products, totalProduct) => {
-        return ((totalProduct - products.length) <= 0)?'':`
-        <div class="view-more">
-            <button type="button" data-page="2" class="btn btn-primary">Xem thêm ${totalProduct - products.length} điện thoại <svg
+        return `
+        <div class="view-more" ${totalProduct - products.length < 1? 'style="display:none;"':''}>
+            <button type="button" data-page="2" class="btn btn-primary">Xem thêm <span>${(totalProduct - products.length < 1)? 0 : totalProduct - products.length}</span> điện thoại <svg
                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-arrow-down" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -294,5 +294,17 @@ module.exports = {
             </button>
         </div>
     `;
-    }
+    },
+    manufacturerView: (categories)=>{
+        let xhtml = ``;
+        for(let i=0; i<categories.length; i++){
+            xhtml += `
+                <li>
+                    <input id="${categories[i]._id}" value="${categories[i].slug}" type="checkbox" class="checked">
+                    <label for="${categories[i]._id}" class="cursor-pointer span">${categories[i].name}</label>
+                </li>
+            `;
+        }
+        return xhtml;
+    },
 }

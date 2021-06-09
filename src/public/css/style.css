@@ -878,7 +878,7 @@ h3.tittle-w3l span {
 .search-hotel input[type="search"] {
     background: #fff;
     border: none;
-    width: 78%;
+    width: 100%;
     outline: none;
     padding: 11px 10px 10px 10px;
     font-size: 13px;

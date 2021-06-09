@@ -1,4 +1,24 @@
 $(document).ready(function() {
+    (function() {
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if (!user_token && window.location.pathname.indexOf("payment") != (-1)) {
+            return window.location.href = "/";
+        } else {
+            $.ajax({
+                type: "GET",
+                url: '/api/getProfile',
+                headers: {
+                    "Authorization": user_token.token
+                },
+                success: function(data) {
+                    console.log("data", data);
+                }
+            });
+        }
+    })();
+});
+
+$(document).ready(function() {
     const carouselInner = document.querySelector('#banner-carousel-inner');
     const menu = document.querySelector('#nav-header-bottoms');
     if (carouselInner) {
@@ -85,58 +105,36 @@ $(document).ready(function(event) {
                 let xhtml = ``;
                 let myProduct = (product) => {
                         return `
-            <div class="col-lg-3 col-md-4 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
-                <div class="men-pro-item simpleCart_shelfItem">
-                    <div class="men-thumb-item text-center">
-                        <img src="/public/images/products/${product.colors[0].bigImg}" alt="*.jpg"
-                            width="100%">
-                        <div class="men-cart-pro">
-                            <div class="inner-men-cart-pro">
-                                <a href="/${product.categori}/${product.slug}"
-                                    class="link-product-add-cart">Xem
-                                    thông
-                                    tin</a>
+                    <div class="col-lg-3 col-md-4 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
+                        <div class="men-pro-item simpleCart_shelfItem">
+                            <div class="men-thumb-item text-center">
+                                <img src="/public/images/products/${product.colors[0].bigImg}" alt="*.jpg"
+                                    width="100%">
+                                <div class="men-cart-pro">
+                                    <div class="inner-men-cart-pro">
+                                        <a href="/${product.categori}/${product.slug}"
+                                            class="link-product-add-cart">Xem
+                                            thông
+                                            tin</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-info-product text-center border-top mt-4">
+                                <h4 class="pt-1">
+                                    <a href="/${product.categori}/${product.slug}">${product.name}</a>
+                                </h4>
+                                <div class="info-product-price my-2">
+                                    <span class="item_price">${(new Intl.NumberFormat().format((product.price - (product.price*(product.sale/100)))))} <sup>đ</sup></span>
+                                    ${(product.sale == 0)?``:`<del>${(new Intl.NumberFormat().format(product.price))}</del><sup>đ</sup>`}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="item-info-product text-center border-top mt-4">
-                        <h4 class="pt-1">
-                            <a href="/${product.categori}/${product.slug}">${product.name}</a>
-                        </h4>
-                        <div class="info-product-price my-2">
-                            <span class="item_price">${(new Intl.NumberFormat().format((product.price - (product.price*(product.sale/100)))))} <sup>đ</sup></span>
-                            ${(product.sale == 0)?``:`<del>${(new Intl.NumberFormat().format(product.price))}</del><sup>đ</sup>`}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            `;
+                    `;
         };
         products.map((product) => {
             xhtml += myProduct(product);
         });
         return xhtml;
     };
-    (function() {
-        $(".view-more").click(function() {
-            // mutiple search
-            let page = $(this).find("button").data('page');
-            let rangePrice = $("#range-between").find("a[class='active']");
-            let searchInput = $("#search-mutiple").find("input[name='search']");
-            let manufacturerChecked = $("#select-manufacturer").find("input[type=checkbox]:checked");
-            if (manufacturerChecked.length === 0 && rangePrice.length === 0 && searchInput.val() === '') {
-                var s = new URLSearchParams(window.location.search);
-                $.ajax({
-                    type: "GET",
-                    url: `/api/mutipleSearch?q=${s.get('q')?s.get('q'):''}&page=${page}`,
-                    success: function(data) {
-                        $("#viewed-products").append(loadProducts(data.products));
-                        if (data.productViewed === data.totalProduct) {
-                            $(".view-more").remove();
-                        }
-                    }
-                });
-            }
-        });
-    })();
 });
