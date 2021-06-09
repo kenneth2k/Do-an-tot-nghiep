@@ -203,34 +203,33 @@ class ApiUserController {
     //         res.send({message : false})
     //     }
     // }
-    // // [POST] /api/getProfile
-    // getProfile(req, res, next){
-    //     const token = req.header('Authorization').replace("Bearer ", "");
-    //     //const token = jwt.sign({_id: "nguyen_van_trong"}, "electroStore")
-    //     try{
-    //         const decoded = jwt.verify(token, "electroStore");
-    //         Account.findOne({slug: decoded._id, token: token})
-    //             .then(account => {
-    //                 res.send({
-    //                     fullname: account.fullname,
-    //                     gender: account.gender,
-    //                     phone: account.phone,
-    //                     address: account.address[0],
-    //                     dateOfBirth: account.dateOfBirth.getFullYear() + '-' + (account.dateOfBirth.getMonth() + 1) + '-' + account.dateOfBirth.getDate(),
-    //                 })
-    //             })
-    //             .catch(next)
-    //     }
-    //     catch(e){
-    //         res.send({message : false})
-    //     }
+    // [GET] /api/getProfile
+    getProfile(req, res, next) {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            //const token = jwt.sign({_id: "nguyen_van_trong"}, "electroStore")
+            try {
+                const decoded = jwt.verify(token, "electroStore");
+                Account.findOne({ slug: decoded._id, token: token })
+                    .then(account => {
+                        res.send({
+                            fullname: account.fullname,
+                            gender: account.gender,
+                            phone: account.phone,
+                            address: account.address[0],
+                            dateOfBirth: account.dateOfBirth.getFullYear() + '-' + (account.dateOfBirth.getMonth() + 1) + '-' + account.dateOfBirth.getDate(),
+                        })
+                    })
+                    .catch(next)
+            } catch (e) {
+                res.send({ message: false })
+            }
 
-    // }
-    // getAddress(req, res, next){
-    //     res.send({message: false})
-    // }
-    // setAddress(req, res, next){
-    //     res.send({message: false})
-    // }
+        }
+        // getAddress(req, res, next){
+        //     res.send({message: false})
+        // }
+        // setAddress(req, res, next){
+        //     res.send({message: false})
+        // }
 }
 module.exports = new ApiUserController;

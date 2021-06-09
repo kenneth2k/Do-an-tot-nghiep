@@ -5,14 +5,15 @@ const apiHomeController = require('../controllers/ApiHomeController');
 const apiController = require('../controllers/ApiHomeController');
 
 router.get('/menu', apiHomeController.menu);
+router.get('/searchName', apiHomeController.searchName);
 router.get('/mutipleSearch', apiHomeController.mutipleSearch);
 router.post('/login', ApiUserController.login);
 router.post('/register', ApiUserController.register);
 router.post('/checkEmail', ApiUserController.checkEmail);
 router.post('/sendNewPassword', ApiUserController.sendNewPassword);
+router.get('/getProfile', ApiUserController.getProfile);
 router.get('/search/:search', apiController.showSearch);
 // router.post('/checkLogin', ApiUserController.checkLogin);
-// router.post('/getProfile', ApiUserController.getProfile);
 // router.put('/getProfile/changePassword', ApiUserController.changePassword);
 
 

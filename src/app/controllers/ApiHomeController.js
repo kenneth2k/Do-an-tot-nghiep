@@ -17,15 +17,52 @@ class ApiHomeController {
             })
             .catch(next)
     };
-    // [GET] /mutipleSearch
-    mutipleSearch(req, res, next) {
+    // [GET] /searchName
+    searchName(req, res, next) {
         let maxProduct = 12;
-        let skipPage = (req.query.page - 1) * maxProduct;
+        let skipPage = ((req.query.page ? req.query.page : 1) - 1) * maxProduct;
         Product.find({ name: { $regex: new RegExp(req.query.q, "i") } }).sort({
                 price: -1
             })
             .then(products => {
                 return res.send({
+                    page: req.query.page,
+                    productViewed: skipPage + multipleMongooseToObjectOnLimit(products, maxProduct, skipPage).length,
+                    totalProduct: products.length,
+                    products: multipleMongooseToObjectOnLimit(products, maxProduct, skipPage)
+                })
+            })
+            .catch(next)
+    };
+    // [GET] /mutipleSearch
+    mutipleSearch(req, res, next) {
+        let maxProduct = 12;
+        let priceVND = 1000000;
+        let pageNumber = Number.parseInt(req.query.page) - 1;
+        let skipPage = pageNumber * maxProduct;
+        let searchSlug = JSON.parse(req.query.mf);
+        let price = JSON.parse(req.query.price);
+        let condition = {};
+        if (searchSlug.length > 0 && Object.keys(price).length > 0) {
+            condition.name = { $regex: new RegExp(req.query.name, "i") };
+            condition.categori = { $in: searchSlug };
+            condition.price = { $gte: price.min * priceVND, $lt: price.max * priceVND };
+        } else if (searchSlug.length == 0 && Object.keys(price).length > 0) {
+            condition.name = { $regex: new RegExp(req.query.name, "i") };
+            condition.price = { $gte: price.min * priceVND, $lt: price.max * priceVND };
+        } else if (searchSlug.length > 0 && Object.keys(price).length == 0) {
+            condition.name = { $regex: new RegExp(req.query.name, "i") };
+            condition.categori = { $in: searchSlug };
+        } else {
+            condition.name = { $regex: new RegExp(req.query.name, "i") };
+        }
+        Product.find(condition)
+            .sort({
+                price: -1
+            })
+            .then(products => {
+                return res.send({
+                    page: pageNumber + 2,
                     productViewed: skipPage + multipleMongooseToObjectOnLimit(products, maxProduct, skipPage).length,
                     totalProduct: products.length,
                     products: multipleMongooseToObjectOnLimit(products, maxProduct, skipPage)

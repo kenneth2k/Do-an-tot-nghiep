@@ -5,7 +5,6 @@
             <h3 class="agileits-sear-head mb-3">Tìm kiếm</h3>
             <form action="#" method="get" id="search-mutiple">
                 <input type="search" placeholder="Tên sản phẩm..." name="search">
-                <input type="submit" value=" ">
             </form>
         </div>
         <!-- price -->
@@ -39,26 +38,8 @@
         <div class="left-side border-bottom py-2">
             <h3 class="agileits-sear-head mb-3">Chọn hãng</h3>
             <ul id="select-manufacturer">
-                <li>
-                    <input id="123" value="123" type="checkbox" class="checked">
-                    <label for="123" class="cursor-pointer span">iPhone</label>
-                </li>
-                <li>
-                    <input id="121" value="121" type="checkbox" class="checked">
-                    <label for="121" class="cursor-pointer span">Samsung</label>
-                </li>
-                <li>
-                    <input id="111" value="111" type="checkbox" class="checked">
-                    <label for="111" class="cursor-pointer span">Oppo</label>
-                </li>
-                <li>
-                    <input id="112" value="112" type="checkbox" class="checked">
-                    <label for="112" class="cursor-pointer span">Xiaomi</label>
-                </li>
-                <li>
-                    <input id="222" value="222" type="checkbox" class="checked">
-                    <label for="222" class="cursor-pointer span">Huawei</label>
-                </li>
+                {{{manufacturerView categories}}}
+                
             </ul>
         </div>
         <!-- //discounts -->
