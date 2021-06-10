@@ -124,9 +124,104 @@ function sendNewPasswordMail(email, password) {
             console.error(error)
         });
 }
+
+function sendOrderSuccessMail(order, user, products) {
+    let temp = ``;
+    products.forEach((product, index) => {
+        temp += `
+            <tr>
+                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${index + 1}</td>
+                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${product.name}</td>
+                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${product.color}</td>
+                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${product.quantity}</td>
+                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${new Intl.NumberFormat().format(product.price)}</td>
+            </tr>
+        `;
+    })
+    let xhtml = `
+        <div style="padding: 10px 40px 40px;border-radius: 8px; margin: auto; width: 800px;box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);">
+            <h1 style="text-align: center;">Ephone store</h1>
+            <div style="border-bottom: 2px solid #f0f0f0;">
+                <h3 style="margin:10px;">Xin chào ${user.fullname} ,</h3>
+                <p style="margin:10px;text-align: justify;">
+                    Ephone store đã nhận được yêu cầu đặt hàng của bạn và đang xử lý nhé. Bạn sẽ nhận được thông báo tiếp theo khi đơn hàng đã sẵn sàng được giao
+                </p>
+                <p style="margin:10px;text-align: justify;">*<strong>Lưu ý nhỏ cho bạn</strong>: Bạn chỉ nên nhận hàng khi trạng thái đơn hàng là <strong>“Đang giao hàng”</strong> và nhớ kiểm tra Mã đơn hàng, Thông tin người gửi và Mã vận đơn để nhận đúng kiện hàng nhé.</p>
+            </div>
+            <div style="border-bottom: 2px solid #f0f0f0;">
+                <h3 style="position: relative;">
+                    <span>
+                        <img style="position: absolute; top: -3px;" width="25" height="25" src="https://simpleicon.com/wp-content/uploads/map-marker-2.png" alt="">
+                    </span>
+                    <span style="padding-left: 30px;">Đơn hàng được giao đến</span>
+                </h3>
+                <div style="padding-bottom: 10px;">
+                    <div style="padding: 5px 0; display: flex;">
+                        <div style="width: 150px;font-size: 16px;font-weight: bold;">Tên:</div>
+                        <div style="text-align: justify;">${user.fullname}</div>
+                    </div>
+                    <div style="padding: 5px 0; display: flex;">
+                        <div style="width: 150px;font-size: 16px;font-weight: bold;">Địa chỉ nhà:</div>
+                        <div style="text-align: justify;">${user.address}</div>
+                    </div>
+                    <div style="padding: 5px 0; display: flex;">
+                        <div style="width: 150px;font-size: 16px;font-weight: bold;">Điện thoại:</div>
+                        <div style="text-align: justify;">${user.phone}</div>
+                    </div>
+                    <div style="padding: 5px 0; display: flex;">
+                        <div style="width: 150px;font-size: 16px;font-weight: bold;">Email:</div>
+                        <div style="text-align: justify;"><a href="mailto:${user.email}" target="_blank">${user.email}</a></div>
+                    </div>
+                </div>
+            </div>
+            <div style="border-bottom: 2px solid #f0f0f0;">
+                <h3 style="margin: 10px 0px 0px 0px;">Mã đơn hàng#${order._id}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="height: 40px; width: 50px;">STT</th>
+                            <th style="height: 40px; width: 300px;">Tên</th>
+                            <th style="height: 40px; width: 150px;">Màu</th>
+                            <th style="height: 40px; width: 100px;">Số lượng</th>
+                            <th style="height: 40px; width: 200px;">Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${temp}
+                    </tbody>
+                </table>
+                <div style="display: flex;line-height: 40px;padding-right: 10px;color: orange;">
+                    <div>Thành tiền:</div>
+                    <div style="padding: 0 5px;">${new Intl.NumberFormat().format(order.sumPrice)}</div>
+                    <div>VNĐ</div>
+                </div>
+            </div>
+        </div>
+    `;
+    const msg = {
+        to: user.email,
+        from: {
+            name: 'EPHONE STORE',
+            email: `${process.env.SENDGRID_EMAIL}`
+        },
+        subject: 'Cám ơn bạn đã đặt hàng tại ephone store!',
+        text: 'Cám ơn bạn đã đặt hàng tại ephone store!',
+        html: xhtml
+    };
+    //ES6
+    return sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent order.');
+        })
+        .catch((error) => {
+            console.error(error)
+        });
+}
 module.exports = {
     sendCodeMail,
     sendWelcomeMail,
     sendNewPasswordMail,
-    sendActiveMail
+    sendActiveMail,
+    sendOrderSuccessMail
 }

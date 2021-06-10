@@ -1,7 +1,10 @@
+const jwt = require('jsonwebtoken');
 const Product = require('../models/Product');
 const User = require('../models/User');
 const Raiting = require('../models/Raiting');
 const Category = require('../models/Category');
+const Order = require('../models/Order');
+const { sendOrderSuccessMail } = require('../../util/email/email');
 const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../util/mongoose');
 const { randomToBetween } = require('../../helper/random');
 class HomeController {
@@ -72,11 +75,6 @@ class HomeController {
         res.render('home/payment');
     }
 
-    // [GET] /payment/success
-    showPaymentSuccess(req, res, next) {
-        res.render('home/paymentsuccess');
-    }
-
     // [GET] /search
     showSearch(req, res, next) {
         if (['lien-he'].includes(req.params.search)) {
@@ -127,8 +125,75 @@ class HomeController {
                 });
             })
             .catch(next)
-    }
+    };
+    // [POST] /payment/success
+    showPaymentSuccess(req, res, next) {
+        const token = req.header('Authorization').replace("Bearer ", "");
+        try {
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            let searchSlug = [];
+            req.body.products.forEach(value => {
+                searchSlug.push(value.slug);
+            });
+            Product.find({ slug: { $in: searchSlug } })
+                .then(products => {
+                    let sumQuantity = 0;
+                    let productTemp = [];
+                    let totalPrice = products.reduce((accumulator, currentValue, currentIndex) => {
+                        let idxProductsOrder = null;
+                        let idxDiscount = currentValue.colors.findIndex((item) => {
+                            idxProductsOrder = req.body.products.findIndex((item) => {
+                                return currentValue.slug === item.slug;
+                            });
+                            return item._id == req.body.products[idxProductsOrder].colorId;
+                        });
 
+                        let discount = (currentValue.colors[idxDiscount].quantity / 100);
+                        sumQuantity += Number.parseInt(req.body.products[idxProductsOrder].quantity);
+
+                        let price = ((currentValue.price - (currentValue.price * discount))) * Number.parseInt(req.body.products[idxProductsOrder].quantity);
+                        req.body.products[idxProductsOrder].price = (currentValue.price - (currentValue.price * discount));
+                        req.body.products[idxProductsOrder].colorName = currentValue.colors[idxDiscount].name;
+                        productTemp.push({
+                            name: currentValue.name,
+                            color: currentValue.colors[idxDiscount].name,
+                            quantity: Number.parseInt(req.body.products[idxProductsOrder].quantity),
+                            price: (currentValue.price - (currentValue.price * discount))
+                        });
+
+                        return accumulator + price;
+                    }, 0);
+                    if (req.body.products.length != products.length) {
+                        throw new Error("Find products failed");
+                    }
+
+                    let order = new Order({
+                        slugUser: decoded._id,
+                        sumQuantity: sumQuantity,
+                        sumPrice: totalPrice,
+                        details: req.body.products,
+                    });
+                    Promise.all([
+                            User.findOne({ slug: decoded._id }),
+                            order.save()
+                        ])
+                        .then(([user, order]) => {
+                            sendOrderSuccessMail(order, user, productTemp);
+                            return res.send({
+                                status: 200,
+                                _id: order._id
+                            });
+                        })
+                        .catch(next)
+                })
+                .catch(next)
+        } catch (e) {
+            return res.send({
+                status: 404,
+                error: e.message
+            });
+        }
+    }
     show404(req, res, next) {
         res.render('home/notfound', { layout: false });
     }

@@ -11,7 +11,7 @@ class ApiUserController {
     // checkLogin(req, res, next){
     //     const token = req.header('Authorization').replace("Bearer ", "");
     //     try{
-    //         const decoded = jwt.verify(token, "electroStore");
+    //         
     //         Account.findOne({slug: decoded._id, token: token})
     //             .then(account => {
     //                 if(account != null){
@@ -100,7 +100,7 @@ class ApiUserController {
                     const user = new User(req.body);
                     user.save()
                         .then((user) => {
-                            user.token = jwt.sign({ _id: user.slug }, "electroStore");
+                            user.token = jwt.sign({ _id: user.slug }, process.env.EPHONE_STORE_PRIMARY_KEY);
                             user.activeToken = Date.now() + '.' + randomCharacter(16);
                             return user.save();
                         })
@@ -123,7 +123,7 @@ class ApiUserController {
             .then(user => {
                 if (user !== null) {
                     user.otp = randomToBetween(process.env.RANDOM_MIN, process.env.RANDOM_MAX);
-                    user.token = jwt.sign({ _id: user.slug }, "electroStore");
+                    user.token = jwt.sign({ _id: user.slug }, process.env.EPHONE_STORE_PRIMARY_KEY);
                     User.updateOne({ _id: user._id }, user)
                         .then(() => {
                             try {
@@ -164,7 +164,7 @@ class ApiUserController {
                         let newPassword = randomCharacter(10);
                         user.password = bcrypt.hashSync(newPassword, 8);
                         user.otp = null;
-                        user.token = jwt.sign({ _id: user.slug }, "electroStore");
+                        user.token = jwt.sign({ _id: user.slug }, process.env.EPHONE_STORE_PRIMARY_KEY);
                         User.updateOne({ _id: user._id }, user)
                             .then(() => {
                                 try {
@@ -222,7 +222,7 @@ class ApiUserController {
             const token = req.header('Authorization').replace("Bearer ", "");
             //const token = jwt.sign({_id: "nguyen_van_trong"}, "electroStore")
             try {
-                const decoded = jwt.verify(token, "electroStore");
+                const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
                 User.findOne({ slug: decoded._id, token: token })
                     .then(account => {
                         return res.send({

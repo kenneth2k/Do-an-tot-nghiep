@@ -1,9 +1,15 @@
 $(document).ready(function() {
     (function() {
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        let listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
         if (!user_token && window.location.pathname.indexOf("payment") != (-1)) {
             return window.location.href = "/";
         } else if (user_token && window.location.pathname.indexOf("payment") != (-1)) {
+            if (listProd === null) {
+                return window.location.href = "/";
+            } else if (listProd.value.items.length < 1) {
+                return window.location.href = "/";
+            }
             $.ajax({
                 type: "GET",
                 url: '/api/getProfile',

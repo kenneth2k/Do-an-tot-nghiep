@@ -420,10 +420,42 @@ $(document).ready(function() {
     });
     // payment success
     $("#payment-order").click(function() {
-        // $("#payment-succes").modal('show');
+        let listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
+        if (!listProd) return;
+        let cartItem = listProd.value.items;
+        let products = [];
+        cartItem.forEach((value, index) => {
+            let obj = {
+                slug: value.add,
+                colorId: value.addColor,
+                quantity: value.quantity
+            };
+            products.push(obj);
+        });
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        $.ajax({
+            type: "POST",
+            url: '/payment/success',
+            headers: {
+                "Authorization": user_token.token
+            },
+            data: {
+                products: products
+            },
+            success: function(data) {
+                console.log(data);
+                if (data.status === 200) {
+                    window.localStorage.removeItem('PPminicarts');
+                    $("#payment-succes").find('button[name="id"]').text(data._id);
+                    $("#payment-succes").modal('show');
+                }
+            }
+        });
     });
-    $("#payment-succes").blur(function() {
-        window.location.href = '/';
+    $("#payment-succes").blur(function(e) {
+        setTimeout(function() {
+            window.location.href = '/';
+        }, 1000)
     });
 });
 $(document).ready(function(c) {
