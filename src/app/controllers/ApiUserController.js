@@ -11,7 +11,7 @@ class ApiUserController {
     // checkLogin(req, res, next){
     //     const token = req.header('Authorization').replace("Bearer ", "");
     //     try{
-    //         const decoded = jwt.verify(token, "electroStore");
+    //         
     //         Account.findOne({slug: decoded._id, token: token})
     //             .then(account => {
     //                 if(account != null){
@@ -76,19 +76,31 @@ class ApiUserController {
     // [POST] /api/register
     register(req, res, next) {
         const formData = req.body;
-        User.findOneWithDeleted({ email: req.body.email })
-            .then(user => {
-                if (user !== null) {
-                    return res.send({
-                        register: false,
-                        message: "Email này đã đăng ký!"
-                    })
+        Promise.all([
+                User.findOneWithDeleted({ email: req.body.email }),
+                User.findOneWithDeleted({ phone: req.body.phone }),
+            ])
+            .then(([userEmail, userPhone]) => {
+                let validate = {};
+                if (userEmail !== null) {
+                    validate.userEmail = false;
+                    validate.messageEmail = "Email này đã đăng ký!"
+                }
+                if (userPhone !== null) {
+                    validate.userPhone = false;
+                    validate.messagePhone = "Số điện thoại này đã đăng ký!"
+                }
+                if (Object.keys(validate).length > 0) {
+                    validate.userEmail = (validate.userEmail === false) ? validate.userEmail : true;
+                    validate.userPhone = (validate.userPhone === false) ? false : true;
+                    validate.register = false;
+                    return res.send(validate);
                 } else {
                     formData.password = bcrypt.hashSync(req.body.password, 8);
                     const user = new User(req.body);
                     user.save()
                         .then((user) => {
-                            user.token = jwt.sign({ _id: user.slug }, "electroStore");
+                            user.token = jwt.sign({ _id: user.slug }, process.env.EPHONE_STORE_PRIMARY_KEY);
                             user.activeToken = Date.now() + '.' + randomCharacter(16);
                             return user.save();
                         })
@@ -103,7 +115,7 @@ class ApiUserController {
                         .catch(next)
                 }
             })
-            .catch(next);
+            .catch(next)
     };
     // [POST] /api/checkEmail
     checkEmail(req, res, next) {
@@ -111,6 +123,7 @@ class ApiUserController {
             .then(user => {
                 if (user !== null) {
                     user.otp = randomToBetween(process.env.RANDOM_MIN, process.env.RANDOM_MAX);
+                    user.token = jwt.sign({ _id: user.slug }, process.env.EPHONE_STORE_PRIMARY_KEY);
                     User.updateOne({ _id: user._id }, user)
                         .then(() => {
                             try {
@@ -151,6 +164,7 @@ class ApiUserController {
                         let newPassword = randomCharacter(10);
                         user.password = bcrypt.hashSync(newPassword, 8);
                         user.otp = null;
+                        user.token = jwt.sign({ _id: user.slug }, process.env.EPHONE_STORE_PRIMARY_KEY);
                         User.updateOne({ _id: user._id }, user)
                             .then(() => {
                                 try {
@@ -208,16 +222,15 @@ class ApiUserController {
             const token = req.header('Authorization').replace("Bearer ", "");
             //const token = jwt.sign({_id: "nguyen_van_trong"}, "electroStore")
             try {
-                const decoded = jwt.verify(token, "electroStore");
-                Account.findOne({ slug: decoded._id, token: token })
+                const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+                User.findOne({ slug: decoded._id, token: token })
                     .then(account => {
-                        res.send({
+                        return res.send({
                             fullname: account.fullname,
-                            gender: account.gender,
-                            phone: account.phone,
-                            address: account.address[0],
-                            dateOfBirth: account.dateOfBirth.getFullYear() + '-' + (account.dateOfBirth.getMonth() + 1) + '-' + account.dateOfBirth.getDate(),
-                        })
+                            address: account.address,
+                            email: account.email,
+                            phone: account.phone
+                        });
                     })
                     .catch(next)
             } catch (e) {

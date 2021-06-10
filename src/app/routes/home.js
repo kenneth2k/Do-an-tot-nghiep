@@ -4,9 +4,9 @@ const homeController = require('../controllers/HomeController');
 const userController = require('../controllers/UserController');
 
 // router on two params
-router.get('/payment/success', homeController.showPaymentSuccess);
+router.post('/payment/success', homeController.showPaymentSuccess);
 router.get('/active/:key', userController.activeUser);
-// router.get('/profile/:slug', homeController.showProfile);
+router.get('/profile/:slug', homeController.showProfile);
 router.get('/:categori/:slug', homeController.show);
 // router on one params
 router.get('/cart', homeController.showCart);
