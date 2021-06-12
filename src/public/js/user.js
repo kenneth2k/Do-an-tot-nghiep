@@ -443,7 +443,6 @@ $(document).ready(function() {
                 products: products
             },
             success: function(data) {
-                console.log(data);
                 if (data.status === 200) {
                     window.localStorage.removeItem('PPminicarts');
                     $("#payment-succes").find('button[name="id"]').text(data._id);

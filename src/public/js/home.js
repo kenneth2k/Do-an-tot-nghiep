@@ -17,9 +17,10 @@ $(document).ready(function() {
                     "Authorization": user_token.token
                 },
                 success: function(data) {
+                    console.log("Profile", data);
                     $(".user__info-content-name h6").text(data.fullname);
-                    $(".user__info-content-address p:first-child").text(data.address);
-                    $(".user__info-content-address p span").text(data.phone);
+                    $(".user__info-content-address p:first-child").text(data.addresses.address);
+                    $(".user__info-content-address p span").text(data.addresses.phone);
                 }
             });
         }

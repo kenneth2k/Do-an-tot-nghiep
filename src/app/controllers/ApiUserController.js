@@ -75,7 +75,6 @@ class ApiUserController {
     };
     // [POST] /api/register
     register(req, res, next) {
-        const formData = req.body;
         Promise.all([
                 User.findOneWithDeleted({ email: req.body.email }),
                 User.findOneWithDeleted({ phone: req.body.phone }),
@@ -96,8 +95,20 @@ class ApiUserController {
                     validate.register = false;
                     return res.send(validate);
                 } else {
-                    formData.password = bcrypt.hashSync(req.body.password, 8);
-                    const user = new User(req.body);
+                    req.body.password = bcrypt.hashSync(req.body.password, 8);
+                    let tempAddress = [];
+                    tempAddress.push({
+                        address: req.body.address,
+                        phone: req.body.phone,
+                        active: true
+                    });
+                    const user = new User({
+                        fullname: req.body.fullname,
+                        email: req.body.email,
+                        phone: req.body.phone,
+                        addresses: tempAddress,
+                        password: req.body.password
+                    });
                     user.save()
                         .then((user) => {
                             user.token = jwt.sign({ _id: user.slug }, process.env.EPHONE_STORE_PRIMARY_KEY);
@@ -225,11 +236,12 @@ class ApiUserController {
                 const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
                 User.findOne({ slug: decoded._id, token: token })
                     .then(account => {
+                        let idx = account.addresses.findIndex((item) => {
+                            return item.active === true;
+                        });
                         return res.send({
                             fullname: account.fullname,
-                            address: account.address,
-                            email: account.email,
-                            phone: account.phone
+                            addresses: account.addresses[idx]
                         });
                     })
                     .catch(next)

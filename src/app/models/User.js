@@ -12,7 +12,12 @@ const User = new Schema({
     email: { type: String, unique: true },
     gender: { type: String },
     dateOfBirth: { type: Date },
-    address: { type: String },
+    addresses: [{
+        _id: { type: String, default: Date.now() },
+        address: { type: String, required: true },
+        phone: { type: String, required: true },
+        active: { type: Boolean, default: false }
+    }, ],
     otp: { type: String, default: null },
     decentralization: { type: String, default: 1 },
     active: { type: Boolean, default: false },
