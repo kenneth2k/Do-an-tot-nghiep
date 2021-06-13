@@ -2,23 +2,23 @@ $(document).ready(function(c) {
     function checkLogin() {
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
         if (user_token) {
-            return;
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: '/api/checkLogin',
                 headers: {
                     'Authorization': user_token.token,
                 },
                 success: function(data) {
-                    if (!data.message) {
+                    if (data.resetLogin) {
                         window.localStorage.removeItem('user_token');
                         getToken();
+                        window.location.reload();
                     }
                 }
             });
         }
     }
-    checkLogin();
+    // checkLogin();
     $("#login-form input[name='password']").prop('maxlength', '16');
     $('#login-form').submit(function(e) {
         e.preventDefault();
@@ -68,6 +68,54 @@ $(document).ready(function(c) {
                 }
             }
         });
+    });
+    $("#form-change-profile").submit(function(e) {
+        e.preventDefault();
+        let name = $(this).find('input[name="fullName"]');
+        let phone = $(this).find('input[name="phone"]');
+        let email = $(this).find('input[name="email"]');
+        let gender = $(this).find('input[name="gender"]:checked');
+        let dateOfBirth = $(this).find('input[name="dateOfBirth"]');
+        let count = 0;
+        if (name.val() < 4) {
+            $(name).closest('.form-gp').find('small').text('Tên ít nhất 3 kí tự');
+            count++;
+        }
+        if (!IsPhoneNumber(phone.val())) {
+            count++;
+            $(phone).closest('.form-gp').find('small').text('Số điện thoại không đúng định dạng');
+        }
+        if (gender.val() === undefined || gender.val() == '' || gender.val() == null) {
+            count++;
+            $(this).find('input[name="gender"]').closest('.form-gp').find('small').text('Vui lòng chọn giới tính');
+        }
+        if (dateOfBirth.val() == null || dateOfBirth.val() == '') {
+            count++;
+            $(dateOfBirth).closest('.form-gp').find('small').text('Tên ít nhất 3 kí tự');
+        }
+
+        if (count == 0) {
+            $(this).find('.form-gp').closest('.form-gp').find('small').text('');
+            var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+            if (user_token) {
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/updateProfile',
+                    headers: {
+                        'Authorization': user_token.token,
+                    },
+                    data: $(this).serialize(),
+                    success: function(data) {
+                        console.log('data', data)
+                        if (data.updated) {
+                            ShowToastMessage(data.message, "success");
+                        } else {
+                            ShowToastMessage(data.message, "error");
+                        }
+                    }
+                });
+            }
+        }
     });
     // validate form register
     (function($) {
@@ -231,7 +279,7 @@ $(document).ready(function(c) {
         }
         if (count == 0) {
             $.ajax({
-                type: "POST",
+                type: "PUT",
                 url: '/api/sendNewPassword',
                 data: { email: email.val(), otp: otp.val() },
                 success: function(data) {
@@ -338,9 +386,23 @@ $(document).ready(function() {
         };
     });
 
-    const formChangePass = $("#form-change-password");
-    formChangePass.submit(function(e) {
+    $("#form-change-password").submit(function(e) {
         e.preventDefault();
+        let count = 0;
+        if ($(this).find("input[name='oldPassword']").val() == "") {
+            ShowToastMessage("Vui lòng nhập mật khẩu cũ!", "error");
+            count++;
+        } else if ($(this).find("input[name='passwordNew']").val() == "") {
+            ShowToastMessage("Vui lòng nhập mật khẩu mới!", "error");
+            count++;
+        } else if ($(this).find("input[name='passwordConfirm']").val() == "") {
+            ShowToastMessage("Vui lòng nhập lại mật khẩu mới!", "error");
+            count++;
+        } else if ($(this).find("input[name='passwordConfirm']").val() != $(this).find("input[name='passwordNew']").val()) {
+            ShowToastMessage("Nhập lại mật khẩu không đúng!", "error");
+            count++;
+        }
+        if (count > 0) return;
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
         $.ajax({
             type: "PUT",
@@ -350,12 +412,13 @@ $(document).ready(function() {
             },
             data: $(this).serialize(),
             success: function(data) {
-                if (data.message) {
-                    alert('Cập nhật mật khẩu thành công, vui lòng đăng nhập lại!');
+                console.log('data', data)
+                if (data.changePassword) {
+                    ShowToastMessage(data.message, "success");
                     window.localStorage.removeItem('user_token');
-                    window.location.href = "/";
+                    $("#form-change-password")[0].reset();
                 } else {
-                    alert('Cập nhật mật khẩu thất bại!');
+                    ShowToastMessage(data.message, "error");
                 }
             }
         });
@@ -458,26 +521,6 @@ $(document).ready(function() {
     });
 });
 $(document).ready(function(c) {
-    getUserPayment();
-
-    function getUserPayment() {
-        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
-        // if (!user_token && window.location.pathname.indexOf("payment") != (-1)) {
-        //     window.location.href = "/";
-        // }
-        if (!user_token) return;
-        return;
-        $.ajax({
-            type: "POST",
-            url: '/api/getProfile',
-            headers: {
-                "Authorization": user_token.token
-            },
-            success: function(data) {
-                // console.log(data);
-            }
-        });
-    };
     $(".checkout-right-basket a").click(function(e) {
         var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
         if (!user_token) {

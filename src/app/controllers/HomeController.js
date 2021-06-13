@@ -128,8 +128,8 @@ class HomeController {
     };
     // [POST] /payment/success
     showPaymentSuccess(req, res, next) {
-        const token = req.header('Authorization').replace("Bearer ", "");
         try {
+            const token = req.header('Authorization').replace("Bearer ", "");
             const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
             let searchSlug = [];
             req.body.products.forEach(value => {

@@ -17,7 +17,7 @@ function sendCodeMail(email, code) {
     sgMail
         .send(msg)
         .then(() => {
-            console.log('Email sent code.')
+            console.log('Email sent code to: ' + email);
         })
         .catch((error) => {
             console.error(error)
@@ -74,7 +74,7 @@ function sendActiveMail(email, activeToken) {
     return sgMail
         .send(msg)
         .then(() => {
-            console.log('Email sent active account.');
+            console.log('Email sent active account to: ' + email);
         })
         .catch((error) => {
             console.error(error)
@@ -96,7 +96,7 @@ function sendWelcomeMail(email, name) {
     return sgMail
         .send(msg)
         .then(() => {
-            console.log('Email sent welcome.');
+            console.log('Email sent welcome to: ' + email);
         })
         .catch((error) => {
             console.error(error)
@@ -118,7 +118,7 @@ function sendNewPasswordMail(email, password) {
     return sgMail
         .send(msg)
         .then(() => {
-            console.log('Email sent new password.');
+            console.log('Email sent new password to: ' + email);
         })
         .catch((error) => {
             console.error(error)
@@ -212,7 +212,7 @@ function sendOrderSuccessMail(order, user, products) {
     return sgMail
         .send(msg)
         .then(() => {
-            console.log('Email sent order.');
+            console.log('Email sent order to: ' + user.email);
         })
         .catch((error) => {
             console.error(error)

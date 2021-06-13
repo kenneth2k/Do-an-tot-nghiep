@@ -50,29 +50,44 @@
             <div class="tab-content">
                 <div class="tab-pane active">
                     <h2>Thông tin tài khoản</h2>
-                    <form>
+                    <form action="#" method="get" id="form-change-profile">
                         <div class="form-gp">
-                            <label for="fulName" class="input-label">Họ và tên</label>
-                            <input type="text" class="form-control" id="fulName" placeholder="Nhập họ tên..."
-                                value="{{account.fullname}}">
+                            <div class="form-element">
+                                <label class="input-label input-label-center">Họ và tên</label>
+                                <input type="text" class="form-control" name="fullName" placeholder="Nhập họ tên..."
+                                    value="{{account.fullname}}">
+                            </div>
+                            <small class="form-text text-danger"></small>
                         </div>
                         <div class="form-gp">
-                            <label for="phoneNumber" class="input-label">Số điện thoại</label>
-                            <input type="text" class="form-control" id="phoneNumber" placeholder="Nhập số điện thoại..."
-                                value="{{account.phone}}">
+                            <div class="form-element">
+                                <label for="phoneNumber" class="input-label input-label-center">Số điện thoại</label>
+                                <input type="text" class="form-control" name="phone" placeholder="Nhập số điện thoại..."
+                                    value="{{account.phone}}">
+                            </div>
+                            <small class="form-text text-danger"></small>
                         </div>
                         <div class="form-gp">
-                            <label for="email" class="input-label">Email</label>
-                            <input type="text" class="form-control" id="email" placeholder="Nhập email..."
-                                value="{{account.email}}" readonly>
+                            <div class="form-element">
+                                <label for="email" class="input-label input-label-center">Email</label>
+                                <input type="text" class="form-control"
+                                    name="email" value="{{account.email}}" readonly>
+                            </div>
+                            <small class="form-text text-danger"></small>
                         </div>
                         <div class="form-gp">
-                            <label class="input-label">Giới tính</label>
-                            {{{genderChecked account.gender}}}
+                            <div class="form-element">
+                                <label class="input-label line-height-26">Giới tính</label>
+                                    {{{genderChecked account.gender}}}
+                            </div>
+                            <small class="form-text text-danger"></small>
                         </div>
                         <div class="form-gp">
-                            <label for="date" class="input-label">Ngày sinh</label>
-                            <input type="date" class="form-control" id="date">
+                            <div class="form-element">
+                                <label for="date" class="input-label line-height-26">Ngày sinh</label>
+                                <input name="dateOfBirth" type="date" value="{{dateToString account.dateOfBirth}}">
+                            </div>
+                            <small class="form-text text-danger"></small>
                         </div>
                         <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </form>
@@ -109,7 +124,7 @@
                 <div class="tab-pane">
                     <h2>Sổ địa chỉ</h2>
                     <div class="inner">
-                        {{#each account.address}}
+                        {{#each account.addresses}}
                         <div class="item">
                             <div class="info">
                                 <div class="name">Nguyễn Văn Trọng
@@ -128,18 +143,18 @@
                                 </div>
                                 <div class="address">
                                     <span>Địa chỉ: </span>
-                                    {{this.filladdress}}
+                                    {{this.address}}
                                 </div>
                                 <div class="phone">
                                     <span>Điện thoại: </span>
                                     {{this.phone}}
                                 </div>
                             </div>
-                            <div class="action">
-                                <a class="edit" href="#">Mặc định</a>
+                            <div id="action-address">
                                 {{#if this.active}}
                                 {{else}}
-                                <button class="detele-address" data-id="{{this._id}}">Xóa</button>
+                                <a class="default" href="#" data-id="{{this._id}}">Mặc định</a>
+                                <a class="detele" href="#" data-id="{{this._id}}">Xóa</a>
                                 {{/if}}
                             </div>
                         </div>
@@ -170,18 +185,19 @@
                     <form action="#" method="post" id="form-change-password">
                         <div class="form-gp">
                             <label class="input-label">Mật khẩu cũ</label>
-                            <input type="password" name="oldPassword" class="form-control" id="oldPassword"
+                            <input type="password" name="oldPassword" class="form-control" autocomplete="on"
                                 placeholder="Nhập mật khẩu cũ">
                         </div>
                         <div class="form-gp">
                             <label class="input-label">Mật khẩu mới</label>
-                            <input type="password" name="passwordNew" class="form-control" id="passwordNew"
-                                placeholder="Mật khẩu từ 6 đến 32 ký tự">
+                            <input type="password" name="passwordNew" class="form-control" autocomplete="on"
+                                placeholder="Mật khẩu mới từ 6 đến 32 ký tự">
                         </div>
                         <div class="form-gp">
                             <label class="input-label">Nhập lại</label>
-                            <input type="password" name="passwordConfirm" class="form-control" id="passwordConfirm"
+                            <input type="password" name="passwordConfirm" class="form-control" autocomplete="on"
                                 placeholder="Nhập lại mật khẩu mới">
+                            <div class="invalid-feedback">Nhập lại mật khẩu mới</div>
                         </div>
                         <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </form>

@@ -11,14 +11,21 @@ class UserController {
                 activeToken: req.params.key
             })
             .then(user => {
-                if (user) {
-                    user.active = true;
-                    user.activeToken = null;
-                    var temp = new User(user);
-                    temp.save();
-                    return res.render('home/active', { layout: false });
+                try {
+                    if (user != null) {
+                        user.active = true;
+                        user.activeToken = null;
+                        User.updateOne({ slug: user.slug }, user, function(err, res) {
+                            if (err) {
+                                throw new Error(err);
+                            }
+                        });
+                        return res.render('home/active', { layout: false });
+                    }
+                    throw new Error("Active user not found");
+                } catch (err) {
+                    return res.render('home/notfound', { layout: false });
                 }
-                return res.render('home/notfound', { layout: false });
             })
             .catch(next)
     };

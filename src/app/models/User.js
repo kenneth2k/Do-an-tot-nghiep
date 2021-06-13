@@ -10,8 +10,8 @@ const User = new Schema({
     slug: { type: String, slug: 'fullname', unique: true },
     phone: { type: String, unique: true },
     email: { type: String, unique: true },
-    gender: { type: String },
-    dateOfBirth: { type: Date },
+    gender: { type: String, default: null },
+    dateOfBirth: { type: Date, default: null },
     addresses: [{
         _id: { type: String, default: Date.now() },
         address: { type: String, required: true },
