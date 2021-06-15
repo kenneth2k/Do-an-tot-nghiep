@@ -7,26 +7,24 @@ const { multipleMongooseToObject, singleMongooseToObject } = require('../../util
 const { randomToBetween, randomCharacter } = require('../../helper/random');
 
 class ApiUserController {
-    // // [POST] /api/checkLogin
-    // checkLogin(req, res, next){
-    //     const token = req.header('Authorization').replace("Bearer ", "");
-    //     try{
-    //         
-    //         Account.findOne({slug: decoded._id, token: token})
-    //             .then(account => {
-    //                 if(account != null){
-    //                     res.send({message : true})
-    //                 }
-    //                 else{
-    //                     res.send({message : false})
-    //                 }
-    //             })
-    //             .catch(next)
-    //     }
-    //     catch(e){
-    //         res.send({message : false})
-    //     }
-    // }
+    // [GET] /api/checkLogin
+    checkLogin(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            User.findOne({ slug: decoded._id, token: token })
+                .then(account => {
+                    if (account != null) {
+                        return res.send({ resetLogin: false });
+                    } else {
+                        return res.send({ resetLogin: true });
+                    }
+                })
+                .catch(next)
+        } catch (e) {
+            return res.send({ resetLogin: true })
+        }
+    }
 
     // [POST] /api/login
     login(req, res, next) {
@@ -34,48 +32,52 @@ class ApiUserController {
                 email: req.body.email,
             })
             .then(user => {
-                if (!user) {
-                    return res.send({ login: false, message: "Tài khoản chưa đăng ký!" });
-                };
-                if (!user.active) {
-                    let temp = new User(user);
-                    temp.activeToken = Date.now() + randomCharacter(16);
-                    temp.save();
-                    sendActiveMail(user.email, temp.activeToken);
-                    return res.send({ login: false, message: "Tài khoản của bạn chưa được kích hoạt, vui lòng kiểm tra email để kích hoạt tài khoản!" });
-                }
-                if (user.deleted) {
-                    return res.send({ login: false, message: "Tài khoản của bạn bị khóa, vui lòng liên hệ Admin để hổ trợ!" });
-                }
-                let isValid = bcrypt.compareSync(req.body.password, user.password);
-                if (!isValid) {
-                    return res.send({ login: false, message: "Tài khoản hoặc mật khẩu không chính xác!" });
-                }
-                if (user.decentralization == 1) {
-                    return res.send({
-                        _slug: user.slug,
-                        type: 'user',
-                        name: user.fullname,
-                        token: "Bearer " + user.token,
-                        login: true,
-                        message: "Đăng nhập thành công!"
-                    });
-                } else {
-                    return res.send({
-                        _slug: user.slug,
-                        type: 'admin',
-                        name: user.fullname,
-                        token: "Bearer " + user.token,
-                        login: true,
-                        message: "Đăng nhập thành công!"
-                    });
+                try {
+                    if (!user) {
+                        return res.send({ login: false, message: "Tài khoản chưa đăng ký!" });
+                    } else if (!user.active) {
+                        user.activeToken = Date.now() + randomCharacter(16);
+                        User.updateOne({ slug: user.slug }, user, function(err, res) {
+                            if (err) {
+                                throw new Error(err);
+                            }
+                        });
+                        sendActiveMail(user.email, user.activeToken);
+                        return res.send({ login: false, message: "Tài khoản của bạn chưa được kích hoạt, vui lòng kiểm tra email để kích hoạt tài khoản!" });
+                    } else if (user.deleted) {
+                        return res.send({ login: false, message: "Tài khoản của bạn bị khóa, vui lòng liên hệ Admin để hổ trợ!" });
+                    } else if (user) {
+                        let isValid = bcrypt.compareSync(req.body.password, user.password);
+                        if (!isValid) {
+                            return res.send({ login: false, message: "Tài khoản hoặc mật khẩu không chính xác!" });
+                        } else if (user.decentralization == 1) {
+                            return res.send({
+                                _slug: user.slug,
+                                type: 'user',
+                                name: user.fullname,
+                                token: "Bearer " + user.token,
+                                login: true,
+                                message: "Đăng nhập thành công!"
+                            });
+                        } else if (user.decentralization == 2) {
+                            return res.send({
+                                _slug: user.slug,
+                                type: 'admin',
+                                name: user.fullname,
+                                token: "Bearer " + user.token,
+                                login: true,
+                                message: "Đăng nhập thành công!"
+                            });
+                        }
+                    }
+                } catch (err) {
+                    return res.send({ login: false, message: err.message });
                 }
             })
             .catch(next)
     };
     // [POST] /api/register
     register(req, res, next) {
-        const formData = req.body;
         Promise.all([
                 User.findOneWithDeleted({ email: req.body.email }),
                 User.findOneWithDeleted({ phone: req.body.phone }),
@@ -96,8 +98,21 @@ class ApiUserController {
                     validate.register = false;
                     return res.send(validate);
                 } else {
-                    formData.password = bcrypt.hashSync(req.body.password, 8);
-                    const user = new User(req.body);
+                    req.body.password = bcrypt.hashSync(req.body.password, 8);
+                    let tempAddress = [];
+                    tempAddress.push({
+                        address: req.body.address,
+                        phone: req.body.phone,
+                        name: req.body.fullname,
+                        active: true
+                    });
+                    const user = new User({
+                        fullname: req.body.fullname,
+                        email: req.body.email,
+                        phone: req.body.phone,
+                        addresses: tempAddress,
+                        password: req.body.password
+                    });
                     user.save()
                         .then((user) => {
                             user.token = jwt.sign({ _id: user.slug }, process.env.EPHONE_STORE_PRIMARY_KEY);
@@ -105,12 +120,17 @@ class ApiUserController {
                             return user.save();
                         })
                         .then((user) => {
-                            sendWelcomeMail(user.email, user.fullname);
-                            sendActiveMail(user.email, user.activeToken);
-                            return res.send({
-                                message: "Đăng ký thành công, vui lòng kiểm tra email để kích hoạt tài khoản!",
-                                register: true,
-                            });
+                            Promise.all([
+                                    sendWelcomeMail(user.email, user.fullname),
+                                    sendActiveMail(user.email, user.activeToken)
+                                ])
+                                .then((welcome, active) => {
+                                    return res.send({
+                                        message: "Đăng ký thành công, vui lòng kiểm tra email để kích hoạt tài khoản!",
+                                        register: true,
+                                    });
+                                })
+                                .catch(next)
                         })
                         .catch(next)
                 }
@@ -133,7 +153,7 @@ class ApiUserController {
                                     message: "Đã gửi mã OTP, vui lòng kiểm tra email!"
                                 });
                             } catch (e) {
-                                console.log(e)
+                                throw new Error(e)
                             }
                         })
                 } else {
@@ -145,7 +165,7 @@ class ApiUserController {
             })
             .catch(next)
     };
-    // [POST] /api/sendNewPassword
+    // [PUT] /api/sendNewPassword
     sendNewPassword(req, res, next) {
         User.findOneWithDeleted({ email: req.body.email })
             .then(user => {
@@ -167,16 +187,13 @@ class ApiUserController {
                         user.token = jwt.sign({ _id: user.slug }, process.env.EPHONE_STORE_PRIMARY_KEY);
                         User.updateOne({ _id: user._id }, user)
                             .then(() => {
-                                try {
-                                    sendNewPasswordMail(user.email, newPassword);
-                                    return res.send({
-                                        newPassword: true,
-                                        message: "Đã gửi mật khẩu mới, vui lòng kiểm tra email!"
-                                    });
-                                } catch (e) {
-                                    console.log(e)
-                                }
+                                sendNewPasswordMail(user.email, newPassword);
+                                return res.send({
+                                    newPassword: true,
+                                    message: "Đã gửi mật khẩu mới, vui lòng kiểm tra email!"
+                                });
                             })
+                            .catch(next)
                     }
                 } else {
                     return res.send({
@@ -187,62 +204,109 @@ class ApiUserController {
             })
             .catch(next)
     };
-    // // [POST] /api/getProfile/changePassword
-    // changePassword(req, res, next){
-    //     const token = req.header('Authorization').replace("Bearer ", "");
-    //     //const token = jwt.sign({_id: "nguyen_van_trong"}, "electroStore")
-    //     try{
-    //         const decoded = jwt.verify(token, "electroStore");
-    //         Account.findOne({slug: decoded._id, token: token})
-    //             .then(account => {
-    //                 var isPass = bcrypt.compareSync(req.body.oldPassword, account.password);
-    //                 var objPass = {
-    //                     oldPassword: req.body.oldPassword,
-    //                     passwordNew: req.body.passwordNew,
-    //                     passwordConfirm: req.body.passwordConfirm,
-    //                 }
-    //                 if(isPass){
-    //                     if(objPass.passwordNew === objPass.passwordConfirm && objPass.passwordNew.length > 2){
-    //                         const hash = bcrypt.hashSync(objPass.passwordNew, 8);
-    //                         account.password = hash;
-    //                         account.save();
-    //                         return res.send({message : true});
-    //                     }
-    //                 }
-    //                 return res.send({message : false})
-    //             })
-    //             .catch(next)
-    //     }
-    //     catch(e){
-    //         res.send({message : false})
-    //     }
-    // }
+    // [PUT] /api/getProfile/changePassword
+    changePassword(req, res, next) {
+        //const token = jwt.sign({_id: "nguyen_van_trong"}, "electroStore")
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            User.findOne({ slug: decoded._id, token: token })
+                .then(account => {
+                    var isPass = bcrypt.compareSync(req.body.oldPassword, account.password);
+                    var objPass = {
+                        oldPassword: req.body.oldPassword,
+                        passwordNew: req.body.passwordNew,
+                        passwordConfirm: req.body.passwordConfirm,
+                    }
+                    if (isPass) {
+                        if (objPass.passwordNew === objPass.passwordConfirm && objPass.passwordNew.length > 2) {
+                            const hash = bcrypt.hashSync(objPass.passwordNew, 8);
+                            account.password = hash;
+                            User.updateOne({ _id: account._id }, account)
+                                .then(() => {
+                                    return res.send({
+                                        changePassword: true,
+                                        message: 'Cập nhật mật khẩu mới thành công!'
+                                    });
+                                })
+                                .catch(next)
+                        }
+                    } else {
+                        return res.send({
+                            changePassword: false,
+                            message: 'Mật khẩu cũ không chính xác!'
+                        });
+                    }
+                    return res.send({
+                        changePassword: false,
+                        message: 'Cập nhật mật khẩu thất bại!'
+                    });
+                })
+                .catch(next)
+        } catch (e) {
+            res.send({ passwordNew: false })
+        }
+    };
     // [GET] /api/getProfile
     getProfile(req, res, next) {
+        //const token = jwt.sign({_id: "nguyen_van_trong"}, "electroStore")
+        try {
             const token = req.header('Authorization').replace("Bearer ", "");
-            //const token = jwt.sign({_id: "nguyen_van_trong"}, "electroStore")
-            try {
-                const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
-                User.findOne({ slug: decoded._id, token: token })
-                    .then(account => {
-                        return res.send({
-                            fullname: account.fullname,
-                            address: account.address,
-                            email: account.email,
-                            phone: account.phone
-                        });
-                    })
-                    .catch(next)
-            } catch (e) {
-                res.send({ message: false })
-            }
-
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            User.findOne({ slug: decoded._id, token: token })
+                .then(account => {
+                    let idx = account.addresses.findIndex((item) => {
+                        return item.active === true;
+                    });
+                    return res.send({
+                        slug: account.slug,
+                        fullname: account.fullname,
+                        addresses: account.addresses[idx]
+                    });
+                })
+                .catch(next)
+        } catch (e) {
+            res.send({ message: false })
         }
-        // getAddress(req, res, next){
-        //     res.send({message: false})
-        // }
-        // setAddress(req, res, next){
-        //     res.send({message: false})
-        // }
+
+    };
+    // [PUT] /api/updateProfile
+    updateProfile(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            User.findOne({ slug: decoded._id, token: token })
+                .then(account => {
+                    try {
+                        if (account) {
+                            account.fullname = req.body.fullName;
+                            account.phone = req.body.phone;
+                            account.gender = req.body.gender;
+                            account.dateOfBirth = req.body.dateOfBirth;
+                            User.updateOne({ _id: account._id }, account, function(err, res) {
+                                if (err) throw new Error(err);
+                            });
+                            return res.send({
+                                message: "Cập nhật tài khoản thành công!",
+                                updated: true,
+                            });
+                        }
+                        throw new Error("Account not found!");
+                    } catch (e) {
+                        return res.send({
+                            message: "Cập nhật tài khoản thất bại!",
+                            updated: false,
+                        });
+                    }
+                })
+                .catch(next)
+        } catch (e) {
+            return res.send({
+                message: "Cập nhật tài khoản thất bại!",
+                updated: false,
+            });
+        }
+
+    };
 }
 module.exports = new ApiUserController;
