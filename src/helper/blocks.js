@@ -1,6 +1,29 @@
 module.exports = {
+        conditionEqualStatus: (_id, num1, num2) => {
+            return (num1 == num2) ? `
+            <span id="cancel-order"><a
+            href="#"
+            data-id="${_id}"
+            style="padding: 0 5px;color: red;border: 1px solid;margin: 0 5px;"
+            >hủy</a></span>
+            ` : '';
+        },
         convertToVND: (price) => {
             return (new Intl.NumberFormat().format(price));
+        },
+        convertStatus: (number) => {
+            switch (number) {
+                case 0:
+                    return 'Hủy';
+                case 1:
+                    return 'Thành công';
+                case 2:
+                    return 'Đang chờ duyệt';
+                case 3:
+                    return 'Đang giao hàng';
+                default:
+                    return 'Lỗi status';
+            }
         },
         convertSaleToVND: (price, sale) => {
             return (new Intl.NumberFormat().format((price - (price * (sale / 100)))));
@@ -51,6 +74,20 @@ module.exports = {
             // 1970, 1971, ... 2015, 2016, ...
             var yyyy = date.getFullYear();
             return `${yyyy}-${MM}-${dd}`;
+        },
+        timeSpanToString: (date) => {
+            if (date == null) {
+                return '';
+            }
+            checkTime = (i) => {
+                return (i < 10) ? "0" + i : i;
+            }
+            var h = date.getHours();
+            var m = date.getMinutes();
+            var s = date.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            return h + ":" + m + ":" + s;
         },
         productTop: (products) => {
                 let xhtmlHeaderActive = `
@@ -325,5 +362,8 @@ module.exports = {
             `;
         }
         return xhtml;
+    },
+    lenght: (array) => {
+        return array.length;
     },
 }

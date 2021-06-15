@@ -52,9 +52,14 @@ return xhtml;
         var rangePrice = $("#range-between").find("a");
         var searchInput = $("#search-mutiple").find("input[name='search']");
         var manufacturer = $("#select-manufacturer").find("input[type=checkbox]");
+        manufacturer.each(function(index){
+            let path = window.location.pathname.replace('/', '');
+            if($(this).val() == path){
+                $(this).prop('checked', true);
+            }
+        });
         let clickedViewMore = (event)=>{
             let btn = $(event.target).closest('.view-more').find("button");
-            console.log("btn.data('page')", btn.data('page'));
             handleSearchMutipleProduct(btn.data('page'), true);
         }
         $("#content-products").find(".view-more button").click(clickedViewMore);

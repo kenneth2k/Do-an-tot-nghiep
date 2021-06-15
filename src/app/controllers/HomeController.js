@@ -115,13 +115,18 @@ class HomeController {
 
     // [GET] /profile/:slug
     showProfile(req, res, next) {
-
-        User.findOne({
-                slug: req.params.slug
-            })
-            .then(account => {
+        Promise.all([
+                User.findOne({
+                    slug: req.params.slug
+                }),
+                Order.findWithDeleted({
+                    slugUser: req.params.slug
+                })
+            ])
+            .then(([account, orders]) => {
                 res.render('home/profile', {
                     account: singleMongooseToObject(account),
+                    orders: multipleMongooseToObject(orders)
                 });
             })
             .catch(next)
@@ -132,51 +137,67 @@ class HomeController {
             const token = req.header('Authorization').replace("Bearer ", "");
             const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
             let searchSlug = [];
+            let productSearch = [];
+            let productBody = req.body.products;
             req.body.products.forEach(value => {
+                if (searchSlug.includes(value.slug)) {
+                    return;
+                }
                 searchSlug.push(value.slug);
             });
             Product.find({ slug: { $in: searchSlug } })
                 .then(products => {
+                    // duyệt qua sản phẩm
+                    products.forEach((pro, index) => {
+                        // duyệt qua màu của 1 sản phẩm
+                        pro.colors.forEach((color, index) => {
+                            // kiểm tra màu và id sản phẩm
+                            productBody.forEach((body, index) => {
+                                if (pro.slug == body.slug && color._id == body.colorId) {
+                                    // chuyển đổi sang vùng nhớ mới
+                                    let temp = JSON.parse(JSON.stringify(pro));
+                                    temp.colors = JSON.parse(JSON.stringify(color));
+                                    temp.qtyOrder = JSON.parse(JSON.stringify(body.quantity));
+                                    // Lưu mảng mới cho từng color của sản phẩm
+                                    productSearch.push(temp);
+                                }
+                            });
+                        });
+                    });
                     let sumQuantity = 0;
                     let productTemp = [];
-                    let totalPrice = products.reduce((accumulator, currentValue, currentIndex) => {
-                        let idxProductsOrder = null;
-                        let idxDiscount = currentValue.colors.findIndex((item) => {
-                            idxProductsOrder = req.body.products.findIndex((item) => {
-                                return currentValue.slug === item.slug;
-                            });
-                            return item._id == req.body.products[idxProductsOrder].colorId;
-                        });
-
-                        let discount = (currentValue.colors[idxDiscount].quantity / 100);
-                        sumQuantity += Number.parseInt(req.body.products[idxProductsOrder].quantity);
-
-                        let price = ((currentValue.price - (currentValue.price * discount))) * Number.parseInt(req.body.products[idxProductsOrder].quantity);
-                        req.body.products[idxProductsOrder].price = (currentValue.price - (currentValue.price * discount));
-                        req.body.products[idxProductsOrder].colorName = currentValue.colors[idxDiscount].name;
+                    let totalPrice = productSearch.reduce((accumulator, currentValue) => {
+                        // Chi tiết của giỏ hàng
                         productTemp.push({
-                            name: currentValue.name,
-                            color: currentValue.colors[idxDiscount].name,
-                            quantity: Number.parseInt(req.body.products[idxProductsOrder].quantity),
-                            price: (currentValue.price - (currentValue.price * discount))
+                            slug: currentValue.slug,
+                            colorId: currentValue.colors._id,
+                            colorName: currentValue.colors.name,
+                            productName: currentValue.name,
+                            quantity: currentValue.qtyOrder,
+                            price: (currentValue.price - (currentValue.price * (currentValue.sale / 100))),
+                            sale: currentValue.sale,
                         });
-
+                        // Số lượng tất cả sản phẩm được order
+                        sumQuantity += Number.parseInt(currentValue.qtyOrder);
+                        // Giá của tất cả sản phẩm được order
+                        let price = (Number.parseInt(currentValue.qtyOrder) * (currentValue.price - (currentValue.price * (currentValue.sale / 100))));
                         return accumulator + price;
                     }, 0);
-                    if (req.body.products.length != products.length) {
-                        throw new Error("Find products failed");
-                    }
-
-                    let order = new Order({
-                        slugUser: decoded._id,
-                        sumQuantity: sumQuantity,
-                        sumPrice: totalPrice,
-                        details: req.body.products,
-                    });
-                    Promise.all([
-                            User.findOne({ slug: decoded._id }),
-                            order.save()
-                        ])
+                    User.findOne({ slug: decoded._id })
+                        .then((user) => {
+                            // vị trí address active
+                            let idx = user.addresses.findIndex(address => address.active === true);
+                            let order = new Order({
+                                userName: user.addresses[idx].name,
+                                userPhone: user.addresses[idx].phone,
+                                userAddress: user.addresses[idx].address,
+                                slugUser: decoded._id,
+                                sumQuantity: sumQuantity,
+                                sumPrice: totalPrice,
+                                details: productTemp,
+                            });
+                            return Promise.all([user, order.save()])
+                        })
                         .then(([user, order]) => {
                             sendOrderSuccessMail(order, user, productTemp);
                             return res.send({
@@ -185,6 +206,28 @@ class HomeController {
                             });
                         })
                         .catch(next)
+                })
+                .catch(next)
+        } catch (e) {
+            return res.send({
+                status: 404,
+                error: e.message
+            });
+        }
+    };
+    //[GET] /order/detail
+    orderDetail(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            Order.findOne({
+                    _id: req.params.id
+                })
+                .then(order => {
+                    return res.send({
+                        status: 200,
+                        order: singleMongooseToObject(order)
+                    });
                 })
                 .catch(next)
         } catch (e) {

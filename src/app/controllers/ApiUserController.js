@@ -103,6 +103,7 @@ class ApiUserController {
                     tempAddress.push({
                         address: req.body.address,
                         phone: req.body.phone,
+                        name: req.body.fullname,
                         active: true
                     });
                     const user = new User({
@@ -258,6 +259,7 @@ class ApiUserController {
                         return item.active === true;
                     });
                     return res.send({
+                        slug: account.slug,
                         fullname: account.fullname,
                         addresses: account.addresses[idx]
                     });

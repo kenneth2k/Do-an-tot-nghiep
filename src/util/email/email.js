@@ -127,14 +127,18 @@ function sendNewPasswordMail(email, password) {
 
 function sendOrderSuccessMail(order, user, products) {
     let temp = ``;
+    let idx = user.addresses.findIndex(user => {
+        return user.active === true;
+    });
     products.forEach((product, index) => {
         temp += `
             <tr>
                 <td style="text-align: center; padding: 5px; border: 1px solid gray;">${index + 1}</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${product.name}</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${product.color}</td>
+                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${product.productName} - ${product.colorName}</td>
+                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${new Intl.NumberFormat().format(product.price / (1 - (product.sale / 100)))}</td>
                 <td style="text-align: center; padding: 5px; border: 1px solid gray;">${product.quantity}</td>
-                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${new Intl.NumberFormat().format(product.price)}</td>
+                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${product.sale}</td>
+                <td style="text-align: center; padding: 5px; border: 1px solid gray;">${new Intl.NumberFormat().format(product.price * product.quantity)}</td>
             </tr>
         `;
     })
@@ -158,11 +162,11 @@ function sendOrderSuccessMail(order, user, products) {
                 <div style="padding-bottom: 10px;">
                     <div style="padding: 5px 0; display: flex;">
                         <div style="width: 150px;font-size: 16px;font-weight: bold;">Tên:</div>
-                        <div style="text-align: justify;">${user.fullname}</div>
+                        <div style="text-align: justify;">${user.addresses[idx].name}</div>
                     </div>
                     <div style="padding: 5px 0; display: flex;">
                         <div style="width: 150px;font-size: 16px;font-weight: bold;">Địa chỉ nhà:</div>
-                        <div style="text-align: justify;">${user.address}</div>
+                        <div style="text-align: justify;">${user.addresses[idx].address}</div>
                     </div>
                     <div style="padding: 5px 0; display: flex;">
                         <div style="width: 150px;font-size: 16px;font-weight: bold;">Điện thoại:</div>
@@ -181,9 +185,10 @@ function sendOrderSuccessMail(order, user, products) {
                         <tr>
                             <th style="height: 40px; width: 50px;">STT</th>
                             <th style="height: 40px; width: 300px;">Tên</th>
-                            <th style="height: 40px; width: 150px;">Màu</th>
+                            <th style="height: 40px; width: 140px;">Giá(vnđ)</th>
                             <th style="height: 40px; width: 100px;">Số lượng</th>
-                            <th style="height: 40px; width: 200px;">Giá</th>
+                            <th style="height: 40px; width: 60px;">Giảm(%)</th>
+                            <th style="height: 40px; width: 150px;">Tạm tính</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -14,6 +14,7 @@ const User = new Schema({
     dateOfBirth: { type: Date, default: null },
     addresses: [{
         _id: { type: String, default: Date.now() },
+        name: { type: String, required: true },
         address: { type: String, required: true },
         phone: { type: String, required: true },
         active: { type: Boolean, default: false }

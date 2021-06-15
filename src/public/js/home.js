@@ -17,8 +17,8 @@ $(document).ready(function() {
                     "Authorization": user_token.token
                 },
                 success: function(data) {
-                    console.log("Profile", data);
-                    $(".user__info-content-name h6").text(data.fullname);
+                    $(".user__info-content-title a").attr("href", "/profile/" + data.slug);
+                    $(".user__info-content-name h6").text(data.addresses.name);
                     $(".user__info-content-address p:first-child").text(data.addresses.address);
                     $(".user__info-content-address p span").text(data.addresses.phone);
                 }
