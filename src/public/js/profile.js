@@ -1,7 +1,34 @@
 $(document).ready(function() {
     $("#cancel-order a").click(function(event) {
         event.preventDefault();
-        console.log($(this).data("id"))
+        $("#form-cancel-order").find("input[name='id']").val($(this).data("id"));
+        $("#modal-cancel").modal('show');
+    });
+    $("#form-cancel-order").submit(function(event) {
+        event.preventDefault();
+        var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+        if (!user_token) return;
+        let id = $(this).find("input[name='id']").val();
+        $.ajax({
+            type: "PUT",
+            url: '/cancel/order/' + id,
+            headers: {
+                "Authorization": user_token.token
+            },
+            success: function(data) {
+                $("#cancel-order a").each(function() {
+                    if ($(this).data("id") == id) {
+                        $(this).closest('.text-center').html(`<span class="text-danger">${data.message}</span>`);
+                    }
+                    setTimeout(function() {
+                        $("#modal-cancel").modal('hide');
+                        setTimeout(function() {
+                            ShowToastMessage("Cập nhật đơn hàng thành công!", "success");
+                        }, 500);
+                    }, 500);
+                });
+            }
+        })
     });
     $("#order-detail a").click(function(event) {
         event.preventDefault();

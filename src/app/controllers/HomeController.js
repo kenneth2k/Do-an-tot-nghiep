@@ -4,7 +4,7 @@ const User = require('../models/User');
 const Raiting = require('../models/Raiting');
 const Category = require('../models/Category');
 const Order = require('../models/Order');
-const { sendOrderSuccessMail } = require('../../util/email/email');
+const { sendOrderSuccessMail, sendCancelOrderMail } = require('../../util/email/email');
 const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../util/mongoose');
 const { randomToBetween } = require('../../helper/random');
 class HomeController {
@@ -120,13 +120,19 @@ class HomeController {
                     slug: req.params.slug
                 }),
                 Order.findWithDeleted({
-                    slugUser: req.params.slug
-                })
+                    slugUser: req.params.slug,
+                    status: 2
+                }).sort({ createdAt: -1 }),
+                Order.findWithDeleted({
+                    slugUser: req.params.slug,
+                    status: { $ne: 2 }
+                }).sort({ createdAt: -1 })
             ])
-            .then(([account, orders]) => {
+            .then(([account, ordering, orderFinished]) => {
+                account.addresses.sort((a, b) => (a.active > b.active) ? -1 : ((b.active > a.active) ? 1 : 0));
                 res.render('home/profile', {
                     account: singleMongooseToObject(account),
-                    orders: multipleMongooseToObject(orders)
+                    orders: multipleMongooseToObject(ordering.concat(orderFinished))
                 });
             })
             .catch(next)
@@ -236,7 +242,41 @@ class HomeController {
                 error: e.message
             });
         }
-    }
+    };
+    // [PUT] /cancel/order/:id
+    cancelOrder(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            let emailUser = null,
+                idOder = null;
+            Promise.all([
+                    User.findOne({ slug: decoded._id, token: token }),
+                    Order.findOne({ _id: req.params.id })
+                ])
+                .then(([user, order]) => {
+                    if (user !== null && order !== null) {
+                        emailUser = user.email;
+                        idOder = order._id;
+                        order.status = 0;
+                        return Order.updateOne({ _id: order._id }, order);
+                    }
+                    throw new Error('User and Order undefined');
+                })
+                .then(() => {
+                    sendCancelOrderMail(emailUser, idOder);
+                    return res.send({
+                        cancel: true,
+                        message: 'Đã hủy'
+                    });
+                })
+                .catch(next)
+        } catch (err) {
+            return res.send({
+                cancel: false,
+            });
+        }
+    };
     show404(req, res, next) {
         res.render('home/notfound', { layout: false });
     }
