@@ -13,13 +13,15 @@ router.get('/mutipleSearch', apiHomeController.mutipleSearch);
 router.post('/login', ApiUserController.login);
 router.post('/register', ApiUserController.register);
 router.post('/checkEmail', ApiUserController.checkEmail);
+router.post('/createAddress', ApiUserController.createAddress);
 
 router.put('/sendNewPassword', ApiUserController.sendNewPassword);
 router.put('/updateProfile', ApiUserController.updateProfile);
-router.put('/getProfile/changePassword', ApiUserController.changePassword);
 
 router.get('/search/:search', apiController.showSearch);
 
+router.put('/getProfile/changePassword', ApiUserController.changePassword);
+router.put('/updateAddress/:id', ApiUserController.updateAddress);
 
 // // get country vietnam
 // router.get('/menu', apiHomeController.getMenu);

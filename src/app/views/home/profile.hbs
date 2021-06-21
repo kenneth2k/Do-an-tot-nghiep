@@ -156,7 +156,7 @@
             </table>
           </div>
         </div>
-        <div class="tab-pane">
+        <div class="tab-pane" id="addresses">
           <h2>Sổ địa chỉ</h2>
           <div class="inner">
             {{#each account.addresses}}
@@ -205,31 +205,33 @@
         <div class="tab-pane">
           <h2>Tạo sổ địa chỉ</h2>
           <form action="#" method="post" id="form-create-address">
-            <div class="form-gp d-flex">
-              <label for="fulName2" class="input-label">Họ và tên</label>
-              <input
-                type="text"
-                class="form-control"
-                id="fulName2"
-                placeholder="Nhập họ tên..."
-              />
+            <div class="form-gp">
+              <div class="form-element">
+                <label class="input-label input-label-center">Họ và tên</label>
+                <input type="text" class="form-control" name="fullname" autocomplete="on" placeholder="Nhập họ tên..." >
+              </div>
+              <small class="form-text text-danger"></small>
             </div>
-            <div class="form-gp d-flex">
-              <label for="phoneNumber2" class="input-label">Số điện thoại</label>
-              <input
-                type="text"
-                class="form-control"
-                id="phoneNumber2"
-                placeholder="Nhập số điện thoại..."
-              />
+            <div class="form-gp">
+              <div class="form-element">
+                <label for="phoneNumber" class="input-label input-label-center">Số điện thoại</label>
+                <input type="text" class="form-control" name="phone" autocomplete="on" placeholder="Nhập số điện thoại..." >
+              </div>
+              <small class="form-text text-danger"></small>
             </div>
-            <div class="form-gp d-flex">
-              <label class="input-label">Địa chỉ</label>
-              <textarea
+            <div class="form-gp">
+              <div class="form-element">
+                <label for="phoneNumber" class="input-label input-label-center">Địa chỉ</label>
+                <textarea 
                 name="address"
                 placeholder="Nhập địa chỉ"
-                rows="5"
-              ></textarea>
+                rows="2"
+                style="
+                    outline-color: #80bdff;
+                "
+                 ></textarea>
+              </div>
+              <small class="form-text text-danger"></small>
             </div>
             <button type="submit" class="btn btn-primary">Lưu lại</button>
           </form>

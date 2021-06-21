@@ -77,7 +77,7 @@ $(document).ready(function(c) {
         let gender = $(this).find('input[name="gender"]:checked');
         let dateOfBirth = $(this).find('input[name="dateOfBirth"]');
         let count = 0;
-        if (name.val() < 4) {
+        if (name.val().length < 4) {
             $(name).closest('.form-gp').find('small').text('Tên ít nhất 3 kí tự');
             count++;
         }
@@ -423,11 +423,6 @@ $(document).ready(function() {
             }
         });
     });
-    //form-create-address
-    const formCreateAddress = $("#form-create-address");
-    formCreateAddress.submit(function(e) {
-        e.preventDefault();
-    });
     // search on keyup
     function searchContents(products) {
         var xhtml = ``;
@@ -518,7 +513,7 @@ $(document).ready(function() {
     $("#payment-succes").blur(function(e) {
         setTimeout(function() {
             window.location.href = '/';
-        }, 1000)
+        }, 500)
     });
 });
 $(document).ready(function(c) {
