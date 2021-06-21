@@ -103,6 +103,28 @@ function sendWelcomeMail(email, name) {
         });
 }
 
+function sendCancelOrderMail(email, id) {
+    const msg = {
+        to: email,
+        from: {
+            name: 'EPHONE STORE',
+            email: `${process.env.SENDGRID_EMAIL}`
+        },
+        subject: 'Cancel order to Ephone Store',
+        text: 'Send Cancel order to the Ephone Store',
+        html: `Bạn đã hủy đơn hàng: ${id} cảm ơn bạn đã mua sắm tại Ephone Store.`,
+    };
+    //ES6
+    return sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent cancel order to: ' + email);
+        })
+        .catch((error) => {
+            console.error(error)
+        });
+}
+
 function sendNewPasswordMail(email, password) {
     const msg = {
         to: email,
@@ -228,5 +250,6 @@ module.exports = {
     sendWelcomeMail,
     sendNewPasswordMail,
     sendActiveMail,
-    sendOrderSuccessMail
+    sendOrderSuccessMail,
+    sendCancelOrderMail
 }

@@ -147,7 +147,7 @@
                       }}
                       VNĐ</td>
                     <td class="text-center pt-2 pb-2">
-                      <span>{{convertStatus this.status}}</span>
+                      <span {{{addColorTextStatus this.status}}}>{{convertStatusText this.status}}</span>
                       {{{conditionEqualStatus this._id this.status 2}}}
                     </td>
                   </tr>
@@ -205,7 +205,7 @@
         <div class="tab-pane">
           <h2>Tạo sổ địa chỉ</h2>
           <form action="#" method="post" id="form-create-address">
-            <div class="form-gp">
+            <div class="form-gp d-flex">
               <label for="fulName2" class="input-label">Họ và tên</label>
               <input
                 type="text"
@@ -214,7 +214,7 @@
                 placeholder="Nhập họ tên..."
               />
             </div>
-            <div class="form-gp">
+            <div class="form-gp d-flex">
               <label for="phoneNumber2" class="input-label">Số điện thoại</label>
               <input
                 type="text"
@@ -223,7 +223,7 @@
                 placeholder="Nhập số điện thoại..."
               />
             </div>
-            <div class="form-gp">
+            <div class="form-gp d-flex">
               <label class="input-label">Địa chỉ</label>
               <textarea
                 name="address"
@@ -237,7 +237,7 @@
         <div class="tab-pane">
           <h2>Thay đổi mật khẩu</h2>
           <form action="#" method="post" id="form-change-password">
-            <div class="form-gp">
+            <div class="form-gp d-flex">
               <label class="input-label">Mật khẩu cũ</label>
               <input
                 type="password"
@@ -247,7 +247,7 @@
                 placeholder="Nhập mật khẩu cũ"
               />
             </div>
-            <div class="form-gp">
+            <div class="form-gp d-flex">
               <label class="input-label">Mật khẩu mới</label>
               <input
                 type="password"
@@ -257,7 +257,7 @@
                 placeholder="Mật khẩu mới từ 6 đến 32 ký tự"
               />
             </div>
-            <div class="form-gp">
+            <div class="form-gp d-flex">
               <label class="input-label">Nhập lại</label>
               <input
                 type="password"

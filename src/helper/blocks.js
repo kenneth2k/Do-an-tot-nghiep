@@ -8,13 +8,27 @@ module.exports = {
             >hủy</a></span>
             ` : '';
         },
+        addColorTextStatus: (number) => {
+            switch (number) {
+                case 0:
+                    return 'class="text-danger"';
+                case 1:
+                    return 'class="text-success"';
+                case 2:
+                    return 'class="text-primary"';
+                case 3:
+                    return 'class="text-warning"';
+                default:
+                    return 'Lỗi status';
+            }
+        },
         convertToVND: (price) => {
             return (new Intl.NumberFormat().format(price));
         },
-        convertStatus: (number) => {
+        convertStatusText: (number) => {
             switch (number) {
                 case 0:
-                    return 'Hủy';
+                    return 'Đã hủy';
                 case 1:
                     return 'Thành công';
                 case 2:
