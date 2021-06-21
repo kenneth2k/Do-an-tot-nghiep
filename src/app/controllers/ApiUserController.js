@@ -308,5 +308,104 @@ class ApiUserController {
         }
 
     };
+    // [PUT] /api/updateAddress/:id
+    updateAddress(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            User.findOne({ slug: decoded._id, token: token })
+                .then(account => {
+                    try {
+                        if (account) {
+                            if (req.body.event == 'default') {
+                                account.addresses = account.addresses.map(function(value) {
+                                    value.active = false;
+                                    if (value._id == req.params.id) {
+                                        value.active = true;
+                                    }
+                                    return value;
+                                })
+                            }
+                            if (req.body.event == 'detele') {
+                                account.addresses = account.addresses.filter(function(value) {
+                                    return value._id != req.params.id;
+                                })
+                            }
+                            account.addresses.sort((a, b) => (a.active > b.active) ? -1 : ((b.active > a.active) ? 1 : 0));
+                            User.updateOne({ _id: account._id }, account, function(err, res) {
+                                if (err) throw new Error(err);
+                            });
+                            return res.send({
+                                message: "Cập nhật địa chỉ thành công!",
+                                updated: true,
+                                addresses: account.addresses
+                            });
+                        }
+                        throw new Error("Account not found!");
+                    } catch (e) {
+                        return res.send({
+                            message: "Cập nhật địa chỉ thất bại!",
+                            updated: false,
+                        });
+                    }
+                })
+                .catch(next)
+        } catch (e) {
+            return res.send({
+                message: "Cập nhật địa chỉ thất bại!",
+                updated: false,
+            });
+        }
+
+    };
+    // [POST] /api/createAddress
+    createAddress(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            User.findOne({ slug: decoded._id, token: token })
+                .then(account => {
+                    try {
+                        if (account) {
+                            if (account.addresses.length == 5) {
+                                return res.send({
+                                    message: "Số địa chỉ đạt giới hạn!",
+                                    created: false,
+                                });
+                            }
+                            let obj = {
+                                _id: Date.now(),
+                                active: false,
+                                address: req.body.address,
+                                phone: req.body.phone,
+                                name: req.body.fullname,
+                            }
+                            account.addresses = account.addresses.push(obj);
+                            account.addresses.sort((a, b) => (a.active > b.active) ? -1 : ((b.active > a.active) ? 1 : 0));
+                            User.updateOne({ _id: account._id }, account, function(err, res) {
+                                if (err) throw new Error(err);
+                            });
+                            return res.send({
+                                message: "Thêm địa chỉ thành công!",
+                                created: true,
+                                addresses: account.addresses
+                            });
+                        }
+                        throw new Error("Address not found!");
+                    } catch (e) {
+                        return res.send({
+                            message: "Thêm địa chỉ thất bại!",
+                            created: false,
+                        });
+                    }
+                })
+                .catch(next)
+        } catch (e) {
+            return res.send({
+                message: "Thêm địa chỉ thất bại!",
+                created: false,
+            });
+        }
+    };
 }
 module.exports = new ApiUserController;

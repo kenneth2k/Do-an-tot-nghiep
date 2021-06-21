@@ -69,15 +69,28 @@ return xhtml;
             let manufacturerChecked = $("#select-manufacturer").find("input[type=checkbox]:checked").toArray();
             let rangePriceActiveMin = $("#range-between").find("a[class='active']").data('min');
             let rangePriceActiveMax = $("#range-between").find("a[class='active']").data('max');
+            price.min = rangePriceActiveMin;
+            price.max = rangePriceActiveMax;
             manufacturerChecked.map(function(input) {
                 arrMF.push(input.value);
             });
-            price.min = rangePriceActiveMin;
-            price.max = rangePriceActiveMax;
-            history.pushState({},"","all");
+            let query = (window.location.pathname == "/all") ? window.location.search : "";
+            let valSearch = searchInput.val();
+            let params = (new URLSearchParams(query));
+            let countParam = params.get("q") ? params.get("q").length : 0;
+            if(countParam > 0 && arrMF.length == 0 && price.min == undefined && price.max == undefined){
+                valSearch = params.get("q");
+                history.pushState({},"",query);
+            }else if(countParam > 0 && arrMF.length == 0 && price.min != undefined && price.max != undefined){
+                valSearch = params.get("q");
+                history.pushState({},"",query);
+            }
+            else{
+                history.pushState({},"","all");
+            }
             $.ajax({
                 type: "GET",
-                url: `/api/mutipleSearch?mf=${JSON.stringify(arrMF)}&price=${JSON.stringify(price)}&name=${searchInput.val()}&page=${page}`,
+                url: `/api/mutipleSearch?mf=${JSON.stringify(arrMF)}&price=${JSON.stringify(price)}&name=${valSearch}&page=${page}`,
                 success: function(data) {
                     if(data.products.length > 0) {
                         $("#content-products").find(".product-sec1").show();
