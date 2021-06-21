@@ -106,7 +106,6 @@ $(document).ready(function(c) {
                     },
                     data: $(this).serialize(),
                     success: function(data) {
-                        console.log('data', data)
                         if (data.updated) {
                             ShowToastMessage(data.message, "success");
                         } else {
@@ -412,7 +411,6 @@ $(document).ready(function() {
             },
             data: $(this).serialize(),
             success: function(data) {
-                console.log('data', data)
                 if (data.changePassword) {
                     ShowToastMessage(data.message, "success");
                     window.localStorage.removeItem('user_token');
@@ -462,7 +460,6 @@ $(document).ready(function() {
                 type: "GET",
                 url: '/api/search/' + $(this).val(),
                 success: function(data) {
-                    console.log(data);
                     $(".search-content").html(searchContents(data.products));
                     $(".search-content").css("display", "block");
                 }
@@ -501,7 +498,6 @@ $(document).ready(function() {
                 products: products
             },
             success: function(data) {
-                console.log(data);
                 if (data.status === 200) {
                     window.localStorage.removeItem('PPminicarts');
                     $("#payment-succes").find('button[name="id"]').text(data._id);
