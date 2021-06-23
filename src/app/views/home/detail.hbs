@@ -204,7 +204,7 @@
                         <button type="button" class="btn btn-primary m-top-10" id="collapse-raitings">Viết đánh giá</button>
                         <div class="write-content">
                             <div id="noidung-danhgia" class="collapse">
-                                <form action="#" method="post">
+                                <form action="#" method="post" id="form-noidung-danhgia">
                                     <div class="form-raiting">
                                         <div class="title-raiting">
                                             <div>Bạn cảm thấy sản phẩm này như thế nào?</div>
@@ -243,6 +243,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div>
+                                        <input type="text" name="proSlug" hidden="true" >
+                                        <input type="text" name="userSlug" hidden="true" >
+                                    </div>
                                     <div class="textarea">
                                         <textarea name="content"
                                             placeholder="Mời bạn chia sẻ thêm một số cảm nhận ..."></textarea>
@@ -259,12 +263,17 @@
                                                 </span>
                                                 Chọn file
                                             </label>
-                                            <input name="file" id="content-images" type="file" hidden="true"
-                                                multiple="true">
+                                            <input name="images" id="content-images" type="file" hidden="true"
+                                                multiple="true"
+                                                accept="image/png, image/jpeg"
+                                                >
                                             <div class="gallery"></div>
                                         </div>
                                     </div>
-                                    <div class="danhgia-submit">
+                                    <div class="danhgia-submit justify-content-between">
+                                        <div class="text-danger"
+                                            style="font-size: 90%;padding-left: 10px;padding-top: 10px;"
+                                        ></div>
                                         <button type="submit" class="btn btn-primary m-top-10">Gửi đánh giá</button>
                                     </div>
                                 </form>

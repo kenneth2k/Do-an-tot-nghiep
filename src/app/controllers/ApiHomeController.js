@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
-
 const User = require('../models/User');
 const Category = require('../models/Category');
 const Product = require('../models/Product');
+const Raiting = require('../models/Raiting');
 const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../util/mongoose');
-
 class ApiHomeController {
     // [GET] /search/:search
     showSearch(req, res, next) {
@@ -16,6 +15,46 @@ class ApiHomeController {
                 })
             })
             .catch(next)
+    };
+    // [POST] /raiting
+    raiting(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            User.findOne({ slug: decoded._id, token: token })
+                .then(user => {
+                    let files = [];
+                    req.files.forEach(function(value) {
+                        files.push(value.filename);
+                    });
+                    let body = JSON.parse(JSON.stringify(req.body));
+                    let objRaiting = {
+                        star: body.star,
+                        proSlug: body.proSlug,
+                        userSlug: body.userSlug,
+                        content: body.content,
+                        images: files,
+                    };
+
+                    let raiting = new Raiting(objRaiting);
+                    raiting.save();
+                    return res.send({
+                        raiting: true,
+                        message: 'Đánh giá sản phẩm thành công!',
+                        name: user.fullname,
+                        star: raiting.star,
+                        content: body.content,
+                        images: files,
+                    });
+                })
+                .catch(next)
+        } catch (err) {
+            return res.send({
+                raiting: false,
+                message: 'Đánh giá sản phẩm thất bại!'
+            });
+        }
     };
     // [GET] /searchName
     searchName(req, res, next) {
