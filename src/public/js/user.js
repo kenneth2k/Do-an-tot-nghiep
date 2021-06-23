@@ -106,7 +106,6 @@ $(document).ready(function(c) {
                     },
                     data: $(this).serialize(),
                     success: function(data) {
-                        console.log('data', data)
                         if (data.updated) {
                             ShowToastMessage(data.message, "success");
                         } else {
@@ -412,7 +411,6 @@ $(document).ready(function() {
             },
             data: $(this).serialize(),
             success: function(data) {
-                console.log('data', data)
                 if (data.changePassword) {
                     ShowToastMessage(data.message, "success");
                     window.localStorage.removeItem('user_token');
@@ -462,7 +460,6 @@ $(document).ready(function() {
                 type: "GET",
                 url: '/api/search/' + $(this).val(),
                 success: function(data) {
-                    console.log(data);
                     $(".search-content").html(searchContents(data.products));
                     $(".search-content").css("display", "block");
                 }
@@ -501,7 +498,6 @@ $(document).ready(function() {
                 products: products
             },
             success: function(data) {
-                console.log(data);
                 if (data.status === 200) {
                     window.localStorage.removeItem('PPminicarts');
                     $("#payment-succes").find('button[name="id"]').text(data._id);
@@ -527,9 +523,19 @@ $(document).ready(function(c) {
     $(function() {
         // Multiple images preview in browser
         var imagesPreview = function(input, placeToInsertImagePreview) {
+            function FileListItems(files) {
+                var b = new ClipboardEvent("").clipboardData || new DataTransfer()
+                for (var i = 0, len = files.length; i < len; i++) b.items.add(files[i])
+                return b.files
+            }
             if (input.files) {
-                var filesAmount = (input.files.length > 3) ? 3 : input.files.length;
+                var filesAmount = (input.files.length > 3) ? 0 : input.files.length;
                 if (input.files.length > 3) {
+                    var files = [];
+                    for (var i = 0; i < 3; i++) {
+                        files.push(input.files[i])
+                    }
+                    input.files = new FileListItems(files)
                     ShowToastMessage("Chỉ cho phép tối đa 3 ảnh.", "warning")
                 }
                 $(placeToInsertImagePreview).text("");

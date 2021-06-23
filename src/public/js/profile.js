@@ -3,6 +3,7 @@ $(document).ready(function() {
             onloadEventAdress();
 
             function onloadEventAdress() {
+                if (window.location.href.indexOf('profile') === -1) return;
                 //form-create-address
                 $("#form-create-address input[name='phone']").inputFilter(function(value) { return /^\d*$/.test(value); });
                 $("#form-create-address input[name='phone']").prop('maxlength', '10');
@@ -276,4 +277,77 @@ $(document).ready(function() {
             }
         });
     });
+    const dafaultPathname = window.location.pathname;
+    $("#form-noidung-danhgia").submit(function(event) {
+      event.preventDefault();
+      let error = '';
+      let title = $(this).find('input[name="star"]:checked').val()?$(this).find('input[name="star"]:checked').val():0;
+      let content = $(this).find('textarea').val();
+      if(title == 0){
+        error+= 'Bạn chưa đánh giá điểm sao, vui lòng đánh giá.';
+      }
+      else if(content.length < 1){
+        error +='Vui lòng nhập nội dung đánh giá về sản phẩm.';
+      }
+      $(this).find('.danhgia-submit .text-danger').text(error);
+      if(error.length > 0) return;
+      var user_token = JSON.parse(decodeURIComponent(window.localStorage.getItem('user_token')));
+      let  proSlug = dafaultPathname.substring(dafaultPathname.lastIndexOf('/') + 1, dafaultPathname.length);
+      
+      $(this).find('input[name="proSlug"]').val(proSlug);
+      $(this).find('input[name="userSlug"]').val(user_token._slug);
+      
+      let formData = new FormData($(this)[0]);
+      $.ajax({
+        type: 'POST',
+        url: '/api/raiting',
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        enctype: 'multipart/form-data',
+        processData: false,
+        headers: {
+          "Authorization": user_token.token
+        },  
+        success: function(data) {
+          if(data.raiting){
+            ShowToastMessage(data.message, "success");
+            let star = ``, images = ``;
+            for(let i = 0; i < 5; i++){
+              if(i<data.star){
+                star += `<span class="fa fa-star checked">`;
+              }
+              else{
+                star += `<span class="fa fa-star">`;
+              }
+            }
+            for(let i = 0; i < data.images.length; i++){
+              images += `<img src="/public/images/comments/${data.images[i]}" width="100" height="100" alt="">`;
+            }
+            let xhtml = `<div class="comment">
+                <div class="comment-item">
+                    <div class="item-top">
+                        <p class="comment-item__name">${data.name}</p>
+                    </div>
+                    <div class="item-rate">
+                        ${star}
+                    </div>
+                    <div class="comment-content">
+                    ${data.content}
+                    </div>
+                    <div class="comment-content">
+                        ${images}
+                    </div>
+                    <hr style="border:1px solid #f1f1f1">
+                </div>
+            </div>`;
+            $('#raiting-content').append(xhtml);
+          }
+          else{
+            ShowToastMessage(data.message, "error")
+          }
+        }
+      })
+  })
 });

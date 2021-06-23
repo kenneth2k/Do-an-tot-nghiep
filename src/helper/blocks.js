@@ -380,4 +380,24 @@ module.exports = {
     lenght: (array) => {
         return array.length;
     },
+    showBanners: (banners) => {
+        let xhtml = ``;
+        for (let i = 0; i < banners.length; i++) {
+            xhtml += `
+            <div class="carousel-item item${i+1} ${i==0?'active':''}" style="background:url(/public/images/background/${banners[i].images}) no-repeat center;">
+                <div class="container">
+                    <div class="w3l-space-banner">
+                        <div class="carousel-caption p-lg-5 p-sm-4 p-3">
+                            <p>${banners[i].title}</p>
+                            <h3 class="font-weight-bold pt-2 pb-lg-5 pb-4">
+                            <span>${banners[i].content}</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+        }
+        return xhtml;
+    },
 }

@@ -4,6 +4,7 @@ const User = require('../models/User');
 const Raiting = require('../models/Raiting');
 const Category = require('../models/Category');
 const Order = require('../models/Order');
+const Banner = require('../models/Banner');
 const { sendOrderSuccessMail, sendCancelOrderMail } = require('../../util/email/email');
 const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../util/mongoose');
 const { randomToBetween } = require('../../helper/random');
@@ -19,10 +20,12 @@ class HomeController {
                 Product.find({}).limit(15).skip(randomToBetween(0, ((count > 20) ? (count - 10) : 1))),
                 Product.find({
                     hot: true
-                }).limit(12).skip(0)
+                }).limit(12).skip(0),
+                Banner.find({})
             ])
-            .then(([products, productsHot]) => {
+            .then(([products, productsHot, banners]) => {
                 res.render('home/index', {
+                    banners: multipleMongooseToObject(banners),
                     products: multipleMongooseToObject(products),
                     productsHot: multipleMongooseToObject(productsHot),
                 });
