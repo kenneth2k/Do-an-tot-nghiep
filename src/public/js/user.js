@@ -529,14 +529,14 @@ $(document).ready(function(c) {
                 return b.files
             }
             if (input.files) {
-                var filesAmount = (input.files.length > 3) ? 0 : input.files.length;
+                var filesAmount = (input.files.length > 3) ? 3 : input.files.length;
                 if (input.files.length > 3) {
                     var files = [];
                     for (var i = 0; i < 3; i++) {
                         files.push(input.files[i])
                     }
                     input.files = new FileListItems(files)
-                    ShowToastMessage("Chỉ cho phép tối đa 3 ảnh.", "warning")
+                    ShowToastMessage("Chỉ cho phép tối đa 3 ảnh.", "warning");
                 }
                 $(placeToInsertImagePreview).text("");
                 for (i = 0; i < filesAmount; i++) {
