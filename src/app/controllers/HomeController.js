@@ -52,7 +52,7 @@ class HomeController {
                         }
                     },
                     { $match: { proSlug: req.params.slug } }
-                ])
+                ]).sort({ createdAt: -1 })
             ])
             .then(([phone, phones, raitings]) => {
                 if (phone) {

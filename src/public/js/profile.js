@@ -312,6 +312,9 @@ $(document).ready(function() {
         },  
         success: function(data) {
           if(data.raiting){
+            $("#form-noidung-danhgia")[0].reset();
+            $("#form-noidung-danhgia").find('.gallery').text('');
+            $("#form-noidung-danhgia .star label .fa.fa-star").css("color","#dee2e6");
             ShowToastMessage(data.message, "success");
             let star = ``, images = ``;
             for(let i = 0; i < 5; i++){
@@ -342,7 +345,7 @@ $(document).ready(function() {
                     <hr style="border:1px solid #f1f1f1">
                 </div>
             </div>`;
-            $('#raiting-content').append(xhtml);
+            $('#raiting-content').prepend(xhtml);
           }
           else{
             ShowToastMessage(data.message, "error")
