@@ -14,7 +14,7 @@ db.connect();
 
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3300;
 
 //Http logger
 // app.use(morgan('combined'));
