@@ -89,13 +89,15 @@ class HomeController {
                     Product.find({ name: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") } }).sort({
                         price: -1
                     }),
-                    Category.find({ slug: { $nin: ['', 'lien-he'] } })
+                    Category.find({ slug: { $nin: ['', 'lien-he'] } }),
+                    Product.find({}).sort({ qtySeller: -1 })
                 ])
-                .then(([products, categories]) => {
+                .then(([products, categories, productsSeller]) => {
                     return res.render('home/search', {
                         categories: multipleMongooseToObject(categories),
                         totalProduct: products.length,
-                        products: multipleMongooseToObjectOnLimit(products, maxProduct, 0)
+                        products: multipleMongooseToObjectOnLimit(products, maxProduct, 0),
+                        productsSeller: multipleMongooseToObjectOnLimit(productsSeller, 10)
                     });
                 })
                 .catch(next)
@@ -104,13 +106,15 @@ class HomeController {
                     Product.find({ categori: req.params.search }).sort({
                         price: -1
                     }),
-                    Category.find({ slug: { $nin: ['', 'lien-he'] } })
+                    Category.find({ slug: { $nin: ['', 'lien-he'] } }),
+                    Product.find({}).sort({ qtySeller: -1 })
                 ])
-                .then(([products, categories]) => {
+                .then(([products, categories, productsSeller]) => {
                     return res.render('home/search', {
                         categories: multipleMongooseToObject(categories),
                         totalProduct: products.length,
-                        products: multipleMongooseToObjectOnLimit(products, maxProduct, 0)
+                        products: multipleMongooseToObjectOnLimit(products, maxProduct, 0),
+                        productsSeller: multipleMongooseToObjectOnLimit(productsSeller, 10)
                     });
                 })
         }

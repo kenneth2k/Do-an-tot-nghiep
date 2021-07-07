@@ -400,4 +400,22 @@ module.exports = {
         }
         return xhtml;
     },
+    renderProductBestSeller: (products)=>{
+        let xhtml = ``;
+        for(let i=0; i<products.length; i++){
+            xhtml+= `
+            <div class="row" style="border-bottom: 1px solid #333; padding: 10px;">
+                <div class="col-lg-3 col-sm-2 col-3 left-mar">
+                    <img src="/public/images/products/${products[i].colors[0].bigImg}" alt="" class="img-fluid">
+                </div>
+                <div class="col-lg-9 col-sm-10 col-9 w3_mvd">
+                    <a onclick="location.href='/${products[i].categori}/${products[i].slug}';" href="#">${products[i].name}</a>
+                    <a onclick="location.href='/${products[i].categori}/${products[i].slug}';" href="#"
+                        class="price-mar mt-2">${(new Intl.NumberFormat().format(products[i].price))} <sup>đ</sup></a>
+                </div>
+            </div>
+            `;
+        }
+        return xhtml;
+    }
 }
