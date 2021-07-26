@@ -782,6 +782,10 @@ span.item_price {
     border-radius: 10px;
 }
 
+#raiting-content .comment-content img:hover {
+    transform: scale(2);
+}
+
 #noidung-danhgia .gallery {
     display: flex;
     background-color: #dee2e6;
