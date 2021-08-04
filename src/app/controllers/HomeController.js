@@ -62,7 +62,7 @@ class HomeController {
                         raitings: raitings,
                     });
                 } else {
-                    res.redirect('/');
+                    next();
                 }
             })
             .catch(next)

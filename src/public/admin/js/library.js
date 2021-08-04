@@ -185,3 +185,17 @@ function btnEditer(callback) {
         callback($(this).data('id'));
     });
 }
+// Button deleted return
+function btnDeletedReturn(callback) {
+    $(".impact-event .return").click(function(e) {
+        e.preventDefault();
+        callback($(this).data('id'));
+    });
+}
+// Button deleted high
+function btnDeletedHigh(callback) {
+    $(".impact-event .high").click(function(e) {
+        e.preventDefault();
+        callback($(this).data('id'));
+    });
+}
