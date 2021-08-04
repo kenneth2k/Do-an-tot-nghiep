@@ -13,6 +13,7 @@ router.get('/:categori/:slug', homeController.show);
 // router on one params
 router.get('/cart', homeController.showCart);
 router.get('/payment', homeController.showPayment);
+router.get('/notfound', homeController.show404);
 router.get('/:search', homeController.showSearch);
 router.get('/', homeController.index);
 // router on all params

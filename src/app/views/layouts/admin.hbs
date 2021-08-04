@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Admin</title>
     <link rel="shortcut icon" type="images/png" href="./img/favicon-v5.png">
     <link rel="stylesheet" href="/public/admin/css/keyfram.css">
     <link rel="stylesheet" href="/public/admin/css/style.css">
@@ -17,6 +17,14 @@
 </head>
 
 <body>
+    <script>
+        (function checkLogin() {
+            var user_token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+            if (!user_token) {
+                window.location.href = '/notfound';
+            }
+        })();
+    </script>
     <div class="wapper">
         {{{body}}}
     </div>
