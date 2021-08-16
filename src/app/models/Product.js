@@ -18,6 +18,7 @@ const Product = new Schema({
     SIM: { type: String },
     Battery: { type: String },
     categori: { type: String, default: null },
+    content: { type: String, default: null },
     hot: { type: Boolean, default: false },
     sale: { type: Number, default: 0 },
     qtySeller: { type: Number, default: 0 },
