@@ -1,4 +1,18 @@
 module.exports = {
+        rennderPhonesColor: (phones) => {
+            let xhtml = '';
+            for (let i = 0; i < phones.length; i++) {
+                xhtml += `
+                <div class="pro_img">
+                    <input hidden type="radio" id="random-${phones[i]._id}" name="color" value="${phones[i]._id}" ${(i == 0) ? 'checked': ''}>
+                    <label for="random-${phones[i]._id}"><img
+                            src="/public/images/products/${phones[i].bigImg}"
+                            alt=""></label>
+                    <span>${phones[i].name}</span>
+                </div>`;
+            }
+            return xhtml;
+        },
         conditionEqualStatus: (_id, num1, num2) => {
             return (num1 == num2) ? `
             <span id="cancel-order"><a

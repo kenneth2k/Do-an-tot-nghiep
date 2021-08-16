@@ -85,15 +85,7 @@
                 <div class="product-color_img mt-3 mb-3">
                     <div style="display: flex;">
                         <div style="padding-top: 10px;padding-right: 10px;font-weight: bold;">Chọn màu:</div>
-                        {{#each phone.colors}}
-                        <div class="pro_img">
-                            <input hidden type="radio" id="random-{{this._id}}" name="color" value="{{this._id}}" checked>
-                            <label for="random-{{this._id}}"><img
-                                    src="/public/images/products/{{this.bigImg}}"
-                                    alt=""></label>
-                            <span>{{this.name}}</span>
-                        </div>
-                        {{/each}}
+                        {{{rennderPhonesColor phone.colors}}}
                     </div>
                 </div>
                 <div class="occasion-cart">
@@ -134,7 +126,7 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane p-3 border-right border-bottom border-left fade show active" id="nav-home"
                     role="tabpanel" aria-labelledby="nav-home-tab">
-                    {{checkContentProduct phone.content}}
+                    {{{checkContentProduct phone.content}}}
                 </div>
                 <div class="tab-pane p-3 border-right border-bottom border-left fade" id="nav-contact" role="tabpanel"
                     aria-labelledby="nav-contact-tab">
