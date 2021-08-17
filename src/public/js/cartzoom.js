@@ -134,21 +134,21 @@ $(document).ready(function(c) {
             let flag = false;
             cartItem.forEach(function(cart) {
                 if (cart.item_name == id) {
-                    if (newVal == cart.inventory) {
+                    if (newVal <= cart.inventory) {
                         flag = true;
+                        cart.quantity = newVal;
+                        total = cart.amount * cart.quantity;
+                        divPrice.text(total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
+                        return;
                     }
-                    cart.quantity = newVal;
-                    total = cart.amount * cart.quantity;
-                    divPrice.text(total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
-                    return;
                 }
             });
-            listProd.value.items = cartItem;
-            setSaveProd(listProd.value);
-            divUpd.text(newVal);
-            divSumTotal.text(sumTotal().toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
             if (flag == true) {
                 $(this)[0].classList.add('disabled');
+                listProd.value.items = cartItem;
+                setSaveProd(listProd.value);
+                divUpd.text(newVal);
+                divSumTotal.text(sumTotal().toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
                 return;
             }
         }
