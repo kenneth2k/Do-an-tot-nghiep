@@ -31,7 +31,7 @@ function setListProd(prod, index) {
                     <div class="entry value">
                         <span>${prod.quantity}</span>
                     </div>
-                    <div class="entry value-plus ${(prod.quantity === 5) ? 'disabled' : ''}">&nbsp;</div>
+                    <div class="entry value-plus ${(prod.quantity === 5 || prod.quantity >= prod.inventory) ? 'disabled' : ''}">&nbsp;</div>
                 </div>
             </div>
         </td>
@@ -131,8 +131,12 @@ $(document).ready(function(c) {
             divSumTotal = $('#sumTotal');
         if (newVal <= 5) {
             $(this).parent(".quantity-select").find(".value-minus").removeClass('disabled');
+            let flag = false;
             cartItem.forEach(function(cart) {
                 if (cart.item_name == id) {
+                    if (newVal == cart.inventory) {
+                        flag = true;
+                    }
                     cart.quantity = newVal;
                     total = cart.amount * cart.quantity;
                     divPrice.text(total.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
@@ -143,6 +147,10 @@ $(document).ready(function(c) {
             setSaveProd(listProd.value);
             divUpd.text(newVal);
             divSumTotal.text(sumTotal().toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
+            if (flag == true) {
+                $(this)[0].classList.add('disabled');
+                return;
+            }
         }
         if (newVal === 5) {
             $(this)[0].classList.add('disabled');
@@ -243,18 +251,15 @@ $(document).ready(function() {;
         var imgColor = $(".pro_img img");
         if (imgColor) {
             imgColor.click(function(e) {
-                let input = $(this).parent().parent().find("input");
+                let input = $(this).parent().parent().find("input[name='color']");
+                let inventoryCheck = $(this).parent().parent().find("input[name='inventoryCheck']");
                 let color = $(this).parent().parent().find("span");
                 let addColor = $("form fieldset input[name='addColor']");
                 let textColor = $("form fieldset input[name='text_color']");
                 let itemName = $("form fieldset input[name='item_name']");
+                let inventory = $("form fieldset input[name='inventory']");
 
-                // let add = $("form fieldset input[name='add']");
-                // let vt = add.val().indexOf("-");
-                // let id = add.val().substr(0, vt);
-                // add.val(`${id}-${input.val()}`);
-
-
+                inventory.val(inventoryCheck.val());
                 itemName.val(`${itemName.val().substr(0, itemName.val().indexOf("-"))}- ${color.text()}`);
                 addColor.val(input.val());
                 textColor.val(color.text());

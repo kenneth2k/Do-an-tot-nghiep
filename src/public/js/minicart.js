@@ -2618,6 +2618,10 @@
                         data[pair.name] = value;
                     }
                 }
+                if (data.inventory == 0) {
+                    ShowToastMessage(`Sản phẩm tạm hết hàng!`, "error")
+                    return {};
+                }
                 let listProd = JSON.parse(decodeURIComponent(window.localStorage.getItem('PPminicarts')));
                 if (listProd) {
                     let cartItem = listProd.value.items;
@@ -2625,6 +2629,9 @@
                         if (cartItem[i].item_name === data.item_name) {
                             if (cartItem[i].quantity >= 5) {
                                 ShowToastMessage("Sản phẩm vược quá giới hạn!", "error")
+                                return {};
+                            } else if (cartItem[i].quantity >= data.inventory) {
+                                ShowToastMessage(`Chỉ còn ${data.inventory} sản phẩm!`, "error")
                                 return {};
                             }
                         }

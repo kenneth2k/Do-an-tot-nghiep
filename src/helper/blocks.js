@@ -1,10 +1,14 @@
 module.exports = {
+        quantityProduct: (colors) => {
+            return colors[0].quantity;
+        },
         rennderPhonesColor: (phones) => {
             let xhtml = '';
             for (let i = 0; i < phones.length; i++) {
                 xhtml += `
                 <div class="pro_img">
                     <input hidden type="radio" id="random-${phones[i]._id}" name="color" value="${phones[i]._id}" ${(i == 0) ? 'checked': ''}>
+                    <input hidden type="text" name="inventoryCheck" value="${phones[i].quantity}"/>
                     <label for="random-${phones[i]._id}"><img
                             src="/public/images/products/${phones[i].bigImg}"
                             alt=""></label>

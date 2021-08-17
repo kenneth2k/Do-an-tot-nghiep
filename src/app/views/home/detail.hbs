@@ -36,16 +36,6 @@
                     <del class="mx-2 font-weight-light">{{convertToVND phone.price}} <sup>đ</sup></del>
                     <label>Miễn phí giao hàng</label>
                 </p>
-                <div class="single-infoagile">
-                    <ul>
-                        <li class="mb-3">
-                            Thanh toán
-                        </li>
-                        <li class="mb-3">
-                            Giao hàng nhanh.
-                        </li>
-                    </ul>
-                </div>
                 <div class="product-single-w3l">
                     <p class="my-3">
                         <i class="far fa-hand-point-right mr-2"></i>
@@ -93,6 +83,7 @@
                         <form action="#" method="post">
                             <fieldset>
                                 <input type="hidden" name="cmd" value="_cart" />
+                                <input type="hidden" name="inventory" value="{{quantityProduct phone.colors}}"/>
                                 <input type="hidden" name="add" value="{{phone.slug}}" />
                                 <input type="hidden" name="addColor" value="{{idImageOne phone.colors}}" />
                                 <input type="hidden" name="img" value="{{imageOne phone.colors}}" />
