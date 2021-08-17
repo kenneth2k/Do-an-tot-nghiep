@@ -227,7 +227,7 @@ html[xmlns] .flexslider .slides {
 }
 
 .flex-control-nav li {
-    margin: 0 6px;
+    padding: 6px 0px;
     display: inline-block;
     zoom: 1;
     *display: inline;
@@ -264,14 +264,12 @@ html[xmlns] .flexslider .slides {
 .flex-control-thumbs {
     margin: 5px 0 0;
     position: static;
-    overflow-x: scroll;
-    display: flex;
+    overflow-x: hidden;
 }
 
 .flex-control-thumbs li {
     width: 25%;
     float: left;
-    margin: 0 1% 0 0;
 }
 
 .flex-control-thumbs li:nth-child(4) {
@@ -299,6 +297,7 @@ html[xmlns] .flexslider .slides {
 .flex-control-thumbs .flex-active {
     opacity: 1;
     cursor: default;
+    border: 1px solid red;
 }
 
 @media(max-width: 480px) {
