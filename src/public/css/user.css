@@ -895,7 +895,7 @@ span.item_price {
     position: absolute;
     z-index: 999;
     background-color: #fff;
-    width: calc(100% - 140px);
+    width: 90%;
 }
 
 .search-item {
