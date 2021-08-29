@@ -2362,8 +2362,12 @@ div#testimonials h4.m-title {
 }
 
 @media(max-width: 1080px) {
+    .header-right ul li:first-child {
+        display: none;
+    }
     .header-right ul li {
         font-size: 12px;
+        width: 24%;
     }
     .header-most-top p {
         font-size: 14px;
@@ -2478,9 +2482,9 @@ div#testimonials h4.m-title {
         width: 34%;
         top: -11px;
     }
-    .logo_agile {
+    /* .logo_agile {
         padding: 20px 0 21px 46px;
-    }
+    } */
     .logo_agile h1 a {
         font-size: 34px;
     }
@@ -2620,8 +2624,12 @@ div#testimonials h4.m-title {
 }
 
 @media(max-width: 800px) {
+    .header-right ul li:first-child {
+        display: none;
+    }
     .header-right ul li {
         font-size: 13px;
+        width: 24%;
     }
     .logo_agile h1 a {
         font-size: 28px;
@@ -2661,9 +2669,9 @@ div#testimonials h4.m-title {
 }
 
 @media(max-width: 736px) {
-    .logo_agile {
+    /* .logo_agile {
         padding: 10px 0 0;
-    }
+    } */
     .logo_agile h1 a {
         font-size: 34px;
     }
@@ -2806,7 +2814,7 @@ div#testimonials h4.m-title {
 
 @media(max-width: 600px) {
     .header-right ul li {
-        width: 32%;
+        width: 45%;
     }
     .header-right ul li {
         font-size: 13px;
