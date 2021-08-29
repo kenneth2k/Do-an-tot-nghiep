@@ -2645,6 +2645,25 @@ div#testimonials h4.m-title {
 }
 
 @media(max-width: 768px) {
+    .left-side-list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .left-side-list li {
+        align-items: center;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        color: #333;
+        display: flex;
+        font-size: 14px;
+        justify-content: center;
+        line-height: 17px;
+        padding: 8px 9px;
+    }
+    .w3l-range ul li {
+        margin-bottom: 6px;
+        margin-right: 6px;
+    }
     .logo_agile {
         padding: 20px 0 21px 30px;
     }
