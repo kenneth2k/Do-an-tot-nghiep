@@ -14,6 +14,8 @@
         $(".list-group-item.nav-left.border-0").click(function(e) {
             // remove all class active
             $(".list-group-item.nav-left.border-0").removeClass("active");
+            //auth
+            let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
             // addclass active on this
             if ($(e.target).hasClass(".list-group-item")) {
                 $(e.target).addClass('active');
@@ -23,11 +25,21 @@
             switch ($(this).data("manager")) {
                 case 'home':
                     {
-                        showLoadingTable();
-                        setTimeout(function() {
-                            $("#table-role").html(loadTableHome());
-                            hideLoadingTable();
-                        }, 1000);
+                        $.ajax({
+                            url: '/admin/home',
+                            type: "GET",
+                            headers: {
+                                "Authorization": token.token
+                            },
+                            beforeSend: function() {
+                                showLoadingTable();
+                            },
+                            success: function() {
+                                hideLoadingTable();
+                            }
+                        }).done(function(data) {
+                            $("#table-role").html(loadTableHome(data));
+                        });
                         break;
                     }
                 case 'banner':
@@ -80,9 +92,10 @@
 )();
 (
     function() {
-        $("#table-role").html(loadTableHome());
-        hideLoadingTable();
-        // loadTableProduct();
-        // btnAddNew(formProduct);
+        $(".list-group-item.nav-left.border-0").each(function(e) {
+            if ($(this).data("manager") == 'home') {
+                $(this).click();
+            }
+        })
     }
 )();
