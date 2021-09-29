@@ -1,5 +1,4 @@
 function renderTableBanner(data) {
-    console.log(data)
     var xquery = `
     <div class="nav-content d-flex justify-content-between p-2">
         <div class="nav-content-1 d-flex">
@@ -147,12 +146,12 @@ function formBanner() {
     var xhtml = `
         <div>
             <label class="form-label">Tiêu đề</label>
-            <input type="text" class="form-control" name="title">
+            <input type="text" class="form-control" name="title" maxlength="16">
             <div></div>
         </div>
         <div>
             <label class="form-label">Nội dung</label>
-            <input type="text" class="form-control" name="content">
+            <input type="text" class="form-control" name="content" maxlength="30">
             <div></div>
         </div>
         <div>
@@ -164,29 +163,55 @@ function formBanner() {
     showModal("formBannerAddnew", "post", "Thêm ảnh bìa", xhtml, function(data) {
         var error = {};
         // xử lý các giá trị biểu mẫu
-        // if (data.name === "") {
-        //     error.name = "sadsad!";
-        // }
-        // if (data.email === "") {
-        //     error.email = "Vui lòng nhập email!";
-        // }
+        if (data.title.length < 1) {
+            error.title = "Tiêu đề không được rỗng!";
+        } else if (data.title.length > 16) {
+            error.title = "Tiêu đề không quá 16 kí tự!";
+        }
+        if (data.content.length < 1) {
+            error.content = "Nội dung không được rỗng!";
+        } else if (data.content.length > 30) {
+            error.content = "Nội dung không quá 30 kí tự!";
+        }
+        if (data.images.length < 1) {
+            error.images = "Vui lòng chọn ảnh!";
+        }
         // xử lý sự kiện khi có lỗi
         if (Object.keys(error).length > 0) {
             throw JSON.stringify(error);
         }
-        // gọi ajax to do something...
-        console.log("wait");
-        addLoadingPage();
-        // ajax response
-        setTimeout(function() {
-            removeLoadingPage();
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        let formData = new FormData($('#formBannerAddnew')[0]);
+        $.ajax({
+            url: '/admin/banner/create',
+            type: "POST",
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
+            console.log(data)
             setTimeout(function() {
                 $('#myModal').modal('hide');
+                showToast('Cập nhật thành công', "success");
                 setTimeout(function() {
-                    showToast('Cập nhật thành công', "success")
-                }, 500);
-            }, 500);
-        }, 2000);
+                    returnNavBar('banner');
+                }, 1000);
+            }, 1000);
+        });
     });
 };
 
