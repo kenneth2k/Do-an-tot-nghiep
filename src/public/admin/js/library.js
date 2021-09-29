@@ -52,10 +52,12 @@ function contentTable(title, xquery, thead, tbody, addNew = true) {
             </div>`:''}
         </div>
             ${xquery}
-        <table class="table table-hover">
-            ${thead}
-            ${tbody}
-        </table>
+        <div style="max-height: 450px;overflow: auto;">
+            <table class="table table-hover">
+                ${thead}
+                ${tbody}
+            </table>
+        </div>
     `;
     table.innerHTML = xhtml;
 }
