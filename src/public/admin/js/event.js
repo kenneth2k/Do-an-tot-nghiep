@@ -44,14 +44,26 @@
                     }
                 case 'banner':
                     {
-                        showLoadingTable();
-                        setTimeout(function() {
-                            renderTableBanner();
+                        $.ajax({
+                            url: '/admin/banner',
+                            type: "GET",
+                            headers: {
+                                "Authorization": token.token
+                            },
+                            beforeSend: function() {
+                                showLoadingTable();
+                            },
+                            success: function() {
+                                hideLoadingTable();
+
+                            }
+                        }).done(function(data) {
+                            renderTableBanner(data);
                             btnAddNew(formBanner);
                             btnDeleted(formBannerDeleted);
                             btnEditer(formBannerEditer);
-                            hideLoadingTable();
-                        }, 1000);
+                        });
+                        break;
                     }
                 case 'cart':
                     {

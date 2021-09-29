@@ -1,4 +1,5 @@
-function renderTableBanner() {
+function renderTableBanner(data) {
+    console.log(data)
     var xquery = `
     <div class="nav-content d-flex justify-content-between p-2">
         <div class="nav-content-1 d-flex">
@@ -17,7 +18,7 @@ function renderTableBanner() {
     `;
     var xthead = `
         <thead>
-            <tr>
+            <tr class="scrollable-wrapper">
                 <th scope="col">STT</th>
                 <th scope="col">Tiêu đề</th>
                 <th scope="col">Nội dung</th>
@@ -26,20 +27,22 @@ function renderTableBanner() {
             </tr>
         </thead>
     `;
-    var xtbody = `
-        <tbody>
+    var xtbody = '<tbody>';
+    data.bannerList.map((item, index) => {
+        xtbody += `
             <tr>
-                <th class="td-center" scope="row">1</th>
-                <td class="td-center">item 1</td>
-                <td class="td-center">item 2</td>
-                <td class="td-center">item 3</td>
+                <th class="td-center" scope="row">${index + 1}</th>
+                <td class="td-center">${item.title}</td>
+                <td class="td-center">${item.content}</td>
+                <td class="td-center"><img width=100 height=70 src="/public/images/background/${item.images}"/></td>
                 <td class="td-center impact-event">
-                    <button type="button" class="btn btn-primary btn-sm edit" data-id="1">Sửa</button>
-                    <button type="button" class="btn btn-danger btn-sm deleted" data-id="2">Xóa</button>
+                    <button type="button" class="btn btn-primary btn-sm edit" data-id="${item._id}">Sửa</button>
+                    <button type="button" class="btn btn-danger btn-sm deleted" data-id="${item._id}">Xóa</button>
                 </td>
             </tr>
-        </tbody>
-    `;
+        `;
+    });
+    xtbody += '</tbody>';
     contentTable("Quản lý ảnh bìa", xquery, xthead, xtbody);
     pageNavigation(1, 1, 1);
     renderTableBannerSearch();
