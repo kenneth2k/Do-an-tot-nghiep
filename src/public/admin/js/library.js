@@ -61,6 +61,33 @@ function contentTable(title, xquery, thead, tbody, addNew = true) {
     `;
     table.innerHTML = xhtml;
 }
+function imagesPreview(input, placeToInsertImagePreview) {
+    function FileListItems(files) {
+        var b = new ClipboardEvent("").clipboardData || new DataTransfer()
+        for (var i = 0, len = files.length; i < len; i++) b.items.add(files[i])
+        return b.files
+    }
+    if (input.files) {
+        var filesAmount = (input.files.length > 3) ? 3 : input.files.length;
+        if (input.files.length > 4) {
+            var files = [];
+            for (var i = 0; i < 4; i++) {
+                files.push(input.files[i])
+            }
+            input.files = new FileListItems(files)
+            // ShowToastMessage("Chỉ cho phép tối đa 3 ảnh.", "warning");
+        }
+        $(placeToInsertImagePreview).text("");
+        for (i = 0; i < filesAmount; i++) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+               $($.parseHTML('<img class="images-edit" />')).attr('src', event.target.result).appendTo(placeToInsertImagePreview);
+            }
+            reader.readAsDataURL(input.files[i]);
+        }
+    }
+
+};
 // Ẩn/Hiện Modal
 function showModal(idForm, method, title, body, callback) {
     var xhtml = `
@@ -88,6 +115,12 @@ function showModal(idForm, method, title, body, callback) {
         keyboard: false
     });
     openModal.show();
+
+    //Show images input file
+    $(`#${idForm} input[type="file"]`).on('change', function() {
+        imagesPreview(this, `#${idForm} input[type="file"]~div`);
+    });
+
     var submitForm = document.getElementById(idForm);
     // check size
     // var size = Object.keys(data).length;
@@ -184,7 +217,9 @@ function btnDeleted(callback) {
 function btnEditer(callback) {
     $(".impact-event .edit").click(function(e) {
         e.preventDefault();
-        callback($(this).data('id'));
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        let id = $(this).data('id');
+        callback({token, id});
     });
 }
 // Button deleted return

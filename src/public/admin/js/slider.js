@@ -1,20 +1,5 @@
 function renderTableBanner(data) {
-    var xquery = `
-    <div class="nav-content d-flex justify-content-between p-2">
-        <div class="nav-content-1 d-flex">
-            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('banner')">Công khai (<span class="text-secondary">1</span>) </a></div>
-            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableBannerDeleted()">Thùng rác (<span class="text-secondary">0</span>) </a></div>
-        </div>
-        <div class="nav-content-2">
-            <form action="#" method="get" id="formSearchBanner">
-                <div class="input-group" style="width: 300px;">
-                    <input type="text" class="form-control" placeholder="Tìm kiếm">
-                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    `;
+    var xquery = '';
     var xthead = `
         <thead>
             <tr class="scrollable-wrapper">
@@ -215,50 +200,84 @@ function formBanner() {
     });
 };
 
-function formBannerEditer() {
-    var xhtml = `
+function formBannerEditer({ token, id }) {
+    $.ajax({
+        url: `/admin/banner/${id}/edit`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+        }
+    }).done(function(data) {
+        var xhtml = `
+        <div hidden="true">
+            <label class="form-label">ID</label>
+            <input type="text" class="form-control" name="id" value="${data._id}">
+            <div></div>
+        </div>
         <div>
             <label class="form-label">Tiêu đề</label>
-            <input type="text" class="form-control" name="title">
+            <input type="text" class="form-control" name="title" value="${data.title}">
             <div></div>
         </div>
         <div>
             <label class="form-label">Nội dung</label>
-            <input type="text" class="form-control" name="content">
+            <input type="text" class="form-control" name="content" value="${data.content}">
             <div></div>
         </div>
         <div>
             <label class="form-label">Hình ảnh</label>
             <input type="file" class="form-control" name="images">
-            <div></div>
+            <div><img class="images-edit" src="/public/images/background/${data.images}"/></div>
         </div>
         `;
-    showModal("formBannerAddnew", "post", "Xóa ảnh bìa", xhtml, function(data) {
-        var error = {};
-        // xử lý các giá trị biểu mẫu
-        // if (data.name === "") {
-        //     error.name = "sadsad!";
-        // }
-        // if (data.email === "") {
-        //     error.email = "Vui lòng nhập email!";
-        // }
-        // xử lý sự kiện khi có lỗi
-        if (Object.keys(error).length > 0) {
-            throw JSON.stringify(error);
-        }
-        // gọi ajax to do something...
-        console.log("wait");
-        addLoadingPage();
-        // ajax response
-        setTimeout(function() {
-            removeLoadingPage();
-            setTimeout(function() {
+        showModal("formBannerEdit", "post", "Xóa ảnh bìa", xhtml, function(data) {
+            var error = {};
+            // xử lý các giá trị biểu mẫu
+            // if (data.name === "") {
+            //     error.name = "sadsad!";
+            // }
+            // if (data.email === "") {
+            //     error.email = "Vui lòng nhập email!";
+            // }
+            // xử lý sự kiện khi có lỗi
+            if (Object.keys(error).length > 0) {
+                throw JSON.stringify(error);
+            }
+            // call ajax to do something...
+            let formData = new FormData($('#formBannerEdit')[0]);
+            $.ajax({
+                url: `/admin/banner/${id}`,
+                type: "PUT",
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                headers: {
+                    "Authorization": token.token
+                },
+                beforeSend: function() {
+                    addLoadingPage();
+                },
+                success: function() {
+                    removeLoadingPage();
+                }
+            }).done(function(data) {
+                console.log(data);
                 $('#myModal').modal('hide');
                 setTimeout(function() {
-                    showToast('Cập nhật thành công', "success")
+                    showToast(data.message, "success");
+                    returnNavBar('banner');
                 }, 500);
-            }, 500);
-        }, 2000);
+            });
+        });
     });
 }
 

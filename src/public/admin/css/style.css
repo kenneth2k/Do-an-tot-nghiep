@@ -384,3 +384,9 @@
     bottom: 0;
     left: 0;
 }
+
+.images-edit {
+    padding-top: 10px;
+    width: 100px;
+    height: 70px;
+}
