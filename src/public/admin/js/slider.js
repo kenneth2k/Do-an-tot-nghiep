@@ -138,7 +138,7 @@ function formBanner() {
     var xhtml = `
         <div>
             <label class="form-label">Tiêu đề</label>
-            <input type="text" class="form-control" name="title" maxlength="16">
+            <input type="text" class="form-control" name="title" maxlength="30">
             <div></div>
         </div>
         <div>
@@ -157,8 +157,8 @@ function formBanner() {
         // xử lý các giá trị biểu mẫu
         if (data.title.length < 1) {
             error.title = "Tiêu đề không được rỗng!";
-        } else if (data.title.length > 16) {
-            error.title = "Tiêu đề không quá 16 kí tự!";
+        } else if (data.title.length > 30) {
+            error.title = "Tiêu đề không quá 30 kí tự!";
         }
         if (data.content.length < 1) {
             error.content = "Nội dung không được rỗng!";
