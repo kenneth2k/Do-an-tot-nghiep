@@ -10,10 +10,16 @@ class AdminBannerController {
             const token = req.header('Authorization').replace("Bearer ", "");
             const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
             if (!decoded) throw new Error('TOKEN UNDEFINED!');
-            Banner.find({})
-                .then((banner) => {
+            Promise.all([
+                Banner.find({}),
+                Banner.countDocuments(),
+                Banner.countDocumentsDeleted()
+            ])
+                .then(([banner, countActive, countDelete]) => {
                     return res.send({
-                        bannerList: banner
+                        bannerList: banner,
+                        countActive,
+                        countDelete
                     })
                 })
                 .catch((err) => {
