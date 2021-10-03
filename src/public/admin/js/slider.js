@@ -40,57 +40,72 @@ function renderTableBanner(data) {
 }
 
 function renderTableBannerDeleted() {
-    showLoadingTable();
-    setTimeout(function() {
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: '/admin/banner/delete',
+            type: "GET",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
+            renderListDelete(data);
+        });
+}
+function renderListDelete(data){
         var xquery = `
-        <div class="nav-content d-flex justify-content-between p-2">
-            <div class="nav-content-1 d-flex">
-                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('banner')">Danh sách ảnh bìa</a></div>
-            </div>
-            <div class="nav-content-2">
-                <form action="#" method="get" id="formSearchBannerDeleted">
-                    <div class="input-group" style="width: 300px;">
-                        <input type="text" class="form-control" placeholder="Tìm kiếm">
-                        <button class="btn btn-primary" type="submit">Tìm kiếm</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        `;
+            <div class="nav-content d-flex justify-content-between p-2">
+                <div class="nav-content-1 d-flex">
+                    <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('banner')">Danh sách ảnh bìa</a></div>
+                </div>
+                <div class="nav-content-2">
+                    <form action="#" method="get" id="formSearchBannerDeleted">
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm">
+                            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>`;
         var xthead = `
-            <thead>
+                <thead>
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Tiêu đề</th>
+                        <th scope="col">Nội dung</th>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>`;
+        var xtbody = '<tbody>';
+        data.bannerList.map((item, index) => {
+            xtbody += `
                 <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Tiêu đề</th>
-                    <th scope="col">Nội dung</th>
-                    <th scope="col">Hình ảnh</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-        `;
-        var xtbody = `
-            <tbody>
-                <tr>
-                    <th class="td-center" scope="row">1</th>
-                    <td class="td-center">item 1</td>
-                    <td class="td-center">item 2</td>
-                    <td class="td-center">item 3</td>
+                    <th class="td-center" scope="row">${index + 1}</th>
+                    <td class="td-center">${item.title}</td>
+                    <td class="td-center">${item.content}</td>
+                    <td class="td-center"><img width=100 height=70 src="/public/images/background/${item.images}"/></td>
                     <td class="td-center impact-event">
-                        <button type="button" class="btn btn-primary btn-sm return" data-id="1">Khôi phục</button>
-                        <button type="button" class="btn btn-danger btn-sm high" data-id="2">Xóa vĩnh viễn</button>
+                        <button type="button" class="btn btn-primary btn-sm return" data-id="${item._id}">Khôi phục</button>
+                        <button type="button" class="btn btn-danger btn-sm high" data-id="${item._id}">Xóa vĩnh viễn</button>
                     </td>
                 </tr>
-            </tbody>
-        `;
+            `;
+        });
+        xtbody += '</tbody>';
         contentTable("Ảnh bìa đã xóa", xquery, xthead, xtbody, false);
-        pageNavigation(0, 1, 1);
+        pageNavigation(data.pagePre, data.pageActive, data.pageNext);
         btnDeletedReturn(formBannerDeletedReturn);
         btnDeletedHigh(formBannerDeletedHigh);
         renderTableBannerSearch();
-        hideLoadingTable();
-    }, 1000);
 }
-
 function renderTableBannerSearch() {
     const search = $('#table-role #formSearchBanner');
     const searchDeleted = $('#table-role #formSearchBannerDeleted');
@@ -223,17 +238,17 @@ function formBannerEditer({ token, id }) {
         var xhtml = `
         <div hidden="true">
             <label class="form-label">ID</label>
-            <input type="text" class="form-control" name="id" value="${data._id}">
+            <input type="text" class="form-control" name="id" value="${data._id}" >
             <div></div>
         </div>
         <div>
             <label class="form-label">Tiêu đề</label>
-            <input type="text" class="form-control" name="title" value="${data.title}">
+            <input type="text" class="form-control" name="title" value="${data.title}" maxlength="30">
             <div></div>
         </div>
         <div>
             <label class="form-label">Nội dung</label>
-            <input type="text" class="form-control" name="content" value="${data.content}">
+            <input type="text" class="form-control" name="content" value="${data.content}" maxlength="30">
             <div></div>
         </div>
         <div>
@@ -245,12 +260,16 @@ function formBannerEditer({ token, id }) {
         showModal("formBannerEdit", "post", "Xóa ảnh bìa", xhtml, function(data) {
             var error = {};
             // xử lý các giá trị biểu mẫu
-            // if (data.name === "") {
-            //     error.name = "sadsad!";
-            // }
-            // if (data.email === "") {
-            //     error.email = "Vui lòng nhập email!";
-            // }
+            if (data.title.length < 1) {
+                error.title = "Tiêu đề không được rỗng!";
+            } else if (data.title.length > 30) {
+                error.title = "Tiêu đề không quá 30 kí tự!";
+            }
+            if (data.content.length < 1) {
+                error.content = "Nội dung không được rỗng!";
+            } else if (data.content.length > 30) {
+                error.content = "Nội dung không quá 30 kí tự!";
+            }
             // xử lý sự kiện khi có lỗi
             if (Object.keys(error).length > 0) {
                 throw JSON.stringify(error);
