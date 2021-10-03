@@ -188,7 +188,6 @@ function formBanner() {
 
             }
         }).done(function(data) {
-            console.log(data)
             setTimeout(function() {
                 $('#myModal').modal('hide');
                 showToast('Cập nhật thành công', "success");
@@ -252,7 +251,7 @@ function formBannerEditer({ token, id }) {
             // call ajax to do something...
             let formData = new FormData($('#formBannerEdit')[0]);
             $.ajax({
-                url: `/admin/banner/${id}`,
+                url: `/admin/banner/${id}/update`,
                 type: "PUT",
                 data: formData,
                 async: false,
@@ -291,30 +290,34 @@ function formBannerDeleted(id) {
         `;
     showModal("formBannerDeleted", "post", "Xóa ảnh bìa", xhtml, function(data) {
         var error = {};
-        // xử lý các giá trị biểu mẫu
-        // if (data.name === "") {
-        //     error.name = "sadsad!";
-        // }
-        // if (data.email === "") {
-        //     error.email = "Vui lòng nhập email!";
-        // }
         // xử lý sự kiện khi có lỗi
         if (Object.keys(error).length > 0) {
             throw JSON.stringify(error);
         }
-        // gọi ajax to do something...
-        console.log("wait");
-        addLoadingPage();
-        // ajax response
-        setTimeout(function() {
-            removeLoadingPage();
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/banner/${data.bannerId}/delete`,
+            type: "DELETE",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
             setTimeout(function() {
                 $('#myModal').modal('hide');
+                showToast('Cập nhật thành công', "success");
                 setTimeout(function() {
-                    showToast('Cập nhật thành công', "success")
-                }, 500);
-            }, 500);
-        }, 2000);
+                    returnNavBar('banner');
+                }, 1000);
+            }, 1000);
+        });
     });
 }
 

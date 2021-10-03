@@ -68,7 +68,7 @@ class AdminBannerController {
             })
         }
     };
-    // [PUT] /admin/banner/:id
+    // [DELETE] /admin/banner/:id/update
     update(req, res, next) {
         try {
             const token = req.header('Authorization').replace("Bearer ", "");
@@ -98,6 +98,27 @@ class AdminBannerController {
                 })
                 .catch((err) => {
                     throw new Error('FIND NOT FOUND!');
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    }
+    // [PUT] /admin/banner/:id/delete
+    delete(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            Banner.delete({ _id: req.params.id })
+                .then((banner) => {
+                    return res.send({
+                        message: 'Xóa ảnh bìa thành công!'
+                    });
+                })
+                .catch((err) => {
+                    throw new Error('DELETE FAILUARE!');
                 })
         } catch (e) {
             return res.send({
