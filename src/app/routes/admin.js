@@ -24,7 +24,8 @@ router.get('/home', adminController.home);
 router.get('/banner', adminBannerController.index);
 router.post('/banner/create', upload.single('images'), adminBannerController.create);
 router.get('/banner/:id/edit', adminBannerController.edit);
-router.put('/banner/:id', upload.single('images'), adminBannerController.update);
+router.put('/banner/:id/update', upload.single('images'), adminBannerController.update);
+router.delete('/banner/:id/delete', adminBannerController.delete);
 
 router.get('/*', adminController.notfound);
 
