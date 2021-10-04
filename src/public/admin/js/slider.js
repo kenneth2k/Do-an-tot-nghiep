@@ -39,11 +39,11 @@ function renderTableBanner(data) {
     renderTableBannerSearch();
 }
 
-function renderTableBannerDeleted() {
+function renderTableBannerDeleted(search = '', page = undefined) {
     // call ajax to do something...
     let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
     $.ajax({
-        url: '/admin/banner/delete',
+        url: `/admin/banner/delete/search?q=${search}&page=${page}`,
         type: "GET",
         headers: {
             "Authorization": token.token
@@ -56,11 +56,11 @@ function renderTableBannerDeleted() {
 
         }
     }).done(function(data) {
-        renderListDelete(data);
+        renderListDelete(data, search);
     });
 }
 
-function renderListDelete(data) {
+function renderListDelete(data, search) {
     var xquery = `
             <div class="nav-content d-flex justify-content-between p-2">
                 <div class="nav-content-1 d-flex">
@@ -69,7 +69,7 @@ function renderListDelete(data) {
                 <div class="nav-content-2">
                     <form action="#" method="get" id="formSearchBannerDeleted">
                         <div class="input-group" style="width: 300px;">
-                            <input type="text" class="form-control" placeholder="Tìm kiếm">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm" value="${search}">
                             <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                         </div>
                     </form>
@@ -77,7 +77,7 @@ function renderListDelete(data) {
             </div>`;
     var xthead = `
                 <thead>
-                    <tr>
+                    <tr class="scrollable-wrapper">
                         <th scope="col">STT</th>
                         <th scope="col">Tiêu đề</th>
                         <th scope="col">Nội dung</th>
@@ -102,10 +102,16 @@ function renderListDelete(data) {
     });
     xtbody += '</tbody>';
     contentTable("Ảnh bìa đã xóa", xquery, xthead, xtbody, false);
-    pageNavigation(data.pagePre, data.pageActive, data.pageNext);
+    pageNavigation(data.pagePre, data.pageActive, data.pageNext, 'renderBannerDeletePageOnClick');
     btnDeletedReturn(formBannerDeletedReturn);
     btnDeletedHigh(formBannerDeletedHigh);
     renderTableBannerSearch();
+}
+
+function renderBannerDeletePageOnClick(page) {
+    let content = $('#formSearchBannerDeleted').find('input[type="text"').val();
+    console.log(content);
+    renderTableBannerDeleted(content, page);
 }
 
 function renderTableBannerSearch() {
