@@ -86,23 +86,34 @@ function renderListDelete(data, search) {
                     </tr>
                 </thead>`;
     var xtbody = '<tbody>';
-    data.bannerList.map((item, index) => {
+    if (data.bannerList.length > 0) {
+        data.bannerList.map((item, index) => {
+            xtbody += `
+                    <tr>
+                        <th class="td-center" scope="row">${index + 1}</th>
+                        <td class="td-center">${item.title}</td>
+                        <td class="td-center">${item.content}</td>
+                        <td class="td-center"><img width=100 height=70 src="/public/images/background/${item.images}"/></td>
+                        <td class="td-center impact-event">
+                            <button type="button" class="btn btn-primary btn-sm return" data-id="${item._id}">Khôi phục</button>
+                            <button type="button" class="btn btn-danger btn-sm high" data-id="${item._id}">Xóa vĩnh viễn</button>
+                        </td>
+                    </tr>
+                `;
+        });
+    } else {
         xtbody += `
-                <tr>
-                    <th class="td-center" scope="row">${index + 1}</th>
-                    <td class="td-center">${item.title}</td>
-                    <td class="td-center">${item.content}</td>
-                    <td class="td-center"><img width=100 height=70 src="/public/images/background/${item.images}"/></td>
-                    <td class="td-center impact-event">
-                        <button type="button" class="btn btn-primary btn-sm return" data-id="${item._id}">Khôi phục</button>
-                        <button type="button" class="btn btn-danger btn-sm high" data-id="${item._id}">Xóa vĩnh viễn</button>
-                    </td>
-                </tr>
-            `;
-    });
+                    <tr>
+                        <td colspan="5">Không tìm thấy tài liệu</td>
+                    </tr>
+                `;
+    }
     xtbody += '</tbody>';
+    //Check page hide or show
+    let pagePre = (data.bannerList.length > 0) ? data.pagePre : 1;
+    //Show table
     contentTable("Ảnh bìa đã xóa", xquery, xthead, xtbody, false);
-    pageNavigation(data.pagePre, data.pageActive, data.pageNext, 'renderBannerDeletePageOnClick');
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderBannerDeletePageOnClick');
     btnDeletedReturn(formBannerDeletedReturn);
     btnDeletedHigh(formBannerDeletedHigh);
     renderTableBannerSearch();
@@ -110,49 +121,36 @@ function renderListDelete(data, search) {
 
 function renderBannerDeletePageOnClick(page) {
     let content = $('#formSearchBannerDeleted').find('input[type="text"').val();
-    console.log(content);
     renderTableBannerDeleted(content, page);
 }
 
 function renderTableBannerSearch() {
-    const search = $('#table-role #formSearchBanner');
+    // const search = $('#table-role #formSearchBanner');
     const searchDeleted = $('#table-role #formSearchBannerDeleted');
-    if (search) {
-        search.submit(function(e) {
-            e.preventDefault();
-            const input = search.find('input');
-            const table = $('#table-role tbody');
-            table.html(` <tr>
-            <th class="td-center" scope="row">1</th>
-            <td class="td-center">item 1</td>
-            <td class="td-center">item 2</td>
-            <td class="td-center">item 3</td>
-            <td class="td-center impact-event">
-                <button type="button" class="btn btn-primary btn-sm edit" data-id="1">Sửa</button>
-                <button type="button" class="btn btn-danger btn-sm deleted" data-id="2">Xóa</button>
-            </td>
-        </tr>`);
-            btnDeleted(formBannerDeleted);
-            btnEditer(formBannerEditer);
-        });
-    }
+    // if (search) {
+    //     search.submit(function(e) {
+    //         e.preventDefault();
+    //         const input = search.find('input');
+    //         const table = $('#table-role tbody');
+    //         table.html(` <tr>
+    //         <th class="td-center" scope="row">1</th>
+    //         <td class="td-center">item 1</td>
+    //         <td class="td-center">item 2</td>
+    //         <td class="td-center">item 3</td>
+    //         <td class="td-center impact-event">
+    //             <button type="button" class="btn btn-primary btn-sm edit" data-id="1">Sửa</button>
+    //             <button type="button" class="btn btn-danger btn-sm deleted" data-id="2">Xóa</button>
+    //         </td>
+    //     </tr>`);
+    //         btnDeleted(formBannerDeleted);
+    //         btnEditer(formBannerEditer);
+    //     });
+    // }
     if (searchDeleted) {
         searchDeleted.submit(function(e) {
             e.preventDefault();
-            const input = searchDeleted.find('input');
-            const table = $('#table-role tbody');
-            table.html(` <tr>
-            <th class="td-center" scope="row">1</th>
-            <td class="td-center">item 1</td>
-            <td class="td-center">item 2</td>
-            <td class="td-center">item 3</td>
-            <td class="td-center impact-event">
-                <button type="button" class="btn btn-primary btn-sm return" data-id="1">Khôi phục</button>
-                <button type="button" class="btn btn-danger btn-sm high" data-id="2">Xóa vĩnh viễn</button>
-            </td>
-        </tr>`);
-            btnDeletedReturn(formBannerDeletedReturn);
-            btnDeletedHigh(formBannerDeletedHigh);
+            const input = searchDeleted.find('input').val();
+            renderTableBannerDeleted(input);
         });
     }
 }
