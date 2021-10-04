@@ -52,7 +52,7 @@ function contentTable(title, xquery, thead, tbody, addNew = true) {
             </div>`:''}
         </div>
             ${xquery}
-        <div style="max-height: 450px;overflow: auto;">
+        <div style="max-height: 400px;overflow: auto;">
             <table class="table table-hover">
                 ${thead}
                 ${tbody}

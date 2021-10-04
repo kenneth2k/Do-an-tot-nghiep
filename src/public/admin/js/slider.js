@@ -77,7 +77,7 @@ function renderListDelete(data) {
             </div>`;
     var xthead = `
                 <thead>
-                    <tr>
+                    <tr class="scrollable-wrapper">
                         <th scope="col">STT</th>
                         <th scope="col">Tiêu đề</th>
                         <th scope="col">Nội dung</th>
