@@ -164,22 +164,22 @@ function showModal(idForm, method, title, body, callback) {
     }
 }
 
-function pageNavigation(pPrev, pActive, pNext) {
+function pageNavigation(pPrev, pActive, pNext, callback) {
     $('#page-navigation').remove();
     let xhtml = `<div class="d-flex justify-content-end" data-id="page-navigation">
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             ${pPrev < 1 ?'': `
             <li class="page-item">
-                <a class="page-link" href="#" data-id="${pPrev}" aria-label="Previous">
+                <a class="page-link" href="javascript:;" onclick="${callback}(${pPrev})" data-id="${pPrev}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                     <span class="sr-only"></span>
                 </a>
             </li>`}
-            <li class="page-item active"><a class="page-link" href="#">${pActive}</a></li>
+            <li class="page-item active"><a class="page-link" href="javascript:;" onclick="${callback}(${pActive})">${pActive}</a></li>
             ${pNext > pActive? `
             <li class="page-item">
-                <a class="page-link" href="#" data-id="${pNext}" aria-label="Next">
+                <a class="page-link" href="javascript:;" onclick="${callback}(${pNext})" data-id="${pNext}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                     <span class="sr-only"></span>
                 </a>
