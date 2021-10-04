@@ -40,27 +40,28 @@ function renderTableBanner(data) {
 }
 
 function renderTableBannerDeleted() {
-        // call ajax to do something...
-        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
-        $.ajax({
-            url: '/admin/banner/delete',
-            type: "GET",
-            headers: {
-                "Authorization": token.token
-            },
-            beforeSend: function() {
-                addLoadingPage();
-            },
-            success: function() {
-                removeLoadingPage();
+    // call ajax to do something...
+    let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+    $.ajax({
+        url: '/admin/banner/delete',
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
 
-            }
-        }).done(function(data) {
-            renderListDelete(data);
-        });
+        }
+    }).done(function(data) {
+        renderListDelete(data);
+    });
 }
-function renderListDelete(data){
-        var xquery = `
+
+function renderListDelete(data) {
+    var xquery = `
             <div class="nav-content d-flex justify-content-between p-2">
                 <div class="nav-content-1 d-flex">
                     <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('banner')">Danh sách ảnh bìa</a></div>
@@ -74,7 +75,7 @@ function renderListDelete(data){
                     </form>
                 </div>
             </div>`;
-        var xthead = `
+    var xthead = `
                 <thead>
                     <tr>
                         <th scope="col">STT</th>
@@ -84,9 +85,9 @@ function renderListDelete(data){
                         <th scope="col"></th>
                     </tr>
                 </thead>`;
-        var xtbody = '<tbody>';
-        data.bannerList.map((item, index) => {
-            xtbody += `
+    var xtbody = '<tbody>';
+    data.bannerList.map((item, index) => {
+        xtbody += `
                 <tr>
                     <th class="td-center" scope="row">${index + 1}</th>
                     <td class="td-center">${item.title}</td>
@@ -98,14 +99,15 @@ function renderListDelete(data){
                     </td>
                 </tr>
             `;
-        });
-        xtbody += '</tbody>';
-        contentTable("Ảnh bìa đã xóa", xquery, xthead, xtbody, false);
-        pageNavigation(data.pagePre, data.pageActive, data.pageNext);
-        btnDeletedReturn(formBannerDeletedReturn);
-        btnDeletedHigh(formBannerDeletedHigh);
-        renderTableBannerSearch();
+    });
+    xtbody += '</tbody>';
+    contentTable("Ảnh bìa đã xóa", xquery, xthead, xtbody, false);
+    pageNavigation(data.pagePre, data.pageActive, data.pageNext);
+    btnDeletedReturn(formBannerDeletedReturn);
+    btnDeletedHigh(formBannerDeletedHigh);
+    renderTableBannerSearch();
 }
+
 function renderTableBannerSearch() {
     const search = $('#table-role #formSearchBanner');
     const searchDeleted = $('#table-role #formSearchBannerDeleted');
@@ -357,30 +359,34 @@ function formBannerDeletedReturn(id) {
         `;
     showModal("formBannerDeletedReturn", "post", "Khôi phục ảnh bìa", xhtml, function(data) {
         var error = {};
-        // xử lý các giá trị biểu mẫu
-        // if (data.name === "") {
-        //     error.name = "sadsad!";
-        // }
-        // if (data.email === "") {
-        //     error.email = "Vui lòng nhập email!";
-        // }
         // xử lý sự kiện khi có lỗi
         if (Object.keys(error).length > 0) {
             throw JSON.stringify(error);
         }
-        // gọi ajax to do something...
-        console.log("wait", data);
-        addLoadingPage();
-        // ajax response
-        setTimeout(function() {
-            removeLoadingPage();
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/banner/${data.bannerId}/restore`,
+            type: "PUT",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
             setTimeout(function() {
                 $('#myModal').modal('hide');
+                showToast('Cập nhật thành công', "success");
                 setTimeout(function() {
-                    showToast('Cập nhật thành công', "success")
-                }, 500);
-            }, 500);
-        }, 2000);
+                    returnNavBar('banner');
+                }, 1000);
+            }, 1000);
+        });
     });
 }
 
@@ -394,29 +400,32 @@ function formBannerDeletedHigh(id) {
         `;
     showModal("formBannerDeletedHigh", "post", "Xóa vĩnh viễn ảnh bìa", xhtml, function(data) {
         var error = {};
-        // xử lý các giá trị biểu mẫu
-        // if (data.name === "") {
-        //     error.name = "sadsad!";
-        // }
-        // if (data.email === "") {
-        //     error.email = "Vui lòng nhập email!";
-        // }
         // xử lý sự kiện khi có lỗi
         if (Object.keys(error).length > 0) {
             throw JSON.stringify(error);
         }
-        // gọi ajax to do something...
-        console.log("wait");
-        addLoadingPage();
-        // ajax response
-        setTimeout(function() {
-            removeLoadingPage();
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/banner/${data.bannerId}/destroy`,
+            type: "DELETE",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+            }
+        }).done(function(data) {
             setTimeout(function() {
                 $('#myModal').modal('hide');
+                showToast('Cập nhật thành công', "success");
                 setTimeout(function() {
-                    showToast('Cập nhật thành công', "success")
-                }, 500);
-            }, 500);
-        }, 2000);
+                    renderTableBannerDeleted();
+                }, 1000);
+            }, 1000);
+        });
     });
 }

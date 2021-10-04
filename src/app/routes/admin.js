@@ -28,6 +28,9 @@ router.put('/banner/:id/update', upload.single('images'), adminBannerController.
 router.delete('/banner/:id/delete', adminBannerController.delete);
 router.get('/banner/delete', adminBannerController.deleteList);
 router.get('/banner/delete/search', adminBannerController.deleteListSearch);
+router.put('/banner/:id/restore', adminBannerController.restore);
+router.delete('/banner/:id/destroy', adminBannerController.destroy);
+
 
 router.get('/*', adminController.notfound);
 
