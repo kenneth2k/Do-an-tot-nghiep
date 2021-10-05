@@ -33,6 +33,7 @@ router.put('/banner/:id/restore', adminBannerController.restore);
 router.delete('/banner/:id/destroy', adminBannerController.destroy);
 // Producers
 router.get('/producer/search', adminProducerController.search);
+router.post('/producer/create', adminProducerController.create);
 router.get('/producer/:id/edit', adminProducerController.edit);
 router.put('/producer/:id/update', adminProducerController.update);
 router.delete('/producer/:id/delete', adminProducerController.delete);

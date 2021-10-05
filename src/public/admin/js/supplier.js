@@ -78,7 +78,94 @@ function renderListProducer(data, search) {
     pageNavigation(pagePre, data.pageActive, data.pageNext, '');
     btnEditer(formProducerEditer);
     btnDeleted(formProducerDeleted);
+    btnAddNew(formProducerCreate);
 }
+
+function formProducerCreate() {
+    var xhtml = `
+        <div hidden="true">
+            <label class="form-label">ID</label>
+            <input type="text" class="form-control" name="id" />
+            <div></div>
+        </div>
+        <div>
+            <label class="form-label">Tên nhà cung cấp</label>
+            <input type="text" class="form-control" name="name" maxlength="255">
+            <div></div>
+        </div>
+        <div>
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" name="email"  maxlength="255">
+            <div></div>
+        </div>
+        <div>
+            <label class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" name="phone"  maxlength="255">
+            <div></div>
+        </div>
+        <div>
+            <label class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" name="address" maxlength="255">
+            <div></div>
+        </div>`;
+    showModal("formProducerAddnew", "post", "Thêm nhà cung cấp", xhtml, function(data) {
+        var error = {};
+        // xử lý các giá trị biểu mẫu
+        if (data.name.length < 1) {
+            error.name = "Tên nhà cung cấp không được rỗng!";
+        } else if (data.name.length > 255) {
+            error.name = "Tên nhà cung cấp không quá 255 kí tự!";
+        }
+        if (data.email.length < 1) {
+            error.email = "Email không được rỗng!";
+        } else if (data.email.length > 255) {
+            error.email = "Email không quá 255 kí tự!";
+        } else if (!checkEmail(data.email)) {
+            error.email = "Email không đúng định dạng!";
+        }
+        if (data.phone.length < 1) {
+            error.phone = "Số điện thoại không được rỗng!";
+        } else if (data.phone.length > 255) {
+            error.phone = "Số điện thoại không quá 255 kí tự!";
+        } else if (!checkPhone(data.phone)) {
+            error.phone = "Số điện thoại không đúng định dạng!";
+        }
+        if (data.address.length < 1) {
+            error.address = "Địa chỉ không được rỗng!";
+        } else if (data.address.length > 255) {
+            error.address = "Địa chỉ không quá 255 kí tự!";
+        }
+        // xử lý sự kiện khi có lỗi
+        if (Object.keys(error).length > 0) {
+            throw JSON.stringify(error);
+        }
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: '/admin/producer/create',
+            type: "POST",
+            data: data,
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
+            setTimeout(function() {
+                $('#myModal').modal('hide');
+                showToast(data.message, "success");
+                setTimeout(function() {
+                    returnNavBar('supplier');
+                }, 1000);
+            }, 1000);
+        });
+    });
+};
 
 function formProducerEditer({ token, id }) {
     $.ajax({
@@ -133,11 +220,15 @@ function formProducerEditer({ token, id }) {
                 error.email = "Email không được rỗng!";
             } else if (data.email.length > 255) {
                 error.email = "Email không quá 255 kí tự!";
+            } else if (!checkEmail(data.email)) {
+                error.email = "Email không đúng định dạng!";
             }
             if (data.phone.length < 1) {
                 error.phone = "Số điện thoại không được rỗng!";
             } else if (data.phone.length > 255) {
                 error.phone = "Số điện thoại không quá 255 kí tự!";
+            } else if (!checkPhone(data.phone)) {
+                error.phone = "Số điện thoại không đúng định dạng!";
             }
             if (data.address.length < 1) {
                 error.address = "Địa chỉ không được rỗng!";

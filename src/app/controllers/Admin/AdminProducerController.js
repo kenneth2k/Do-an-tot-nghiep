@@ -45,7 +45,30 @@ class AdminProducerController {
     // [GET] /admin/producer/delete/search?q=&page=
 
     // [POST] /admin/producer/create
-
+    create(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            let producer = new Producer({
+                name: req.body.name,
+                email: req.body.email,
+                phone: req.body.phone,
+                address: req.body.address
+            });
+            producer.save()
+                .then((producer) => {
+                    return res.send({ producer });
+                })
+                .catch((e) => {
+                    throw new Error('CREATE FAILUARE!');
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
     // [GET] /admin/producer/:id/edit
     edit(req, res, next) {
         try {
