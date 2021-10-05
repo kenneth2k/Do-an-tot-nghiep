@@ -91,6 +91,7 @@
                     }
                 case 'supplier':
                     {
+                        renderTableProducer();
                         break;
                     }
                 case 'statistical':
