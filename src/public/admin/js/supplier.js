@@ -75,7 +75,7 @@ function renderListProducer(data, search) {
     let pagePre = (data.producerList.length > 0) ? data.pagePre : 1;
     //Show table
     contentTable("Quản lý nhà cung cấp", xquery, xthead, xtbody, true);
-    pageNavigation(pagePre, data.pageActive, data.pageNext, '');
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProducerPageOnClick');
     btnEditer(formProducerEditer);
     btnDeleted(formProducerDeleted);
     btnAddNew(formProducerCreate);
@@ -303,4 +303,9 @@ function formProducerDeleted(id) {
             }, 1000);
         });
     });
+}
+
+function renderProducerPageOnClick(page) {
+    let content = $('#formSearchProducer').find('input[type="text"').val();
+    renderTableProducer(content, page);
 }
