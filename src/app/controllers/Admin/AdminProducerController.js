@@ -42,16 +42,61 @@ class AdminProducerController {
             })
         }
     };
-    // [GET] /admin/producer/search?q=&page=
-
     // [GET] /admin/producer/delete/search?q=&page=
 
     // [POST] /admin/producer/create
 
     // [GET] /admin/producer/:id/edit
-
+    edit(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            Producer.findOne({ _id: req.params.id })
+                .then((producer) => {
+                    return res.send(producer);
+                })
+                .catch((err) => {
+                    throw new Error('FIND NOT FOUND!');
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
     // [PUT] /admin/producer/:id/update
+    update(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            Producer.findOne({ _id: req.params.id })
+                .then((producer) => {
+                    producer.name = req.body.name;
+                    producer.email = req.body.email;
+                    producer.phone = req.body.phone;
+                    producer.address = req.body.address;
 
+                    Producer.updateOne({ _id: req.params.id }, producer)
+                        .then(() => {
+                            return res.send({
+                                message: 'Cập nhật nhà cung cấp thành công!'
+                            });
+                        })
+                        .catch((err) => {
+                            throw new Error('UPDATE FAILURE!');
+                        })
+                })
+                .catch((err) => {
+                    throw new Error('FIND NOT FOUND!');
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
     // [DELETE] /admin/producer/:id/delete
 
     // [PUT] /admin/producer/:id/restore
