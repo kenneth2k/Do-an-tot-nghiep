@@ -79,6 +79,7 @@ function renderListProducer(data, search) {
     btnEditer(formProducerEditer);
     btnDeleted(formProducerDeleted);
     btnAddNew(formProducerCreate);
+    renderTableBannerSearch();
 }
 
 function formProducerCreate() {
@@ -308,4 +309,15 @@ function formProducerDeleted(id) {
 function renderProducerPageOnClick(page) {
     let content = $('#formSearchProducer').find('input[type="text"').val();
     renderTableProducer(content, page);
+}
+
+function renderTableBannerSearch() {
+    const search = $('#table-role #formSearchProducer');
+    if (search) {
+        search.submit(function(e) {
+            e.preventDefault();
+            let input = search.find('input').val();
+            renderTableProducer(input);
+        });
+    }
 }
