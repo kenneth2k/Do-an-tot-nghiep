@@ -74,9 +74,10 @@ function renderListProducer(data, search) {
     //Check page hide or show
     let pagePre = (data.producerList.length > 0) ? data.pagePre : 1;
     //Show table
-    contentTable("Quản lý nhà cung cấp", xquery, xthead, xtbody, false);
+    contentTable("Quản lý nhà cung cấp", xquery, xthead, xtbody, true);
     pageNavigation(pagePre, data.pageActive, data.pageNext, '');
     btnEditer(formProducerEditer);
+    btnDeleted(formProducerDeleted);
 }
 
 function formProducerEditer({ token, id }) {
@@ -168,6 +169,47 @@ function formProducerEditer({ token, id }) {
                     returnNavBar('supplier');
                 }, 500);
             });
+        });
+    });
+}
+
+function formProducerDeleted(id) {
+    var xhtml = `
+        <div>
+            <label class="form-label fw-bold fst-italic text-danger">Nhấn nút lưu để hoàn thành việc xóa nhà cung cấp!!!</label>
+            <input type="text" class="form-control" name="producerId" value="${id}" hidden="true">
+            <div></div>
+        </div>
+        `;
+    showModal("formProducerDeleted", "post", "Xóa nhà cung cấp", xhtml, function(data) {
+        var error = {};
+        // xử lý sự kiện khi có lỗi
+        if (Object.keys(error).length > 0) {
+            throw JSON.stringify(error);
+        }
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/producer/${data.producerId}/delete`,
+            type: "DELETE",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
+            setTimeout(function() {
+                $('#myModal').modal('hide');
+                showToast('Cập nhật thành công', "success");
+                setTimeout(function() {
+                    returnNavBar('supplier');
+                }, 1000);
+            }, 1000);
         });
     });
 }

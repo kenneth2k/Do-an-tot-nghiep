@@ -35,6 +35,7 @@ router.delete('/banner/:id/destroy', adminBannerController.destroy);
 router.get('/producer/search', adminProducerController.search);
 router.get('/producer/:id/edit', adminProducerController.edit);
 router.put('/producer/:id/update', adminProducerController.update);
+router.delete('/producer/:id/delete', adminProducerController.delete);
 
 
 router.get('/*', adminController.notfound);
