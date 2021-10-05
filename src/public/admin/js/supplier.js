@@ -20,11 +20,10 @@ function renderTableProducer(search = '', page = undefined) {
 };
 
 function renderListProducer(data, search) {
-    console.log(data)
     var xquery = `
             <div class="nav-content d-flex justify-content-between p-2">
                 <div class="nav-content-1 d-flex">
-                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('banner')">Công khai (<span class="text-secondary">${data.sumProducer}</span>) </a></div>
+                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('supplier')">Công khai (<span class="text-secondary">${data.sumProducer}</span>) </a></div>
                 <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableBannerDeleted()">Thùng rác (<span class="text-secondary">${data.sumDeleted}</span>) </a></div>
                 </div>
                 <div class="nav-content-2">
@@ -75,9 +74,100 @@ function renderListProducer(data, search) {
     //Check page hide or show
     let pagePre = (data.producerList.length > 0) ? data.pagePre : 1;
     //Show table
-    contentTable("Ảnh bìa đã xóa", xquery, xthead, xtbody, false);
+    contentTable("Quản lý nhà cung cấp", xquery, xthead, xtbody, false);
     pageNavigation(pagePre, data.pageActive, data.pageNext, '');
-    // btnDeletedReturn(formBannerDeletedReturn);
-    // btnDeletedHigh(formBannerDeletedHigh);
-    // renderTableBannerSearch();
+    btnEditer(formProducerEditer);
+}
+
+function formProducerEditer({ token, id }) {
+    $.ajax({
+        url: `/admin/producer/${id}/edit`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+        }
+    }).done(function(data) {
+        var xhtml = `
+        <div hidden="true">
+            <label class="form-label">ID</label>
+            <input type="text" class="form-control" name="id" value="${data._id}" >
+            <div></div>
+        </div>
+        <div>
+            <label class="form-label">Tên nhà cung cấp</label>
+            <input type="text" class="form-control" name="name" value="${data.name}" maxlength="255">
+            <div></div>
+        </div>
+        <div>
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" name="email" value="${data.email}" maxlength="255">
+            <div></div>
+        </div>
+        <div>
+            <label class="form-label">Số điện thoại</label>
+            <input type="text" class="form-control" name="phone" value="${data.phone}" maxlength="255">
+            <div></div>
+        </div>
+        <div>
+            <label class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" name="address" value="${data.address}" maxlength="255">
+            <div></div>
+        </div>
+        `;
+        showModal("formProducerEdit", "post", "Sửa nhà cung cấp", xhtml, function(data) {
+            var error = {};
+            // xử lý các giá trị biểu mẫu
+            if (data.name.length < 1) {
+                error.name = "Tên nhà cung cấp không được rỗng!";
+            } else if (data.name.length > 255) {
+                error.name = "Tên nhà cung cấp không quá 255 kí tự!";
+            }
+            if (data.email.length < 1) {
+                error.email = "Email không được rỗng!";
+            } else if (data.email.length > 255) {
+                error.email = "Email không quá 255 kí tự!";
+            }
+            if (data.phone.length < 1) {
+                error.phone = "Số điện thoại không được rỗng!";
+            } else if (data.phone.length > 255) {
+                error.phone = "Số điện thoại không quá 255 kí tự!";
+            }
+            if (data.address.length < 1) {
+                error.address = "Địa chỉ không được rỗng!";
+            } else if (data.address.length > 255) {
+                error.address = "Địa chỉ không quá 255 kí tự!";
+            }
+            // xử lý sự kiện khi có lỗi
+            if (Object.keys(error).length > 0) {
+                throw JSON.stringify(error);
+            }
+            // call ajax to do something...
+            $.ajax({
+                url: `/admin/producer/${id}/update`,
+                type: "PUT",
+                data: data,
+                headers: {
+                    "Authorization": token.token
+                },
+                beforeSend: function() {
+                    addLoadingPage();
+                },
+                success: function() {
+                    removeLoadingPage();
+                }
+            }).done(function(data) {
+                $('#myModal').modal('hide');
+                setTimeout(function() {
+                    showToast(data.message, "success");
+                    returnNavBar('supplier');
+                }, 500);
+            });
+        });
+    });
 }
