@@ -24,7 +24,7 @@ function renderListProducer(data, search) {
             <div class="nav-content d-flex justify-content-between p-2">
                 <div class="nav-content-1 d-flex">
                 <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('supplier')">Công khai (<span class="text-secondary">${data.sumProducer}</span>) </a></div>
-                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableBannerDeleted()">Thùng rác (<span class="text-secondary">${data.sumDeleted}</span>) </a></div>
+                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableProducerDeleted()">Thùng rác (<span class="text-secondary">${data.sumDeleted}</span>) </a></div>
                 </div>
                 <div class="nav-content-2">
                     <form action="#" method="get" id="formSearchProducer">
@@ -79,7 +79,7 @@ function renderListProducer(data, search) {
     btnEditer(formProducerEditer);
     btnDeleted(formProducerDeleted);
     btnAddNew(formProducerCreate);
-    renderTableBannerSearch();
+    renderTableProducerSearch();
 }
 
 function formProducerCreate() {
@@ -311,7 +311,7 @@ function renderProducerPageOnClick(page) {
     renderTableProducer(content, page);
 }
 
-function renderTableBannerSearch() {
+function renderTableProducerSearch() {
     const search = $('#table-role #formSearchProducer');
     if (search) {
         search.submit(function(e) {
@@ -320,4 +320,127 @@ function renderTableBannerSearch() {
             renderTableProducer(input);
         });
     }
+}
+// Deleted
+function renderTableProducerDeleted(search = '', page = undefined) {
+    // call ajax to do something...
+    let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+    $.ajax({
+        url: `/admin/producer/delete/search?q=${search}&page=${page}`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+
+        }
+    }).done(function(data) {
+        renderListProducerDeleted(data, search);
+    });
+};
+
+function renderListProducerDeleted(data, search) {
+    var xquery = `
+            <div class="nav-content d-flex justify-content-between p-2">
+                <div class="nav-content-1 d-flex">
+                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('supplier')">Danh sách nhà cung cấp</a></div>
+                </div>
+                <div class="nav-content-2">
+                    <form action="#" method="get" id="formSearchProducerDeleted">
+                        <div class="input-group" style="width: 300px;">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm" value="${search}">
+                            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>`;
+    var xthead = `
+                <thead>
+                    <tr class="scrollable-wrapper">
+                        <th scope="col">STT</th>
+                        <th scope="col">Tên NCC</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Address</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>`;
+    var xtbody = '<tbody>';
+    if (data.producerList.length > 0) {
+        data.producerList.map((item, index) => {
+            xtbody += `
+                    <tr>
+                        <th class="td-center" scope="row">${parseInt(data.STT) + index}</th>
+                        <td class="td-center" width="200">${item.name}</td>
+                        <td class="td-center">${item.email}</td>
+                        <td class="td-center">${item.phone}</td>
+                        <td class="td-center" width=250>${item.address}</td>
+                        <td class="td-center impact-event">
+                            <button type="button" class="btn btn-primary btn-sm return" data-id="${item._id}">Khôi phục</button>
+                            <button type="button" class="btn btn-danger btn-sm high" data-id="${item._id}">Xóa vĩnh viễn</button>
+                        </td>
+                    </tr>
+                `;
+        });
+    } else {
+        xtbody += `
+                    <tr>
+                        <td colspan="5">Không tìm thấy tài liệu</td>
+                    </tr>
+                `;
+    }
+    xtbody += '</tbody>';
+    //Check page hide or show
+    let pagePre = (data.producerList.length > 0) ? data.pagePre : 1;
+    //Show table
+    contentTable("Quản lý nhà cung cấp", xquery, xthead, xtbody, true);
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProducerPageOnClick');
+    btnDeletedReturn(formBannerDeletedReturn);
+    btnDeletedHigh(formBannerDeletedHigh);
+    renderTableProducerSearch();
+}
+
+function formProducerDeletedReturn(id) {
+    var xhtml = `
+        <div>
+            <label class="form-label fw-bold fst-italic text-danger">Bạn muốn khôi phục ảnh bìa!</label>
+            <input type="text" class="form-control" name="bannerId" value="${id}" hidden="true">
+            <div></div>
+        </div>
+        `;
+    showModal("formProducerDeletedReturn", "post", "Khôi phục ảnh bìa", xhtml, function(data) {
+        var error = {};
+        // xử lý sự kiện khi có lỗi
+        if (Object.keys(error).length > 0) {
+            throw JSON.stringify(error);
+        }
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/banner/${data.bannerId}/restore`,
+            type: "PUT",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
+            setTimeout(function() {
+                $('#myModal').modal('hide');
+                showToast('Cập nhật thành công', "success");
+                setTimeout(function() {
+                    returnNavBar('banner');
+                }, 1000);
+            }, 1000);
+        });
+    });
 }
