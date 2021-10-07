@@ -263,7 +263,7 @@ function formBannerEditer({ token, id }) {
             <div><img class="images-edit" src="/public/images/background/${data.images}"/></div>
         </div>
         `;
-        showModal("formBannerEdit", "post", "Xóa ảnh bìa", xhtml, function(data) {
+        showModal("formBannerEdit", "post", "Sửa ảnh bìa", xhtml, function(data) {
             var error = {};
             // xử lý các giá trị biểu mẫu
             if (data.title.length < 1) {

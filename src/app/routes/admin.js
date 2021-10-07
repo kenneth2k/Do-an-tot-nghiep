@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const adminController = require('../controllers/Admin/AdminController');
 const adminBannerController = require('../controllers/Admin/AdminBannerController');
+const adminProducerController = require('../controllers/Admin/AdminProducerController');
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -30,6 +31,13 @@ router.get('/banner/delete', adminBannerController.deleteList);
 router.get('/banner/delete/search', adminBannerController.deleteListSearch);
 router.put('/banner/:id/restore', adminBannerController.restore);
 router.delete('/banner/:id/destroy', adminBannerController.destroy);
+// Producers
+router.get('/producer/search', adminProducerController.search);
+router.post('/producer/create', adminProducerController.create);
+router.get('/producer/:id/edit', adminProducerController.edit);
+router.put('/producer/:id/update', adminProducerController.update);
+router.delete('/producer/:id/delete', adminProducerController.delete);
+router.get('/producer/delete/search', adminProducerController.searchDeleted);
 
 
 router.get('/*', adminController.notfound);
