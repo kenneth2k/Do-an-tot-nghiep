@@ -398,10 +398,10 @@ function renderListProducerDeleted(data, search) {
     let pagePre = (data.producerList.length > 0) ? data.pagePre : 1;
     //Show table
     contentTable("Quản lý nhà cung cấp", xquery, xthead, xtbody, true);
-    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProducerPageOnClick');
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProducerDeletedPageOnClick');
     btnDeletedReturn(formProducerDeletedReturn);
     btnDeletedHigh(formProducerDeletedHigh);
-    renderTableProducerSearch();
+    renderTableProducerDeletedSearch();
 }
 
 function formProducerDeletedReturn(id) {
@@ -483,4 +483,20 @@ function formProducerDeletedHigh(id) {
             }, 1000);
         });
     });
+}
+
+function renderProducerDeletedPageOnClick(page) {
+    let content = $('#formSearchProducerDeleted').find('input[type="text"').val();
+    renderTableProducerDeleted(content, page);
+}
+
+function renderTableProducerDeletedSearch() {
+    const search = $('#table-role #formSearchProducerDeleted');
+    if (search) {
+        search.submit(function(e) {
+            e.preventDefault();
+            let input = search.find('input').val();
+            renderTableProducerDeleted(input);
+        });
+    }
 }
