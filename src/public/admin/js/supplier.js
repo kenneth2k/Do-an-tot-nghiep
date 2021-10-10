@@ -398,21 +398,21 @@ function renderListProducerDeleted(data, search) {
     let pagePre = (data.producerList.length > 0) ? data.pagePre : 1;
     //Show table
     contentTable("Quản lý nhà cung cấp", xquery, xthead, xtbody, true);
-    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProducerPageOnClick');
-    btnDeletedReturn(formBannerDeletedReturn);
-    btnDeletedHigh(formBannerDeletedHigh);
-    renderTableProducerSearch();
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProducerDeletedPageOnClick');
+    btnDeletedReturn(formProducerDeletedReturn);
+    btnDeletedHigh(formProducerDeletedHigh);
+    renderTableProducerDeletedSearch();
 }
 
 function formProducerDeletedReturn(id) {
     var xhtml = `
         <div>
-            <label class="form-label fw-bold fst-italic text-danger">Bạn muốn khôi phục ảnh bìa!</label>
-            <input type="text" class="form-control" name="bannerId" value="${id}" hidden="true">
+            <label class="form-label fw-bold fst-italic text-danger">Bạn muốn khôi phục nhà cung cấp!</label>
+            <input type="text" class="form-control" name="producerId" value="${id}" hidden="true">
             <div></div>
         </div>
         `;
-    showModal("formProducerDeletedReturn", "post", "Khôi phục ảnh bìa", xhtml, function(data) {
+    showModal("formProducerDeletedReturn", "post", "Khôi phục nhà cung cấp", xhtml, function(data) {
         var error = {};
         // xử lý sự kiện khi có lỗi
         if (Object.keys(error).length > 0) {
@@ -421,7 +421,7 @@ function formProducerDeletedReturn(id) {
         // call ajax to do something...
         let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
         $.ajax({
-            url: `/admin/banner/${data.bannerId}/restore`,
+            url: `/admin/producer/${data.producerId}/restore`,
             type: "PUT",
             headers: {
                 "Authorization": token.token
@@ -436,11 +436,67 @@ function formProducerDeletedReturn(id) {
         }).done(function(data) {
             setTimeout(function() {
                 $('#myModal').modal('hide');
-                showToast('Cập nhật thành công', "success");
+                showToast(data.message, "success");
                 setTimeout(function() {
-                    returnNavBar('banner');
+                    returnNavBar('supplier');
                 }, 1000);
             }, 1000);
         });
     });
+}
+
+function formProducerDeletedHigh(id) {
+    var xhtml = `
+        <div>
+            <label class="form-label fw-bold fst-italic text-danger">Bạn muốn XÓA VĨNH VIỄN nhà cung cấp!</label>
+            <input type="text" class="form-control" name="producerId" value="${id}" hidden="true">
+            <div></div>
+        </div>
+        `;
+    showModal("formProducerDeletedHigh", "post", "Xóa vĩnh viễn nhà cung cấp", xhtml, function(data) {
+        var error = {};
+        // xử lý sự kiện khi có lỗi
+        if (Object.keys(error).length > 0) {
+            throw JSON.stringify(error);
+        }
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/producer/${data.producerId}/destroy`,
+            type: "DELETE",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+            }
+        }).done(function(data) {
+            setTimeout(function() {
+                $('#myModal').modal('hide');
+                showToast(data.message, "success");
+                setTimeout(function() {
+                    renderTableProducerDeleted();
+                }, 1000);
+            }, 1000);
+        });
+    });
+}
+
+function renderProducerDeletedPageOnClick(page) {
+    let content = $('#formSearchProducerDeleted').find('input[type="text"').val();
+    renderTableProducerDeleted(content, page);
+}
+
+function renderTableProducerDeletedSearch() {
+    const search = $('#table-role #formSearchProducerDeleted');
+    if (search) {
+        search.submit(function(e) {
+            e.preventDefault();
+            let input = search.find('input').val();
+            renderTableProducerDeleted(input);
+        });
+    }
 }

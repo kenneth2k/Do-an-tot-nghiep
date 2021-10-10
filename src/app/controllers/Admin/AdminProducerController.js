@@ -175,7 +175,46 @@ class AdminProducerController {
         }
     };
     // [PUT] /admin/producer/:id/restore
-
+    restore(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            Producer.restore({ _id: req.params.id })
+                .then((producer) => {
+                    return res.send({
+                        message: 'Khôi phục nhà cung cấp thành công!'
+                    });
+                })
+                .catch((err) => {
+                    throw new Error('DELETE FAILUARE!');
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
     // [DELETE] /admin/producer/:id/destroy
+    destroy(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            Producer.deleteOne({ _id: req.params.id })
+                .then((producer) => {
+                    return res.send({
+                        message: 'Xóa nhà cung cấp thành công!'
+                    });
+                })
+                .catch((err) => {
+                    throw new Error('DELETE FAILUARE!');
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    }
 }
 module.exports = new AdminProducerController;
