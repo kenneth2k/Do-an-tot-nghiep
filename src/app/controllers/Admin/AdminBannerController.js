@@ -89,6 +89,7 @@ class AdminBannerController {
                     return res.send({
                         bannerList: multipleMongooseToObjectOnLimit(banner, process.env.LIMIT_DOS, skip),
                         sumDeleted: sumBanner,
+                        STT: (((page - 1) * process.env.LIMIT_DOS) + 1),
                         pagePre,
                         pageActive: page,
                         pageNext,

@@ -90,7 +90,7 @@ function renderListDelete(data, search) {
         data.bannerList.map((item, index) => {
             xtbody += `
                     <tr>
-                        <th class="td-center" scope="row">${index + 1}</th>
+                        <th class="td-center" scope="row">${data.STT + index}</th>
                         <td class="td-center">${item.title}</td>
                         <td class="td-center">${item.content}</td>
                         <td class="td-center"><img width=100 height=70 src="/public/images/background/${item.images}"/></td>
