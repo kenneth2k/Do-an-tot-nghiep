@@ -15,37 +15,41 @@ class AdminRaitingController {
             let skip = (page - 1) * process.env.LIMIT_DOS;
             let limit = parseInt(process.env.LIMIT_DOS);
 
-            Raiting.aggregate(
-                    [{
-                            $match: {
-                                createdAt: {
-                                    $gte: new Date(`${req.query.dateBefore}T00:00:00+00:00`),
-                                    $lte: new Date(`${req.query.dateAfter}T23:59:59+00:00`)
+            Promise.all([
+                    Raiting.aggregate(
+                        [{
+                                $match: {
+                                    createdAt: {
+                                        $gte: new Date(`${req.query.dateBefore}T00:00:00+00:00`),
+                                        $lte: new Date(`${req.query.dateAfter}T23:59:59+00:00`)
+                                    },
+
                                 }
-                            }
-                        }, {
-                            $lookup: {
-                                from: "users",
-                                localField: "userSlug",
-                                foreignField: "slug",
-                                as: "user"
-                            }
-                        },
-                        {
-                            $lookup: {
-                                from: "products",
-                                localField: "proSlug",
-                                foreignField: "slug",
-                                as: "product"
-                            }
-                        },
-                        { $unwind: { path: "$userInfoData", preserveNullAndEmptyArrays: true } },
-                        { $unwind: { path: "$userRoleData", preserveNullAndEmptyArrays: true } }
-                    ])
-                .skip(skip)
-                .limit(limit)
-                .then((raiting) => {
-                    let pageMax = Math.ceil((raiting.length / limit));
+                            }, {
+                                $lookup: {
+                                    from: "users",
+                                    localField: "userSlug",
+                                    foreignField: "slug",
+                                    as: "user"
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: "products",
+                                    localField: "proSlug",
+                                    foreignField: "slug",
+                                    as: "product"
+                                }
+                            },
+                            { $unwind: { path: "$userInfoData", preserveNullAndEmptyArrays: true } },
+                            { $unwind: { path: "$userRoleData", preserveNullAndEmptyArrays: true } }
+                        ])
+                    .skip(skip)
+                    .limit(limit),
+                    Raiting.find({})
+                ])
+                .then(([raiting, sumRaiting]) => {
+                    let pageMax = Math.ceil((sumRaiting.length / limit));
                     let pagePre = ((page > 0) ? page - 1 : 0);
                     let pageNext = ((page < pageMax) ? page + 1 : page);
                     return res.send({
@@ -54,6 +58,7 @@ class AdminRaitingController {
                         pagePre,
                         pageActive: page,
                         pageNext,
+                        pageMax,
                         limit: process.env.LIMIT_DOS
                     })
                 })
