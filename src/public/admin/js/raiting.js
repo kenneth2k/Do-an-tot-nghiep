@@ -23,7 +23,6 @@ function renderTableRaiting(dateBefore = undefined, dateAfter = undefined, page 
 };
 
 function renderListRaiting(data, dateBefore, dateAfter) {
-    console.log(data);
     var xquery = `
     <div class="nav-content d-flex justify-content-between p-2">
         <div class="nav-content-1 d-flex">
@@ -97,6 +96,7 @@ function renderListRaiting(data, dateBefore, dateAfter) {
     contentTable("Quản lý đánh giá", xquery, xthead, xtbody, false);
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderRaitingPageOnClick');
     btnDeleted(formRaitingDeleted);
+    renderRaitingOnChangeDate();
 }
 
 function formRaitingDeleted(id) {
@@ -144,4 +144,15 @@ function renderRaitingPageOnClick(page) {
     let before = $('.before input[type="date"]').val();
     let after = $('.after input[type="date"]').val();
     renderTableRaiting(before, after, page);
+}
+
+function renderRaitingOnChangeDate() {
+    let before = $('.before input[type="date"]');
+    let after = $('.after input[type="date"]');
+    before.change(function() {
+        renderTableRaiting(before.val(), after.val());
+    });
+    after.change(function() {
+        renderTableRaiting(before.val(), after.val());
+    });
 }
