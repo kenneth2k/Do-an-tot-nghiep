@@ -139,3 +139,9 @@ function formRaitingDeleted(id) {
         });
     });
 }
+
+function renderRaitingPageOnClick(page) {
+    let before = $('.before input[type="date"]').val();
+    let after = $('.after input[type="date"]').val();
+    renderTableRaiting(before, after, page);
+}

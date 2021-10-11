@@ -46,7 +46,16 @@ class AdminRaitingController {
                         ])
                     .skip(skip)
                     .limit(limit),
-                    Raiting.find({})
+                    Raiting.aggregate(
+                        [{
+                            $match: {
+                                createdAt: {
+                                    $gte: new Date(`${req.query.dateBefore}T00:00:00+00:00`),
+                                    $lte: new Date(`${req.query.dateAfter}T23:59:59+00:00`)
+                                },
+
+                            }
+                        }])
                 ])
                 .then(([raiting, sumRaiting]) => {
                     let pageMax = Math.ceil((sumRaiting.length / limit));
