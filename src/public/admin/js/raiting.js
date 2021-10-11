@@ -1,0 +1,100 @@
+function renderTableRaiting(dateBefore = undefined, dateAfter = undefined, page = undefined) {
+    if (!dateBefore && !dateBefore) {
+        dateBefore = dateAfter = new Date().toISOString().slice(0, 10);
+    }
+    // call ajax to do something...
+    let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+    $.ajax({
+        url: `/admin/raiting/search?dateBefore=${dateBefore}&dateAfter=${dateAfter}&page=${page}`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+
+        }
+    }).done(function(data) {
+        renderListRaiting(data, dateBefore, dateAfter);
+    });
+};
+
+function renderListRaiting(data, dateBefore, dateAfter) {
+    console.log(data);
+    var xquery = `
+    <div class="nav-content d-flex justify-content-between p-2">
+        <div class="nav-content-1 d-flex">
+        <div class="nav-item position-relative p-2">
+                <div>FROM:</div>
+            </div>
+            <div class="nav-item position-relative p-2">
+                <div class="before">
+                    <input type="date" value="${dateBefore}"/>
+                </div>
+            </div>
+            <div class="nav-item position-relative p-2">
+                <div>TO:</div>
+            </div>
+            <div class="nav-item position-relative p-2">
+                <div class="after">
+                    <input type="date" value="${dateAfter}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+    var xthead = `
+                <thead>
+                    <tr class="scrollable-wrapper">
+                        <th scope="col">STT</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Người đánh giá</th>
+                        <th scope="col">Nội dung</th>
+                        <th scope="col" style="text-align:center;">Số sao</th>
+                        <th scope="col">Ảnh</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>`;
+    var xtbody = '<tbody>';
+    if (data.raitingList.length > 0) {
+        data.raitingList.map((item, index) => {
+            let listimg = '';
+            item.images.map((img, index) => {
+                listimg += `<img src="/public/images/comments/${img}" width="100" height="70"/>`;
+            })
+            xtbody += `
+                    <tr>
+                        <th class="td-center" scope="row">${parseInt(data.STT) + index}</th>
+                        <td class="td-center" width=200>${item.product[0].name}</td>
+                        <td class="td-center" width=200>${item.user[0].fullname}</td>
+                        <td class="td-center" style="width:200px;word-wrap: break-word;text-align:justify;">${item.content}</td>
+                        <td class="td-center" width=200 style="text-align:center;">${item.star}</td>
+                        <td class="td-center" width=450>
+                            ${listimg}
+                            ${listimg}
+                            ${listimg}
+                        </td>
+                        <td class="td-center impact-event">
+                        <button type="button" class="btn btn-danger btn-sm deleted" data-id="${item._id}">Xóa</button>
+                        </td>
+                    </tr>
+                `;
+        });
+    } else {
+        xtbody += `
+                    <tr>
+                        <td colspan="5">Không tìm thấy tài liệu</td>
+                    </tr>
+                `;
+    }
+    xtbody += '</tbody>';
+    //Check page hide or show
+    let pagePre = (data.raitingList.length > 0) ? data.pagePre : 1;
+    //Show table
+    contentTable("Quản lý đánh giá", xquery, xthead, xtbody, false);
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderRaitingPageOnClick');
+    // btnDeleted(formRaitingDeleted);
+}

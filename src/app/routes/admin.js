@@ -5,6 +5,7 @@ const path = require('path');
 const adminController = require('../controllers/Admin/AdminController');
 const adminBannerController = require('../controllers/Admin/AdminBannerController');
 const adminProducerController = require('../controllers/Admin/AdminProducerController');
+const adminRaitingController = require('../controllers/Admin/AdminRaitingController');
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -40,6 +41,9 @@ router.delete('/producer/:id/delete', adminProducerController.delete);
 router.get('/producer/delete/search', adminProducerController.searchDeleted);
 router.put('/producer/:id/restore', adminProducerController.restore);
 router.delete('/producer/:id/destroy', adminProducerController.destroy);
+//Raitings
+router.get('/raiting/search', adminRaitingController.search);
+router.delete('/raiting/:id/delete', adminRaitingController.delete);
 
 
 router.get('/*', adminController.notfound);

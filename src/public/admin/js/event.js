@@ -83,6 +83,7 @@
                     }
                 case 'raiting':
                     {
+                        renderTableRaiting();
                         break;
                     }
                 case 'warehouse':
