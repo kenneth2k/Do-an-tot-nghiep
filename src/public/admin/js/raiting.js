@@ -96,5 +96,46 @@ function renderListRaiting(data, dateBefore, dateAfter) {
     //Show table
     contentTable("Quản lý đánh giá", xquery, xthead, xtbody, false);
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderRaitingPageOnClick');
-    // btnDeleted(formRaitingDeleted);
+    btnDeleted(formRaitingDeleted);
+}
+
+function formRaitingDeleted(id) {
+    var xhtml = `
+        <div>
+            <label class="form-label fw-bold fst-italic text-danger">Nhấn nút lưu để hoàn thành việc xóa đánh giá!!!</label>
+            <input type="text" class="form-control" name="raitingId" value="${id}" hidden="true">
+            <div></div>
+        </div>
+        `;
+    showModal("formRaitingDeleted", "post", "Xóa đánh giá", xhtml, function(data) {
+        var error = {};
+        // xử lý sự kiện khi có lỗi
+        if (Object.keys(error).length > 0) {
+            throw JSON.stringify(error);
+        }
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/raiting/${data.raitingId}/delete`,
+            type: "DELETE",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
+            setTimeout(function() {
+                $('#myModal').modal('hide');
+                showToast(data.message, "success");
+                setTimeout(function() {
+                    returnNavBar('raiting');
+                }, 1000);
+            }, 1000);
+        });
+    });
 }
