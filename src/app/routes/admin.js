@@ -47,6 +47,7 @@ router.get('/raiting/search', adminRaitingController.search);
 router.delete('/raiting/:id/delete', adminRaitingController.delete);
 //User
 router.get('/user/search', adminUserController.search);
+router.delete('/user/:id/delete', adminUserController.delete);
 
 
 router.get('/*', adminController.notfound);
