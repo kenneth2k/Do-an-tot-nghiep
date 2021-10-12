@@ -86,6 +86,11 @@
                         renderTableRaiting();
                         break;
                     }
+                case 'user':
+                    {
+                        renderTableUser();
+                        break;
+                    }
                 case 'warehouse':
                     {
                         break;
