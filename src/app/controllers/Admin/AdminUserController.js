@@ -42,7 +42,39 @@ class AdminUserController {
             })
         }
     };
+    // [GET] /admin/user/delete/search
+    searchDeleted(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            let page = parseInt(req.query.page) || 1;
 
+            let skip = (page - 1) * process.env.LIMIT_DOS;
+
+            User.findDeleted({ fullname: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") }, decentralization: 1 }).sort({ createdAt: -1 })
+                .then((user) => {
+                    let pageMax = Math.ceil((user.length / process.env.LIMIT_DOS));
+                    let pagePre = ((page > 0) ? page - 1 : 0);
+                    let pageNext = ((page < pageMax) ? page + 1 : page);
+                    return res.send({
+                        userList: multipleMongooseToObjectOnLimit(user, process.env.LIMIT_DOS, skip),
+                        STT: (((page - 1) * process.env.LIMIT_DOS) + 1),
+                        pagePre,
+                        pageActive: page,
+                        pageNext,
+                        limit: process.env.LIMIT_DOS
+                    })
+                })
+                .catch((err) => {
+                    throw new Error('Error connecting DB!');
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
     // [DELETE] /admin/user/:id/delete
     delete(req, res, next) {
         try {
