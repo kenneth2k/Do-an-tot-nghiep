@@ -85,7 +85,7 @@ function renderListUser(data, search) {
     contentTable("Quản lý người dùng", xquery, xthead, xtbody, false);
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderUserPageOnClick');
     btnDeleted(formUserDeleted);
-    // renderTableUserSearch();
+    renderTableUserSearch();
 }
 
 function formUserDeleted(id) {
@@ -129,6 +129,16 @@ function formUserDeleted(id) {
     });
 }
 
+function renderTableUserSearch() {
+    const search = $('#table-role #formSearchUser');
+    if (search) {
+        search.submit(function(e) {
+            e.preventDefault();
+            let input = search.find('input').val();
+            renderTableUser(input);
+        });
+    }
+}
 // Deleted
 
 function renderTableUserDeleted(search = '', page = undefined) {
@@ -220,7 +230,7 @@ function renderListUserDeleted(data, search) {
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderUserPageOnClick');
     btnDeleted(formUserDeleted);
     btnDeletedReturn(formUserDeletedReturn);
-    // renderTableUserSearch();
+    renderTableProducerDeletedSearch();
 }
 
 function formUserDeletedReturn(id) {
@@ -262,4 +272,15 @@ function formUserDeletedReturn(id) {
             }, 1000);
         });
     });
+}
+
+function renderTableProducerDeletedSearch() {
+    const search = $('#table-role #formSearchUserDeleted');
+    if (search) {
+        search.submit(function(e) {
+            e.preventDefault();
+            let input = search.find('input').val();
+            renderTableUserDeleted(input);
+        });
+    }
 }
