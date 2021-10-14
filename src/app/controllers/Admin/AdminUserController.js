@@ -96,5 +96,26 @@ class AdminUserController {
             })
         }
     };
+    // [PUT] /admin/user/:id/restore
+    restore(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            User.restore({ _id: req.params.id })
+                .then((user) => {
+                    return res.send({
+                        message: 'Khôi phục người dùng thành công!'
+                    });
+                })
+                .catch((err) => {
+                    throw new Error('DELETE FAILUARE!');
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
 }
 module.exports = new AdminUserController;
