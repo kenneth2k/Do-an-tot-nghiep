@@ -153,6 +153,7 @@ function renderTableUserDeleted(search = '', page = undefined) {
 };
 
 function renderListUserDeleted(data, search) {
+
     var xquery = `
             <div class="nav-content d-flex justify-content-between p-2">
                 <div class="nav-content-1 d-flex">
