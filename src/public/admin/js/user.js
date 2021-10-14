@@ -219,5 +219,47 @@ function renderListUserDeleted(data, search) {
     contentTable("Người dùng đã khóa", xquery, xthead, xtbody, false);
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderUserPageOnClick');
     btnDeleted(formUserDeleted);
+    btnDeletedReturn(formUserDeletedReturn);
     // renderTableUserSearch();
+}
+
+function formUserDeletedReturn(id) {
+    var xhtml = `
+        <div>
+            <label class="form-label fw-bold fst-italic text-danger">Bạn muốn khôi phục người dùng!</label>
+            <input type="text" class="form-control" name="userId" value="${id}" hidden="true">
+            <div></div>
+        </div>
+        `;
+    showModal("formUserDeletedReturn", "post", "Khôi phục người dùng", xhtml, function(data) {
+        var error = {};
+        // xử lý sự kiện khi có lỗi
+        if (Object.keys(error).length > 0) {
+            throw JSON.stringify(error);
+        }
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/user/${data.userId}/restore`,
+            type: "PUT",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
+            setTimeout(function() {
+                $('#myModal').modal('hide');
+                showToast(data.message, "success");
+                setTimeout(function() {
+                    returnNavBar('user');
+                }, 1000);
+            }, 1000);
+        });
+    });
 }
