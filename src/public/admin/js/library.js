@@ -91,7 +91,7 @@ function imagesPreview(input, placeToInsertImagePreview) {
 // Ẩn/Hiện Modal
 function showModal(idForm, method, title, body, callback) {
     var xhtml = `
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <form id=${idForm} action="#" method=${method}>
                 <div class="modal-content">
                     <div class="modal-header">
