@@ -67,6 +67,7 @@
                     }
                 case 'cart':
                     {
+                        renderTableOder();
                         break;
                     }
                 case 'product':
