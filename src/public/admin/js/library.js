@@ -91,7 +91,7 @@ function imagesPreview(input, placeToInsertImagePreview) {
 // Ẩn/Hiện Modal
 function showModal(idForm, method, title, body, callback) {
     var xhtml = `
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog ${(idForm.indexOf('-xl') !== (-1))? 'modal-xl': 'modal-lg'} ">
             <form id=${idForm} action="#" method=${method}>
                 <div class="modal-content">
                     <div class="modal-header">
@@ -101,10 +101,15 @@ function showModal(idForm, method, title, body, callback) {
                     <div class="modal-body">
                         ${body}
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-primary">Lưu</button>
-                    </div>
+                    ${
+                        (idForm.indexOf('-hbtn') === (-1))?
+                        `
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            </div>
+                        `: ''
+                    }
                 </div>
             </form>
         </div>

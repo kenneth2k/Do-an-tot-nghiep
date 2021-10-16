@@ -1,4 +1,5 @@
 const Order = require('../../models/Order');
+const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
 const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../../util/mongoose');
 
@@ -6,7 +7,6 @@ class AdminOrderController {
     // [GET] /admin/oder/search
     search(req, res, next) {
         try {
-            console.log("vào")
             const token = req.header('Authorization').replace("Bearer ", "");
             const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
             if (!decoded) throw new Error('TOKEN UNDEFINED!');
@@ -41,6 +41,34 @@ class AdminOrderController {
                 })
                 .catch((err) => {
                     throw new Error('Error connecting DB!');
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
+    // [GET] /admin/oder/:id/edit
+    edit(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            Order.findOne({ _id: req.params.id })
+                .then((order) => {
+                    return Promise.all([
+                        order,
+                        User.findOne({ slug: order.slugUser })
+                    ])
+                })
+                .then(([order, user]) => {
+                    return res.send({
+                        ...order._doc,
+                        email: user.email,
+                    });
+                })
+                .catch((err) => {
+                    throw new Error(err.message);
                 })
         } catch (e) {
             return res.send({
