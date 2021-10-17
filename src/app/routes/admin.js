@@ -53,6 +53,8 @@ router.get('/user/delete/search', adminUserController.searchDeleted);
 router.put('/user/:id/restore', adminUserController.restore);
 //Oder
 router.get('/order/search', adminOrderController.search);
+router.get('/order/:id/edit', adminOrderController.edit);
+router.put('/order/:id/update', adminOrderController.update);
 
 router.get('/*', adminController.notfound);
 

@@ -91,7 +91,7 @@ function imagesPreview(input, placeToInsertImagePreview) {
 // Ẩn/Hiện Modal
 function showModal(idForm, method, title, body, callback) {
     var xhtml = `
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog ${(idForm.indexOf('-xl') !== (-1))? 'modal-xl': 'modal-lg'} ">
             <form id=${idForm} action="#" method=${method}>
                 <div class="modal-content">
                     <div class="modal-header">
@@ -101,10 +101,15 @@ function showModal(idForm, method, title, body, callback) {
                     <div class="modal-body">
                         ${body}
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-primary">Lưu</button>
-                    </div>
+                    ${
+                        (idForm.indexOf('-hbtn') === (-1))?
+                        `
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            </div>
+                        `: ''
+                    }
                 </div>
             </form>
         </div>
@@ -128,6 +133,7 @@ function showModal(idForm, method, title, body, callback) {
         e.preventDefault();
         try {
             var listInput = submitForm.querySelectorAll("input");
+            var listSelected = submitForm.querySelectorAll("select");
             var data = {};
             listInput.forEach((input, index) => {
                 if (input.type === "radio" && input.checked == false) {
@@ -143,6 +149,9 @@ function showModal(idForm, method, title, body, callback) {
                 input.classList = "form-control is-valid";
                 input.parentElement.querySelector('div').classList = "valid-feedback";
                 input.parentElement.querySelector('div').textContent = "";
+            });
+            listSelected.forEach((item)=>{
+                data[`${item.name}`] = item.value;
             })
             callback(data);
         } catch (error) {
