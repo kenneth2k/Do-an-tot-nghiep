@@ -2,7 +2,7 @@ function renderTableOder(search = '', page = undefined) {
     // call ajax to do something...
     let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
     $.ajax({
-        url: `/admin/order/search?q=${search}&page=${page}`,
+        url: `/admin/order/2/search?q=${search}&page=${page}`,
         type: "GET",
         headers: {
             "Authorization": token.token
@@ -23,10 +23,10 @@ function renderListOder(data, search) {
     var xquery = `
             <div class="nav-content d-flex justify-content-between p-2">
                 <div class="nav-content-1 d-flex">
-                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableOrderDeleted()">Đang xử lý (<span class="text-secondary">${data.countOrderWarning}</span>) </a></div>
-                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableOrderDeleted()">Đang giao (<span class="text-secondary">${data.countOrderSuccess}</span>) </a></div>
-                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableOrderDeleted()">Hoàn thành (<span class="text-secondary">${data.countOrderFinished}</span>) </a></div>
-                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableOrderDeleted()">Đã Hủy (<span class="text-secondary">${data.countOrderFailed}</span>) </a></div>
+                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('cart')">Đang xử lý (<span class="text-secondary">${data.countOrderWarning}</span>) </a></div>
+                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableOderSuccess()">Đang giao (<span class="text-secondary">${data.countOrderSuccess}</span>) </a></div>
+                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableOderFinished()">Hoàn thành (<span class="text-secondary">${data.countOrderFinished}</span>) </a></div>
+                <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableOderFailed()">Đã Hủy (<span class="text-secondary">${data.countOrderFailed}</span>) </a></div>
                 </div>
                 <div class="nav-content-2">
                     <form action="#" method="get" id="formSearchOder">
@@ -96,24 +96,23 @@ function renderListOder(data, search) {
     btnEditer(formOderEditer);
 }
 
-
 function formOderEditer({ token, id }) {
     $.ajax({
-        url: `/admin/order/${id}/edit`,
-        type: "GET",
-        headers: {
-            "Authorization": token.token
-        },
-        beforeSend: function() {
-            addLoadingPage();
-        },
-        success: function() {
-            removeLoadingPage();
-        }
-    }).done(function(data) {
-        let details = '';
-        data.details.map((item, index) => {
-            details += `
+            url: `/admin/order/${id}/edit`,
+            type: "GET",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+            }
+        }).done(function(data) {
+                let details = '';
+                data.details.map((item, index) => {
+                    details += `
                 <tr>
                     <th class="td-center" scope="row">${index + 1}</th>
                     <td class="td-center">${item.productName}</td>
@@ -123,8 +122,8 @@ function formOderEditer({ token, id }) {
                     <td class="td-center">${item.sale}</td>
                     <td class="td-center">${new Intl.NumberFormat().format(item.price * item.quantity)} VNĐ</td>
                 </tr>`;
-        });
-        var xhtml = `
+                });
+                var xhtml = `
         <div >
             <label style="font-weight: 500;">Mã đơn hàng</label>
             <h5>&nbsp;&nbsp;&nbsp;&nbsp;${data._id}</h5>
@@ -149,16 +148,18 @@ function formOderEditer({ token, id }) {
             <label style="font-weight: 500;">Thông tin thanh toán</label>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;- Thanh toán khi nhận hàng.</p>
         </div>
-        <div style="width: 400px;">
+        <div style="width: 400px;" class="mb-3">
             <label style="font-weight: 500;">Thông tin đơn hàng</label>
             <div class="input-group">
             <select class="form-select" name="status">
-                    <option value="2" ${(data.status === 2)? 'selected': ''}>Đang xử lý</option>
-                    <option value="3" ${(data.status === 3)? 'selected': ''}>Đang giao hàng</option>
-                    <option value="1" ${(data.status === 1)? 'selected': ''}>Hoàn thành</option>
-                    <option value="0" ${(data.status === 0)? 'selected': ''}>Hủy</option>
+                    <option class="${(data.status === 2)? 'text-info text-uppercase fw-bold': ''}" value="2" ${(data.status === 2)? 'selected': ''}>Đang xử lý</option>
+                    <option class="${(data.status === 3)? 'text-info text-uppercase fw-bold': ''}" value="3" ${(data.status === 3)? 'selected': ''}>Đang giao hàng</option>
+                    <option class="${(data.status === 1)? 'text-info text-uppercase fw-bold': ''}" value="1" ${(data.status === 1)? 'selected': ''}>Hoàn thành</option>
+                    <option class="${(data.status === 0)? 'text-info text-uppercase fw-bold': ''}" value="0" ${(data.status === 0)? 'selected': ''}>Hủy</option>
             </select>
+            ${data.status == 0 ||  data.status == 1? '': `
             <span class="input-group-text" style="background-color: transparent; border-color: transparent;"><button type="submit" class="btn btn-primary">Cập nhật đơn hàng</button></span>
+            `}
             </div>
         </div>
         <div>
@@ -217,3 +218,66 @@ function formOderEditer({ token, id }) {
         });
     });
 }
+
+function renderTableOderSuccess(search = '', page = undefined) {
+    // call ajax to do something...
+    let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+    $.ajax({
+        url: `/admin/order/3/search?q=${search}&page=${page}`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+
+        }
+    }).done(function(data) {
+        renderListOder(data, search);
+    });
+};
+
+function renderTableOderFailed(search = '', page = undefined) {
+    // call ajax to do something...
+    let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+    $.ajax({
+        url: `/admin/order/0/search?q=${search}&page=${page}`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+
+        }
+    }).done(function(data) {
+        renderListOder(data, search);
+    });
+};
+
+function renderTableOderFinished(search = '', page = undefined) {
+    // call ajax to do something...
+    let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+    $.ajax({
+        url: `/admin/order/1/search?q=${search}&page=${page}`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+
+        }
+    }).done(function(data) {
+        renderListOder(data, search);
+    });
+};

@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../../util/mongoose');
 
 class AdminOrderController {
-    // [GET] /admin/oder/search
+    // [GET] /admin/oder/:status/search
     search(req, res, next) {
         try {
             const token = req.header('Authorization').replace("Bearer ", "");
@@ -13,7 +13,8 @@ class AdminOrderController {
             let page = parseInt(req.query.page) || 1;
 
             let skip = (page - 1) * process.env.LIMIT_DOS;
-            let searchID = (req.query.q) ? { status: 2, _id: req.query.q } : { status: 2 };
+
+            let searchID = (req.query.q) ? { status: req.params.status, _id: req.query.q } : { status: req.params.status };
             Promise.all([
                     Order.find(searchID).sort({ createdAt: -1 }),
                     Order.countDocuments({ status: 1 }).sort({ createdAt: -1 }),
