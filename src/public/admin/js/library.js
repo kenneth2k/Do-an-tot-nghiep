@@ -133,6 +133,7 @@ function showModal(idForm, method, title, body, callback) {
         e.preventDefault();
         try {
             var listInput = submitForm.querySelectorAll("input");
+            var listSelected = submitForm.querySelectorAll("select");
             var data = {};
             listInput.forEach((input, index) => {
                 if (input.type === "radio" && input.checked == false) {
@@ -148,6 +149,9 @@ function showModal(idForm, method, title, body, callback) {
                 input.classList = "form-control is-valid";
                 input.parentElement.querySelector('div').classList = "valid-feedback";
                 input.parentElement.querySelector('div').textContent = "";
+            });
+            listSelected.forEach((item)=>{
+                data[`${item.name}`] = item.value;
             })
             callback(data);
         } catch (error) {

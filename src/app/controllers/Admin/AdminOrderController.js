@@ -76,5 +76,34 @@ class AdminOrderController {
             })
         }
     };
+    // [PUT] /admin/oder/:id/update
+    update(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            Order.findOne({ _id: req.params.id })
+                .then((order) => {
+                    order.status = req.body.status;
+
+                    Order.updateOne({ _id: req.params.id }, order)
+                        .then(() => {
+                            return res.send({
+                                message: 'Cập nhật đơn hàng thành công!'
+                            });
+                        })
+                        .catch((err) => {
+                            throw new Error(err.message);
+                        })
+                })
+                .catch((err) => {
+                    throw new Error(err.message);
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
 }
 module.exports = new AdminOrderController;

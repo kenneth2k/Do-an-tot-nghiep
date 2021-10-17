@@ -111,7 +111,6 @@ function formOderEditer({ token, id }) {
             removeLoadingPage();
         }
     }).done(function(data) {
-        console.log(data);
         let details = '';
         data.details.map((item, index) => {
             details += `
@@ -152,10 +151,12 @@ function formOderEditer({ token, id }) {
         </div>
         <div style="width: 400px;">
             <label style="font-weight: 500;">Thông tin đơn hàng</label>
-            <div class="input-group mb-3">
-            <select class="form-select bg-danger text-white">
-                    <option value="1" selected>Đang xử lý</option>
-                    <option value="2">Đang giao hàng</option>
+            <div class="input-group">
+            <select class="form-select" name="status">
+                    <option value="2" ${(data.status === 2)? 'selected': ''}>Đang xử lý</option>
+                    <option value="3" ${(data.status === 3)? 'selected': ''}>Đang giao hàng</option>
+                    <option value="1" ${(data.status === 1)? 'selected': ''}>Hoàn thành</option>
+                    <option value="0" ${(data.status === 0)? 'selected': ''}>Hủy</option>
             </select>
             <span class="input-group-text" style="background-color: transparent; border-color: transparent;"><button type="submit" class="btn btn-primary">Cập nhật đơn hàng</button></span>
             </div>
@@ -191,6 +192,7 @@ function formOderEditer({ token, id }) {
             if (Object.keys(error).length > 0) {
                 throw JSON.stringify(error);
             }
+
             // call ajax to do something...
             $.ajax({
                 url: `/admin/order/${id}/update`,
@@ -209,7 +211,7 @@ function formOderEditer({ token, id }) {
                 $('#myModal').modal('hide');
                 setTimeout(function() {
                     showToast(data.message, "success");
-                    returnNavBar('order');
+                    returnNavBar('cart');
                 }, 500);
             });
         });
