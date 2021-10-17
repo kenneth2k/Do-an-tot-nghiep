@@ -1,4 +1,5 @@
 const Order = require('../../models/Order');
+const Product = require('../../models/Product');
 const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
 const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../../util/mongoose');
@@ -84,23 +85,38 @@ class AdminOrderController {
             const token = req.header('Authorization').replace("Bearer ", "");
             const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
             if (!decoded) throw new Error('TOKEN UNDEFINED!');
-            Order.findOne({ _id: req.params.id })
-                .then((order) => {
-                    order.status = req.body.status;
 
-                    Order.updateOne({ _id: req.params.id }, order)
-                        .then(() => {
-                            return res.send({
-                                message: 'Cập nhật đơn hàng thành công!'
-                            });
-                        })
-                        .catch((err) => {
-                            throw new Error(err.message);
-                        })
+            const result = async() => {
+                const order = await Order.findOne({ _id: req.params.id });
+                // Thay đổi trạng thái đơn hàng
+                order.status = req.body.status;
+                if (req.body.status == 1) {
+                    var updateProduct;
+                    // Duyệt qua từng sản phẩm của đơn hàng
+                    for (let i = 0; i < order.details.length; i++) {
+                        const product = await Product.findOne({ slug: order.details[i].slug });
+                        // Duyệt qua màu của từng sản phẩm 
+                        for (let j = 0; j < product.colors.length; j++) {
+                            if (order.details[i].colorId == product.colors[j]._id) {
+                                product.colors[j].quantity = Number.parseInt(product.colors[j].quantity) - Number.parseInt(order.details[i].quantity);
+                            }
+                        }
+                        updateProduct = await Product.updateOne({ slug: order.details[i].slug }, product);
+                    }
+                }
+                // Cập nhật trạng thái đơn hàng
+                const updateOrder = await Order.updateOne({ _id: req.params.id }, order);
+                return Promise.all([order, updateOrder, updateProduct]);
+            }
+            result()
+                .then(([order, updateOrder, updateProduct]) => {
+                    return res.send({
+                        message: 'Cập nhật đơn hàng thành công!'
+                    });
                 })
                 .catch((err) => {
                     throw new Error(err.message);
-                })
+                });
         } catch (e) {
             return res.send({
                 message: e

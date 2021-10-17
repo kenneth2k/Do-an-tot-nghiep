@@ -227,7 +227,7 @@ function formOderEditer({ token, id }) {
                 $('#myModal').modal('hide');
                 setTimeout(function() {
                     showToast(data.message, "success");
-                    returnNavBar('cart');
+                    $('#table-role #formSearchOder').submit();
                 }, 500);
             });
         });
