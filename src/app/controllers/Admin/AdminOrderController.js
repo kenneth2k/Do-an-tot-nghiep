@@ -37,6 +37,7 @@ class AdminOrderController {
                         pagePre,
                         pageActive: page,
                         pageNext,
+                        statusOrder: req.params.status,
                         limit: process.env.LIMIT_DOS
                     })
                 })

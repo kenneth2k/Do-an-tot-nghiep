@@ -20,6 +20,7 @@ function renderTableOder(search = '', page = undefined) {
 };
 
 function renderListOder(data, search) {
+
     var xquery = `
             <div class="nav-content d-flex justify-content-between p-2">
                 <div class="nav-content-1 d-flex">
@@ -31,7 +32,7 @@ function renderListOder(data, search) {
                 <div class="nav-content-2">
                     <form action="#" method="get" id="formSearchOder">
                         <div class="input-group" style="width: 300px;">
-                            <input type="text" class="form-control" placeholder="Tìm kiếm" value="${search}">
+                            <input type="text" data-status="${data.statusOrder}" class="form-control" placeholder="Tìm kiếm" value="${search}">
                             <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                         </div>
                     </form>
@@ -90,10 +91,24 @@ function renderListOder(data, search) {
     xtbody += '</tbody>';
     //Check page hide or show
     let pagePre = (data.orderNewList.length > 0) ? data.pagePre : 1;
+
+    //Show status
+    let showMessage = '';
+    switch (Number.parseInt(data.statusOrder)) {
+        case 0:
+            { showMessage = 'Đã hủy'; break; }
+        case 1:
+            { showMessage = 'Hoàn thành'; break; }
+        case 2:
+            { showMessage = 'Đang xử lý'; break; }
+        case 3:
+            { showMessage = 'Đang giao'; break; }
+    }
     //Show table
-    contentTable("Quản lý đơn hàng", xquery, xthead, xtbody, false);
-    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderOrderPageOnClick');
+    contentTable("Quản lý đơn hàng - " + showMessage, xquery, xthead, xtbody, false);
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderOderPageOnClick');
     btnEditer(formOderEditer);
+    renderTableOrderSearch();
 }
 
 function formOderEditer({ token, id }) {
@@ -281,3 +296,41 @@ function renderTableOderFinished(search = '', page = undefined) {
         renderListOder(data, search);
     });
 };
+
+
+function renderOderPageOnClick(page) {
+    let content = $('#formSearchOder').find('input[type="text"').val();
+    let status = $('#formSearchOder').find('input[type="text"').data('status');
+    switch (status) {
+        case 0:
+            return renderTableOderFailed(content, page);
+        case 1:
+            return renderTableOderFinished(content, page);
+        case 2:
+            return renderTableOder(content, page);
+        case 3:
+            return renderTableOderSuccess(content, page);
+    }
+    
+}
+
+function renderTableOrderSearch() {
+    const search = $('#table-role #formSearchOder');
+    if (search) {
+        search.submit(function(e) {
+            e.preventDefault();
+            let content = $(this).find('input[type="text"').val();
+            let status = $(this).find('input[type="text"').data('status');
+            switch (status) {
+                case 0:
+                    return renderTableOderFailed(content);
+                case 1:
+                    return renderTableOderFinished(content);
+                case 2:
+                    return renderTableOder(content);
+                case 3:
+                    return renderTableOderSuccess(content);
+            }
+        });
+    }
+}
