@@ -73,8 +73,6 @@ function renderListRaiting(data, dateBefore, dateAfter) {
                         <td class="td-center" width=200 style="text-align:center;">${item.star}</td>
                         <td class="td-center" width=450>
                             ${listimg}
-                            ${listimg}
-                            ${listimg}
                         </td>
                         <td class="td-center impact-event">
                         <button type="button" class="btn btn-danger btn-sm deleted" data-id="${item._id}">Xóa</button>
