@@ -24,7 +24,28 @@ $('.cbo-m-select__dropdown-item input').click(function(e) {
     }
 });
 
-function loadTableProduct() {
+function renderTableProduct(search = '', page = undefined) {
+    // call ajax to do something...
+    let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+    $.ajax({
+        url: `/admin/product/search?q=${search}&page=${page}`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+
+        }
+    }).done(function(data) {
+        renderListProduct(data, search);
+    });
+};
+
+function renderListProduct(data, search) {
     var xquery = `
     <div class="nav-content d-flex justify-content-between p-2">
         <div class="nav-content-1 d-flex">
@@ -43,44 +64,67 @@ function loadTableProduct() {
     `;
     var xthead = `
         <thead>
-            <tr>
+            <tr class="scrollable-wrapper">
                 <th scope="col">STT</th>
-                <th scope="col">Hình</th>
-                <th scope="col">Tên</th>
+                <th scope="col">Ảnh</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Màu</th>
                 <th scope="col">Giá</th>
-                <th scope="col">địa chỉ</th>
-                <th scope="col">địa chỉ</th>
-                <th scope="col">địa chỉ</th>
-                <th scope="col">địa chỉ</th>
-                <th scope="col">địa chỉ</th>
+                <th scope="col">Danh mục</th>
+                <th scope="col">Ngày tạo</th>
                 <th scope="col"></th>
             </tr>
         </thead>
     `;
-    var xtbody = `
-        <tbody>
-            <tr>
-                <th class="td-center" scope="row">1</th>
-                <td class="td-center">item 1</td>
-                <td class="td-center">item 2</td>
-                <td class="td-center">item 3</td>
-                <td class="td-center">item 4</td>
-                <td class="td-center">item 4</td>
-                <td class="td-center">item 4</td>
-                <td class="td-center">item 4</td>
-                <td class="td-center">item 4</td>
-                <td class="td-center impact-event">
-                    <button type="button" class="btn btn-primary btn-sm edit" data-id="1">Sửa</button>
-                    <button type="button" class="btn btn-danger btn-sm deleted" data-id="2">Xóa</button>
-                </td>
-            </tr>
-        </tbody>
-    `;
-    contentTable("Quản lý sản phẩm", xquery, xthead, xtbody);
+    var xtbody = '<tbody>';
+    if (data.productsList.length > 0) {
+        data.productsList.map((item, index) => {
+            let listImg = '';
+            item.colors.map((val, index) => {
+                listImg += `<img class="border border-dark p-1" src="/public/images/products/${val.bigImg}" width="100" height="70"/>`;
+            })
+            let listColor = '';
+            let countColors = item.colors.length;
+            item.colors.map((val, index) => {
+                listColor += "- " + val.name;
+                if (index < countColors - 1) {
+                    listColor += "<br/>";
+                }
+            })
+            let createdAt = moment(moment(item.createdAt).subtract(1, "days")).format("DD/MM/YYYY - HH:mm:ss");
+            xtbody += `
+                <tr>
+                    <th class="td-center" scope="row">${data.STT + index}</th>
+                    <td class="td-center" width="120">${listImg}</td>
+                    <td class="td-center" width="170"><div clas="text-wrap">${item.name}</div></td>
+                    <td class="td-center" width="120">${listColor}</td>
+                    <td class="td-center">${new Intl.NumberFormat().format(item.price)}</td>
+                    <td class="td-center" ><p class="text-capitalize">${item.categori}</p></td>
+                    <td class="td-center">${createdAt}</td>
+                    <td class="td-center impact-event">
+                        <button type="button" class="btn btn-primary btn-sm edit" data-id="${item._id}">Sửa</button>
+                        <button type="button" class="btn btn-danger btn-sm deleted" data-id="${item._id}">Xóa</button>
+                    </td>
+                </tr>
+                `;
+        });
+    } else {
+        xtbody += `
+                    <tr>
+                        <td colspan="5">Không tìm thấy tài liệu</td>
+                    </tr>
+                `;
+    }
+    xtbody += '</tbody>';
+    //Check page hide or show
+    let pagePre = (data.productsList.length > 0) ? data.pagePre : 1;
+    //Show table
+    contentTable("Quản lý sản phẩm", xquery, xthead, xtbody, true);
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProductPageOnClick');
 }
 
 // add new product
-function formProduct() {
+function formProductEditer() {
     var xhtml = `
     <div class="body-content__title justify-content-start">
     <a href="#" style="line-height: 40px; padding-right: 10px;">
@@ -185,10 +229,6 @@ function formProduct() {
         `;
     $("#table-role").html(xhtml);
 };
-
-function formProductEditer() {
-    formProduct();
-}
 
 function formProductDeleted(id) {
     var xhtml = `
