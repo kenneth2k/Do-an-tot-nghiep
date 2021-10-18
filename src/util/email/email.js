@@ -173,7 +173,7 @@ function sendOrderSuccessMail(order, user, products) {
                     Ephone store đã nhận được yêu cầu đặt hàng của bạn và đang xử lý nhé. Bạn sẽ nhận được thông báo tiếp theo khi đơn hàng đã sẵn sàng được giao
                 </p>
                 <p style="margin:10px;text-align: justify;">*<strong>Lưu ý nhỏ cho bạn</strong>: Bạn chỉ nên nhận hàng khi trạng thái đơn hàng là <strong>“Đang giao hàng”</strong> và nhớ kiểm tra Mã đơn hàng, Thông tin người gửi và Mã vận đơn để nhận đúng kiện hàng nhé.</p>
-            </div>
+                </div>
             <div style="border-bottom: 2px solid #f0f0f0;">
                 <h3 style="position: relative;">
                     <span>
@@ -222,6 +222,14 @@ function sendOrderSuccessMail(order, user, products) {
                     <div style="padding: 0 5px;">${new Intl.NumberFormat().format(order.sumPrice)}</div>
                     <div>VNĐ</div>
                 </div>
+            </div>
+            <div>
+                <p style="margin:10px;text-align: justify;">
+                    Nếu có vấn đề gì, hãy gọi ngay đến tổng đài trợ giúp của chúng tôi.
+                </p>
+                <p style="margin:10px;text-align: justify;">
+                    Hotline: 066.888.8888
+                </p>
             </div>
         </div>
     `;
