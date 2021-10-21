@@ -187,6 +187,10 @@
     background-color: var(--bs-danger);
 }
 
+#snackbar.warning {
+    background-color: #ffc107;
+}
+
 @-webkit-keyframes snackbarfadein {
     from {
         bottom: 0;

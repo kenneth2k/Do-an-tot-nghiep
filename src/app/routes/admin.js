@@ -22,6 +22,19 @@ var upload = multer({
     storage: storage,
     limits: { fileSize: 1000000 }
 });
+//Product
+var storageProduct = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, path.join(__dirname, '../../public/images/products'));
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+var uploadProduct = multer({
+    storage: storageProduct,
+    limits: { fileSize: 1000000 }
+});
 
 router.get('/', adminController.index);
 router.get('/home', adminController.home);
@@ -59,6 +72,9 @@ router.put('/order/:id/update', adminOrderController.update);
 //Product
 router.get('/product/search', adminProductController.search);
 router.delete('/product/:id/delete', adminProductController.delete);
+router.post('/product/images', uploadProduct.single('upload'), adminProductController.updateImages);
+router.get('/product/create', adminProductController.createGet);
+router.post('/product/create', uploadProduct.fields([{ name: 'images1', maxCount: 4 }, { name: 'images2', maxCount: 4 }]), adminProductController.create);
 
 router.get('/*', adminController.notfound);
 
