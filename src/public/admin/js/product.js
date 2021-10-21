@@ -49,8 +49,8 @@ function renderListProduct(data, search) {
     var xquery = `
     <div class="nav-content d-flex justify-content-between p-2">
         <div class="nav-content-1 d-flex">
-            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="#">Công khai (<span class="text-secondary">1</span>) </a></div>
-            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="#">Thùng rác (<span class="text-secondary">0</span>) </a></div>
+            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="#">Công khai (<span class="text-secondary">${data.sumProduct}</span>) </a></div>
+            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="#">Thùng rác (<span class="text-secondary">${data.sumDeleted}</span>) </a></div>
         </div>
         <div class="nav-content-2">
             <form action="#" method="get">
@@ -122,6 +122,7 @@ function renderListProduct(data, search) {
     contentTable("Quản lý sản phẩm", xquery, xthead, xtbody, true);
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProductPageOnClick');
     btnAddNew(apiFormProductCreate);
+    btnDeleted(formProductDeleted);
 }
 
 
@@ -176,8 +177,6 @@ function apiFormProductCreate() {
 
 // add new product
 function formProductCreate(data) {
-    console.log(data)
-
     let producer = '',
         categori = '';
     data.producer.forEach((item, index) => {
@@ -446,7 +445,6 @@ function formProductCreate(data) {
     })
 };
 
-
 function formSubmitProduct(idForm, callback) {
     var submitForm = document.getElementById(idForm);
     // check size
@@ -526,28 +524,33 @@ function formProductDeleted(id) {
     showModal("formProductDeleted", "post", "Xóa sản phẩm", xhtml, function(data) {
         var error = {};
         // xử lý các giá trị biểu mẫu
-        // if (data.name === "") {
-        //     error.name = "sadsad!";
-        // }
-        // if (data.email === "") {
-        //     error.email = "Vui lòng nhập email!";
-        // }
         // xử lý sự kiện khi có lỗi
         if (Object.keys(error).length > 0) {
             throw JSON.stringify(error);
         }
-        // gọi ajax to do something...
-        console.log("wait");
-        addLoadingPage();
-        // ajax response
-        setTimeout(function() {
-            removeLoadingPage();
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/product/${data.productId}/delete`,
+            type: "DELETE",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+            }
+        }).done(function(data) {
             setTimeout(function() {
                 $('#myModal').modal('hide');
+                showToast(data.message, "success");
                 setTimeout(function() {
-                    showToast(message.deleteSuccess, "success")
-                }, 500);
-            }, 500);
-        }, 2000);
+                    returnNavBar('product');
+                }, 1000);
+            }, 1000);
+        });
+
     });
 }

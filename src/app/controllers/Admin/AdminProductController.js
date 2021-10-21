@@ -63,7 +63,15 @@ class AdminProductController {
             const token = req.header('Authorization').replace("Bearer ", "");
             const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
             if (!decoded) throw new Error('TOKEN UNDEFINED!');
-
+            Product.delete({ _id: req.params.id })
+                .then((product) => {
+                    return res.send({
+                        message: 'Xóa sản phẩm thành công!'
+                    });
+                })
+                .catch((err) => {
+                    throw new Error(err.message);
+                })
         } catch (e) {
             return res.send({
                 message: e
