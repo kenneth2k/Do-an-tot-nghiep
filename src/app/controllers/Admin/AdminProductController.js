@@ -125,28 +125,36 @@ class AdminProductController {
             const token = req.header('Authorization').replace("Bearer ", "");
             const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
             if (!decoded) throw new Error('TOKEN UNDEFINED!');
-
             let reducers = [],
                 images1 = [],
                 images2 = [];
-            req.body.reducers.forEach((val) => {
-                reducers.push({ _id: val });
-            });
+            if (typeof req.body.reducers === 'string') {
+                reducers.push({ _id: req.body.reducers });
+            } else {
+                req.body.reducers.forEach((val) => {
+                    reducers.push({ _id: val });
+                });
+            }
             req.files.images1.forEach((val) => {
                 images1.push(val.filename);
             })
-            req.files.images2.forEach((val) => {
-                images2.push(val.filename);
-            })
-            let colors = [{
+
+            let colors = [];
+            colors.push({
                 name: req.body.nameColor1,
                 bigImg: req.files.images1[0].filename,
                 secImg: images1,
-            }, {
-                name: req.body.nameColor2,
-                bigImg: req.files.images2[0].filename,
-                secImg: images2,
-            }];
+            });
+            if (req.files.images2) {
+                req.files.images2.forEach((val) => {
+                    images2.push(val.filename);
+                })
+                colors.push({
+                    name: req.body.nameColor2,
+                    bigImg: req.files.images2[0].filename,
+                    secImg: images2,
+                });
+            };
             let product = new Product({
                 name: req.body.name,
                 price: req.body.price,
@@ -160,21 +168,86 @@ class AdminProductController {
                 SIM: req.body.SIM,
                 Battery: req.body.Battery,
                 categori: req.body.categori,
-                content: req.body.content,
+                content: req.body.textContent[1],
                 reducers: reducers,
                 colors: colors,
                 sale: req.body.sale
-            })
+            });
             product.save()
                 .then((pro) => {
                     return res.send({
-                        body: req.body,
+                        status: true,
                         message: "Thêm sản phẩm thành công"
                     })
                 })
                 .catch((e) => {
-                    throw new Error(e.message);
+                    return res.send({
+                        status: false,
+                        message: "Thêm sản phẩm thất bại"
+                    })
                 });
+
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
+
+    // [GET] /admin/product/:id/edit
+    edit(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            Promise.all([
+                    Product.findOne({ _id: req.params.id }),
+                    Category.find({ slug: { $nin: ['', 'lien-he'] } }),
+                    Producer.find({})
+                ])
+                .then(([product, categori, producer]) => {
+                    let selectProducer = [],
+                        selectCategori = [];
+                    producer.forEach((item) => {
+                        selectProducer.push({
+                            _id: item._id,
+                            name: item.name,
+                            checked: false
+                        })
+                        product.reducers.forEach((val) => {
+                            if (item._id == val._id) {
+                                selectProducer[selectProducer.length - 1].checked = true;
+                            }
+                        })
+                    });
+                    categori.forEach((item) => {
+                        selectCategori.push({
+                            _id: item._id,
+                            name: item.name,
+                            checked: ((item._id == product.categori) ? true : false)
+                        })
+                    });
+                    return res.send({
+                        product,
+                        selectProducer,
+                        selectCategori
+                    });
+                })
+                .catch((err) => {
+                    throw new Error(err.message);
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    };
+    // [PUT] /admin/product/:id/update
+    update(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
 
         } catch (e) {
             return res.send({
