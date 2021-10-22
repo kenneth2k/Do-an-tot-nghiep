@@ -161,7 +161,7 @@ class AdminProductController {
                 sreen: req.body.sreen,
                 HDH: req.body.HDH,
                 CameraAfter: req.body.CameraAfter,
-                CamereBefore: req.body.CamereBefore,
+                CameraBefore: req.body.CameraBefore,
                 CPU: req.body.CPU,
                 RAM: req.body.RAM,
                 MemoryIn: req.body.MemoryIn,
@@ -173,6 +173,7 @@ class AdminProductController {
                 colors: colors,
                 sale: req.body.sale
             });
+            console.log("req.body.CameraBefore", req.body.CameraBefore)
             product.save()
                 .then((pro) => {
                     return res.send({
@@ -189,7 +190,8 @@ class AdminProductController {
 
         } catch (e) {
             return res.send({
-                message: e
+                status: false,
+                message: "Thêm sản phẩm thất bại"
             })
         }
     };
@@ -224,7 +226,8 @@ class AdminProductController {
                         selectCategori.push({
                             _id: item._id,
                             name: item.name,
-                            checked: ((item._id == product.categori) ? true : false)
+                            slug: item.slug,
+                            checked: ((item.slug == product.categori) ? true : false)
                         })
                     });
                     return res.send({

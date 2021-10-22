@@ -11,7 +11,7 @@ const Product = new Schema({
     sreen: { type: String },
     HDH: { type: String },
     CameraAfter: { type: String },
-    CamereBefore: { type: String },
+    CameraBefore: { type: String },
     CPU: { type: String },
     RAM: { type: String },
     MemoryIn: { type: String },

@@ -184,7 +184,7 @@ function formProductCreate(data) {
         producer += `<option value="${item._id}" >${item.name}</option>`;
     });
     data.categori.forEach((item, index) => {
-        categori += `<option value="${item._id}" >${item.name}</option>`;
+        categori += `<option value="${item.slug}" >${item.name}</option>`;
     });
     var xhtml = `
         <form id="productCreate">
@@ -592,10 +592,11 @@ function formProductEditer(data) {
     });
     data.selectCategori.forEach((item, index) => {
         if (item.checked) {
-            arrSelected.push(item._id)
+            arrSelected.push(item.slug)
         }
-        categori += `<option value="${item._id}" >${item.name}</option>`;
+        categori += `<option value="${item.slug}" >${item.name}</option>`;
     });
+    console.log(data.selectCategori)
     data.product.colors.forEach((color, index) => {
         if (index === 0) {
             color.secImg.forEach((item) => {
@@ -741,8 +742,7 @@ function formProductEditer(data) {
 
     formSubmitProduct(idForm, (data) => {
         var data_content = CKEDITOR.instances.textContent.getData();
-        console.log("data_content", data_content);
-        return;
+
         var error = {};
         // xử lý các giá trị biểu mẫu
         if (data.name.length < 1) {
