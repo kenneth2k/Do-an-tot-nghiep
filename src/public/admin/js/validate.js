@@ -5,8 +5,13 @@ function checkEmail(email) {
 };
 
 function checkPhone(phone) {
-    console.log(phone)
     const regex = /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/g;
     const result = regex.test(phone);
     return result ? true : false;
 };
+
+function isNumeric(str) {
+    const regex = /^\d+$/;
+    const result = regex.test(str);
+    return result ? true : false;
+}

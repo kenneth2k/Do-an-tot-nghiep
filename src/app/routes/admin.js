@@ -8,6 +8,7 @@ const adminProducerController = require('../controllers/Admin/AdminProducerContr
 const adminRaitingController = require('../controllers/Admin/AdminRaitingController');
 const adminUserController = require('../controllers/Admin/AdminUserController');
 const adminOrderController = require('../controllers/Admin/AdminOrderController');
+const adminProductController = require('../controllers/Admin/AdminProductController');
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -19,6 +20,19 @@ var storage = multer.diskStorage({
 });
 var upload = multer({
     storage: storage,
+    limits: { fileSize: 1000000 }
+});
+//Product
+var storageProduct = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, path.join(__dirname, '../../public/images/products'));
+    },
+    filename: function(req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+var uploadProduct = multer({
+    storage: storageProduct,
     limits: { fileSize: 1000000 }
 });
 
@@ -51,10 +65,20 @@ router.get('/user/search', adminUserController.search);
 router.delete('/user/:id/delete', adminUserController.delete);
 router.get('/user/delete/search', adminUserController.searchDeleted);
 router.put('/user/:id/restore', adminUserController.restore);
-//Oder
+//Order
 router.get('/order/:status/search', adminOrderController.search);
 router.get('/order/:id/edit', adminOrderController.edit);
 router.put('/order/:id/update', adminOrderController.update);
+//Product
+router.get('/product/search', adminProductController.search);
+router.get('/product/delete/search', adminProductController.searchDeleted);
+router.delete('/product/:id/delete', adminProductController.delete);
+router.post('/product/images', uploadProduct.single('upload'), adminProductController.updateImages);
+router.get('/product/create', adminProductController.createGet);
+router.post('/product/create', uploadProduct.fields([{ name: 'images1', maxCount: 4 }, { name: 'images2', maxCount: 4 }]), adminProductController.create);
+router.get('/product/:id/edit', adminProductController.edit);
+router.put('/product/:id/update', uploadProduct.fields([{ name: 'images1', maxCount: 4 }, { name: 'images2', maxCount: 4 }]), adminProductController.update);
+router.put('/product/:id/restore', adminProductController.restore);
 
 router.get('/*', adminController.notfound);
 

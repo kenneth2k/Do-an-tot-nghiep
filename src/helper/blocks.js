@@ -135,8 +135,8 @@ module.exports = {
                         <div class="col-xl-2dot4 col-md-3 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
                             <div class="men-pro-item simpleCart_shelfItem">
                                 <div class="men-thumb-item text-center">
-                                    <img src="${process.env.IMAGES_PRODUCT}${product.colors[0].bigImg}" alt="*.jpg"
-                                        width="100%">
+                                    <img  src="${process.env.IMAGES_PRODUCT}${product.colors[0].bigImg}" alt="*.jpg"
+                                        width="100%" height="130">
                                     <div class="men-cart-pro">
                                         <div class="inner-men-cart-pro">
                                             <a href="/${product.categori}/${product.slug}"
@@ -182,7 +182,7 @@ module.exports = {
             <div class="col-xl-2dot4 col-md-3 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
                 <div class="men-pro-item simpleCart_shelfItem">
                     <div class="men-thumb-item text-center">
-                        <img src="${process.env.IMAGES_PRODUCT}${product.colors[0].bigImg}" alt="*.jpg"
+                        <img height="130" src="${process.env.IMAGES_PRODUCT}${product.colors[0].bigImg}" alt="*.jpg"
                             width="100%">
                         <div class="men-cart-pro">
                             <div class="inner-men-cart-pro">
@@ -218,7 +218,7 @@ module.exports = {
             <div class="col-lg-3 col-md-4 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
                 <div class="men-pro-item simpleCart_shelfItem">
                     <div class="men-thumb-item text-center">
-                        <img src="${process.env.IMAGES_PRODUCT}${product.colors[0].bigImg}" alt="*.jpg"
+                        <img height="130" src="${process.env.IMAGES_PRODUCT}${product.colors[0].bigImg}" alt="*.jpg"
                             width="100%">
                         <div class="men-cart-pro">
                             <div class="inner-men-cart-pro">

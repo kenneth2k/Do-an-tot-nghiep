@@ -34,7 +34,7 @@ $(document).ready(function(event) {
                     <div class="col-lg-3 col-md-4 col-sm-6 media-slide-0 pl-1 pr-1 product-men mt-5">
                         <div class="men-pro-item simpleCart_shelfItem">
                             <div class="men-thumb-item text-center">
-                                <img src="/public/images/products/${product.colors[0].bigImg}" alt="*.jpg"
+                                <img height="130" src="/public/images/products/${product.colors[0].bigImg}" alt="*.jpg"
                                     width="100%">
                                 <div class="men-cart-pro">
                                     <div class="inner-men-cart-pro">

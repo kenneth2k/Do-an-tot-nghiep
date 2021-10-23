@@ -72,14 +72,7 @@
                     }
                 case 'product':
                     {
-                        showLoadingTable();
-                        setTimeout(function() {
-                            loadTableProduct();
-                            btnAddNew(formProduct);
-                            btnDeleted(formProductDeleted);
-                            btnEditer(formProductEditer);
-                            hideLoadingTable();
-                        }, 1000);
+                        renderTableProduct();
                         break;
                     }
                 case 'raiting':
