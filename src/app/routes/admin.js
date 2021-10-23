@@ -76,7 +76,7 @@ router.post('/product/images', uploadProduct.single('upload'), adminProductContr
 router.get('/product/create', adminProductController.createGet);
 router.post('/product/create', uploadProduct.fields([{ name: 'images1', maxCount: 4 }, { name: 'images2', maxCount: 4 }]), adminProductController.create);
 router.get('/product/:id/edit', adminProductController.edit);
-router.put('/product/:id/update', adminProductController.update);
+router.put('/product/:id/update', uploadProduct.fields([{ name: 'images1', maxCount: 4 }, { name: 'images2', maxCount: 4 }]), adminProductController.update);
 
 router.get('/*', adminController.notfound);
 

@@ -173,7 +173,6 @@ class AdminProductController {
                 colors: colors,
                 sale: req.body.sale
             });
-            console.log("req.body.CameraBefore", req.body.CameraBefore)
             product.save()
                 .then((pro) => {
                     return res.send({
@@ -251,11 +250,79 @@ class AdminProductController {
             const token = req.header('Authorization').replace("Bearer ", "");
             const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
             if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            let editer = async() => {
+                let product = await Product.findOne({ _id: req.params.id });
+                let reducers = [],
+                    images1 = [],
+                    images2 = [];
+                if (typeof req.body.reducers === 'string') {
+                    reducers.push({ _id: req.body.reducers });
+                } else {
+                    req.body.reducers.forEach((val) => {
+                        reducers.push({ _id: val });
+                    });
+                }
+                let colors = [];
+                if (req.files.images1) {
+                    req.files.images1.forEach((val) => {
+                        images1.push(val.filename);
+                    })
+                    colors.push({
+                        name: req.body.nameColor1,
+                        bigImg: req.files.images1[0].filename,
+                        secImg: images1,
+                    });
+                } else {
+                    colors.push(product.colors[0]);
+                }
+                if (req.files.images2) {
+                    req.files.images2.forEach((val) => {
+                        images2.push(val.filename);
+                    })
+                    colors.push({
+                        name: req.body.nameColor2,
+                        bigImg: req.files.images2[0].filename,
+                        secImg: images2,
+                    });
+                } else if (product.colors.length > 1) {
+                    colors.push(product.colors[1]);
+                }
 
+                product.name = req.body.name;
+                product.price = req.body.price;
+                product.sreen = req.body.sreen;
+                product.HDH = req.body.HDH;
+                product.CameraAfter = req.body.CameraAfter;
+                product.CameraBefore = req.body.CameraBefore;
+                product.CPU = req.body.CPU;
+                product.RAM = req.body.RAM;
+                product.MemoryIn = req.body.MemoryIn;
+                product.SIM = req.body.SIM;
+                product.Battery = req.body.Battery;
+                product.categori = req.body.categori;
+                product.content = req.body.textContent[1];
+                product.reducers = reducers;
+                product.colors = colors;
+                product.sale = req.body.sale;
+                let updateOneProduct = Product.updateOne({ _id: req.params.id }, product);
+                return Promise.all([product, updateOneProduct]);
+            };
+            editer()
+                .then(([product, updateOneProduct]) => {
+                    return res.send({
+                        status: true,
+                        message: 'Cập nhật sản phẩm thành công!'
+                    });
+                })
+                .catch(err => {
+                    throw new Error(err.message);
+                })
         } catch (e) {
             return res.send({
-                message: e
-            })
+                status: true,
+                message: 'Cập nhật sản phẩm thất bại!',
+                error: e
+            });
         }
     };
 }

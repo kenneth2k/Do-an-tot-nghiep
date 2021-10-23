@@ -571,12 +571,11 @@ function apiFormProductEditer({ token, id }) {
             removeLoadingPage();
         }
     }).done(function(data) {
-        formProductEditer(data);
+        formProductEditer(data, id);
     });
 }
 
-function formProductEditer(data) {
-    console.log(data);
+function formProductEditer(data, productId) {
     let producer = '',
         categori = '',
         images1 = '',
@@ -596,7 +595,6 @@ function formProductEditer(data) {
         }
         categori += `<option value="${item.slug}" >${item.name}</option>`;
     });
-    console.log(data.selectCategori)
     data.product.colors.forEach((color, index) => {
         if (index === 0) {
             color.secImg.forEach((item) => {
@@ -742,7 +740,6 @@ function formProductEditer(data) {
 
     formSubmitProduct(idForm, (data) => {
         var data_content = CKEDITOR.instances.textContent.getData();
-
         var error = {};
         // xử lý các giá trị biểu mẫu
         if (data.name.length < 1) {
@@ -823,20 +820,18 @@ function formProductEditer(data) {
         if (data.nameColor2.length > 255) {
             error.nameColor2 = "Màu 2 không quá 255 kí tự!";
         }
-        if (data.images1.length < 1) {
-            error.images1 = "Hình ảnh 1 không được rỗng!";
-        }
         // xử lý sự kiện khi có lỗi
         if (Object.keys(error).length > 0) {
             throw JSON.stringify(error);
         }
         let formData = new FormData($(`#${idForm}`)[0]);
         formData.append('textContent', data_content);
+
         // call ajax to do something...
         let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
         $.ajax({
-            url: '/admin/product/create',
-            type: "POST",
+            url: `/admin/product/${productId}/update`,
+            type: "PUT",
             data: formData,
             async: false,
             cache: false,
@@ -851,16 +846,18 @@ function formProductEditer(data) {
             },
             success: function() {
                 removeLoadingPage();
-
             }
         }).done(function(data) {
             console.log(data);
             setTimeout(function() {
-                $('#myModal').modal('hide');
-                showToast(data.message, "success");
-                setTimeout(function() {
-                    returnNavBar('product');
-                }, 1000);
+                if (data.status) {
+                    showToast(data.message, "success");
+                    setTimeout(function() {
+                        returnNavBar('product');
+                    }, 1000);
+                } else {
+                    showToast(data.message, "error");
+                }
             }, 1000);
         });
     })
