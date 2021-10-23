@@ -1,29 +1,3 @@
-$('.cbo-m-select__dropdown-item input').click(function(e) {
-    var listInput = $('.cbo-m-select__dropdown-item input[type="checkbox"]:checked');
-    var listID = [];
-    if (listInput.length > 0) {
-        let text = '';
-        listInput.each(function(index, val) {
-            text += $(val).val() + ',';
-            listID.push($(val).data('id'));
-        });
-        if ($('.cbo-m-select__primary').hasClass('is-invalid')) {
-            $('.cbo-m-select__primary').removeClass('is-invalid');
-            $('.cbo-m-select__primary').addClass('is-valid');
-        } else {
-            $('.cbo-m-select__primary').addClass('is-valid');
-        }
-        $('.cbo-m-select__text').text(text.substr(0, text.length - 1));
-        $('.cbo-m-select input[type="text"]').val(JSON.stringify(listID));
-    } else {
-        $('.cbo-m-select__primary').removeClass('is-invalid');
-        $('.cbo-m-select__primary').removeClass('is-valid');
-        $('.cbo-m-select__primary').addClass('is-invalid');
-        $('.cbo-m-select__text').text('Vui lòng chọn');
-        $('.cbo-m-select input[type="text"]').val('');
-    }
-});
-
 function renderTableProduct(search = '', page = undefined) {
     // call ajax to do something...
     let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
@@ -53,9 +27,9 @@ function renderListProduct(data, search) {
             <div class="nav-item position-relative border-right-solid-1 p-2"><a href="#">Thùng rác (<span class="text-secondary">${data.sumDeleted}</span>) </a></div>
         </div>
         <div class="nav-content-2">
-            <form action="#" method="get">
+            <form action="#" method="get" id="formSearchProduct">
                 <div class="input-group" style="width: 300px;">
-                    <input type="text" class="form-control" placeholder="Tìm kiếm" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm">
                     <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                 </div>
             </form>
@@ -126,7 +100,6 @@ function renderListProduct(data, search) {
     btnEditer(apiFormProductEditer);
 }
 
-
 function imagesPreviewProduct(input, placeToInsertImagePreview) {
     function FileListItems(files) {
         var b = new ClipboardEvent("").clipboardData || new DataTransfer()
@@ -176,7 +149,7 @@ function apiFormProductCreate() {
 
 }
 
-//Add new product
+//Thêm mới sản phẩm
 function formProductCreate(data) {
     let producer = '',
         categori = '';
@@ -554,9 +527,7 @@ function formProductDeleted(id) {
 
     });
 }
-
-
-//Add new product
+//Cập nhật mới sản phẩm
 function apiFormProductEditer({ token, id }) {
     $.ajax({
         url: `/admin/product/${id}/edit`,
@@ -862,3 +833,13 @@ function formProductEditer(data, productId) {
         });
     })
 };
+//Chọn trang hiển thị
+function renderProductPageOnClick(page) {
+    let content = $('#formSearchProduct').find('input[type="text"').val();
+    renderTableProduct(content, page);
+}
+
+function renderProductDeletedPageOnClick(page) {
+    let content = $('#formSearchProductDeleted').find('input[type="text"').val();
+    renderTableProduct(content, page);
+}

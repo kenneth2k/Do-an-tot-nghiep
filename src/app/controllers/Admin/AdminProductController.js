@@ -32,12 +32,12 @@ class AdminProductController {
                     Product.countDocumentsDeleted({})
                 ])
                 .then(([products, sumProduct, sumDeleted]) => {
-                    let pageMax = Math.ceil((products.length / process.env.LIMIT_DOS));
+                    let pageMax = Math.ceil((products.length / limit));
                     let pagePre = ((page > 0) ? page - 1 : 0);
                     let pageNext = ((page < pageMax) ? page + 1 : page);
                     return res.send({
-                        productsList: multipleMongooseToObjectOnLimit(products, process.env.LIMIT_DOS, skip),
-                        STT: (((page - 1) * process.env.LIMIT_DOS) + 1),
+                        productsList: multipleMongooseToObjectOnLimit(products, limit, skip),
+                        STT: (((page - 1) * limit) + 1),
                         sumProduct,
                         sumDeleted,
                         pagePre,
