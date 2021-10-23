@@ -323,6 +323,7 @@ class AdminProductController {
                         secImg: images1,
                     });
                 } else {
+                    product.colors[0].name = req.body.nameColor1;
                     colors.push(product.colors[0]);
                 }
                 if (req.files.images2) {
@@ -335,6 +336,7 @@ class AdminProductController {
                         secImg: images2,
                     });
                 } else if (product.colors.length > 1) {
+                    product.colors[1].name = req.body.nameColor2;
                     colors.push(product.colors[1]);
                 }
 

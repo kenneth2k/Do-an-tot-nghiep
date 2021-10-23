@@ -565,7 +565,7 @@ function formProductEditer(data, productId) {
         nameColor1 = data.product.colors[0].name,
         nameColor2 = ((data.product.colors.length > 1) ? data.product.colors[1].name : ''),
         arrSelected = [];
-    data.selectProduct.forEach((item, index) => {
+    data.selectProducer.forEach((item, index) => {
         if (item.checked) {
             arrSelected.push(item._id)
         }
@@ -830,7 +830,6 @@ function formProductEditer(data, productId) {
                 removeLoadingPage();
             }
         }).done(function(data) {
-            console.log(data);
             setTimeout(function() {
                 if (data.status) {
                     showToast(data.message, "success");
