@@ -65,6 +65,11 @@
                         });
                         break;
                     }
+                case 'category':
+                    {
+                        renderTableCategory();
+                        break;
+                    }
                 case 'cart':
                     {
                         renderTableOder();

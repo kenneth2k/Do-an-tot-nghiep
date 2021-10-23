@@ -9,6 +9,7 @@ const adminRaitingController = require('../controllers/Admin/AdminRaitingControl
 const adminUserController = require('../controllers/Admin/AdminUserController');
 const adminOrderController = require('../controllers/Admin/AdminOrderController');
 const adminProductController = require('../controllers/Admin/AdminProductController');
+const adminCategoryController = require('../controllers/Admin/AdminCategoryController');
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -79,6 +80,14 @@ router.post('/product/create', uploadProduct.fields([{ name: 'images1', maxCount
 router.get('/product/:id/edit', adminProductController.edit);
 router.put('/product/:id/update', uploadProduct.fields([{ name: 'images1', maxCount: 4 }, { name: 'images2', maxCount: 4 }]), adminProductController.update);
 router.put('/product/:id/restore', adminProductController.restore);
+//category
+router.get('/category/search', adminCategoryController.search);
+router.delete('/category/:id/delete', adminCategoryController.delete);
+router.get('/category/delete/search', adminCategoryController.searchDeleted);
+router.put('/category/:id/restore', adminCategoryController.restore);
+router.get('/category/:id/edit', adminCategoryController.edit);
+router.put('/category/:id/update', adminCategoryController.update);
+router.post('/category/create', adminCategoryController.create);
 
 router.get('/*', adminController.notfound);
 
