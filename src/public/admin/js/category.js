@@ -201,7 +201,7 @@ function renderListCategoryDeleted(data, search) {
     //Check page hide or show
     let pagePre = (data.categoryList.length > 0) ? data.pagePre : 1;
     //Show table
-    contentTable("Người dùng đã khóa", xquery, xthead, xtbody, false);
+    contentTable("Danh mục đã xóa", xquery, xthead, xtbody, false);
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderCategoryPageOnClick');
     btnDeleted(formCategoryDeleted);
     btnDeletedReturn(formCategoryDeletedReturn);
