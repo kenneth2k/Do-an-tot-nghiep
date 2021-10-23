@@ -17,21 +17,20 @@ class AdminProductController {
 
             let skip = (page - 1) * process.env.LIMIT_DOS;
             let limit = parseInt(process.env.LIMIT_DOS);
-
             let arrSearch = [{ name: new RegExp((req.query.q ? req.query.q : ''), "i") }];
             if (((req.query.q) != undefined) && ((req.query.q) != '') && (req.query.q.length == 24)) {
                 arrSearch.push({ _id: req.query.q });
             }
             Promise.all([
                     Product.find({
+                        categori: (req.query.categori == 'all') ? new RegExp((''), "i") : req.query.categori,
                         $or: arrSearch
                     }).sort({ createdAt: -1 }),
-                    Product.countDocuments({
-                        $or: arrSearch
-                    }).sort({ createdAt: -1 }),
+                    Category.find({ slug: { $nin: ['', 'lien-he'] } }),
+                    Product.countDocuments({}).sort({ createdAt: -1 }),
                     Product.countDocumentsDeleted({})
                 ])
-                .then(([products, sumProduct, sumDeleted]) => {
+                .then(([products, categories, sumProduct, sumDeleted]) => {
                     let pageMax = Math.ceil((products.length / limit));
                     let pagePre = ((page > 0) ? page - 1 : 0);
                     let pageNext = ((page < pageMax) ? page + 1 : page);
@@ -43,7 +42,8 @@ class AdminProductController {
                         pagePre,
                         pageActive: page,
                         pageNext,
-                        limit: process.env.LIMIT_DOS
+                        limit: process.env.LIMIT_DOS,
+                        categories
                     })
                 })
                 .catch((err) => {

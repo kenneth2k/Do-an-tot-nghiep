@@ -1,8 +1,8 @@
-function renderTableProduct(search = '', page = undefined) {
+function renderTableProduct(search = '', page = undefined, categori = 'all') {
     // call ajax to do something...
     let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
     $.ajax({
-        url: `/admin/product/search?q=${search}&page=${page}`,
+        url: `/admin/product/search?q=${search}&page=${page}&categori=${categori}`,
         type: "GET",
         headers: {
             "Authorization": token.token
@@ -15,21 +15,30 @@ function renderTableProduct(search = '', page = undefined) {
 
         }
     }).done(function(data) {
-        renderListProduct(data, search);
+        renderListProduct(data, search, categori);
     });
 };
 
-function renderListProduct(data, search) {
+function renderListProduct(data, search, categori) {
+    let category = '<option value="all">Tất cả</option>';
+    data.categories.forEach((value, index) => {
+        category += `<option value="${value.slug}">${value.name}</option>`;
+    })
     var xquery = `
     <div class="nav-content d-flex justify-content-between p-2">
         <div class="nav-content-1 d-flex">
-            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="#">Công khai (<span class="text-secondary">${data.sumProduct}</span>) </a></div>
-            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="#">Thùng rác (<span class="text-secondary">${data.sumDeleted}</span>) </a></div>
+            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('product')">Công khai (<span class="text-secondary">${data.sumProduct}</span>) </a></div>
+            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="renderTableProductDeleted()">Thùng rác (<span class="text-secondary">${data.sumDeleted}</span>) </a></div>
         </div>
         <div class="nav-content-2">
-            <form action="#" method="get" id="formSearchProduct">
+            <form action="#" method="get" id="formSearchProduct" style="width: 500px;display: flex; justify-content: space-between;">
+                <div class="input-group border border-primary" style="width: 170px;">
+                    <select name="categori" class="selectpicker form-control" data-size="5" data-selected-text-format="count > 3" data-live-search="true">
+                        ${category}
+                    </select>
+                </div>
                 <div class="input-group" style="width: 300px;">
-                    <input type="text" class="form-control" placeholder="Tìm kiếm">
+                    <input name="search" type="text" class="form-control" placeholder="Tìm kiếm" value="${search}">
                     <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                 </div>
             </form>
@@ -94,10 +103,12 @@ function renderListProduct(data, search) {
     let pagePre = (data.productsList.length > 0) ? data.pagePre : 1;
     //Show table
     contentTable("Quản lý sản phẩm", xquery, xthead, xtbody, true);
+    $('.selectpicker').selectpicker('val', [categori]);
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProductPageOnClick');
     btnAddNew(apiFormProductCreate);
     btnDeleted(formProductDeleted);
     btnEditer(apiFormProductEditer);
+    renderTableProducerSearch();
 }
 
 function imagesPreviewProduct(input, placeToInsertImagePreview) {
@@ -836,10 +847,34 @@ function formProductEditer(data, productId) {
 //Chọn trang hiển thị
 function renderProductPageOnClick(page) {
     let content = $('#formSearchProduct').find('input[type="text"').val();
-    renderTableProduct(content, page);
+    let categori = $('#formSearchProduct').find('select[name="categori"]').val();
+    renderTableProduct(content, page, categori);
 }
 
 function renderProductDeletedPageOnClick(page) {
     let content = $('#formSearchProductDeleted').find('input[type="text"').val();
-    renderTableProduct(content, page);
+    let categori = $('#formSearchProductDeleted').find('select[name="categori"]').val();
+    renderTableProductDeleted(content, page, categori);
+}
+
+// Tìm kiếm sản phẩm
+function renderTableProducerSearch() {
+    const search = $('#table-role #formSearchProduct');
+    const searchDeleted = $('#table-role #formSearchProductDeleted');
+    if (search) {
+        search.submit(function(e) {
+            e.preventDefault();
+            let input = search.find('input[name="search"]').val();
+            let cate = search.find('select[name="categori"]').val();
+            renderTableProduct(input, undefined, cate);
+        });
+    }
+    if (searchDeleted) {
+        searchDeleted.submit(function(e) {
+            e.preventDefault();
+            let input = searchDeleted.find('input[name="search"]').val();
+            let cate = searchDeleted.find('select[name="categori"]').val();
+            renderTableProduct(input, undefined, cate);
+        });
+    }
 }
