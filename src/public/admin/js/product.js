@@ -874,7 +874,164 @@ function renderTableProducerSearch() {
             e.preventDefault();
             let input = searchDeleted.find('input[name="search"]').val();
             let cate = searchDeleted.find('select[name="categori"]').val();
-            renderTableProduct(input, undefined, cate);
+            renderTableProductDeleted(input, undefined, cate);
         });
     }
+}
+
+// Hiển thị danh sách sản phẩm đã Xóa
+function renderTableProductDeleted(search = '', page = undefined, categori = 'all') {
+    // call ajax to do something...
+    let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+    $.ajax({
+        url: `/admin//product/delete/search?q=${search}&page=${page}&categori=${categori}`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+        }
+    }).done(function(data) {
+        renderListProductDeleted(data, search, categori);
+    });
+};
+
+function renderListProductDeleted(data, search, categori) {
+    let category = '<option value="all">Tất cả</option>';
+    data.categories.forEach((value, index) => {
+        category += `<option value="${value.slug}">${value.name}</option>`;
+    })
+    var xquery = `
+    <div class="nav-content d-flex justify-content-between p-2">
+        <div class="nav-content-1 d-flex">
+            <div class="nav-item position-relative border-right-solid-1 p-2"><a href="javascript:;" onclick="returnNavBar('product')">Danh sách sản phẩm</a></div>
+        </div>
+        <div class="nav-content-2">
+            <form action="#" method="get" id="formSearchProductDeleted" style="width: 500px;display: flex; justify-content: space-between;">
+                <div class="input-group border border-primary" style="width: 170px;">
+                    <select name="categori" class="selectpicker form-control" data-size="5" data-selected-text-format="count > 3" data-live-search="true">
+                        ${category}
+                    </select>
+                </div>
+                <div class="input-group" style="width: 300px;">
+                    <input name="search" type="text" class="form-control" placeholder="Tìm kiếm" value="${search}">
+                    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    `;
+    var xthead = `
+        <thead>
+            <tr class="scrollable-wrapper">
+                <th scope="col">STT</th>
+                <th scope="col">Ảnh</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Màu</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Danh mục</th>
+                <th scope="col">Ngày tạo</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+    `;
+    var xtbody = '<tbody>';
+    if (data.productsList.length > 0) {
+        data.productsList.map((item, index) => {
+            let listImg = '';
+            item.colors.map((val, index) => {
+                listImg += `<img class="border border-dark p-1" src="/public/images/products/${val.bigImg}" width="100" height="70"/>`;
+            })
+            let listColor = '';
+            let countColors = item.colors.length;
+            item.colors.map((val, index) => {
+                listColor += "- " + val.name;
+                if (index < countColors - 1) {
+                    listColor += "<br/>";
+                }
+            })
+            let createdAt = moment(moment(item.createdAt).subtract(1, "days")).format("DD/MM/YYYY - HH:mm:ss");
+            xtbody += `
+                <tr>
+                    <th class="td-center" scope="row">${data.STT + index}</th>
+                    <td class="td-center" width="120">${listImg}</td>
+                    <td class="td-center" width="170"><div clas="text-wrap">${item.name}</div></td>
+                    <td class="td-center" width="120">${listColor}</td>
+                    <td class="td-center">${new Intl.NumberFormat().format(item.price)}</td>
+                    <td class="td-center" ><p class="text-capitalize">${item.categori}</p></td>
+                    <td class="td-center">${createdAt}</td>
+                    <td class="td-center impact-event">
+                        <button type="button" class="btn btn-primary btn-sm return" data-id="${item._id}">Khôi phục</button>
+                    </td>
+                </tr>
+                `;
+        });
+    } else {
+        xtbody += `
+                    <tr>
+                        <td colspan="5">Không tìm thấy tài liệu</td>
+                    </tr>
+                `;
+    }
+    xtbody += '</tbody>';
+    //Check page hide or show
+    let pagePre = (data.productsList.length > 0) ? data.pagePre : 1;
+    //Show table
+    contentTable("Sản phẩm đã xóa", xquery, xthead, xtbody, true);
+    $('.selectpicker').selectpicker('val', [categori]);
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProductDeletedPageOnClick');
+    btnDeletedReturn(formProductDeletedReturn);
+    renderTableProducerSearch();
+}
+
+function formProductDeletedReturn(id) {
+    var xhtml = `
+        <div>
+            <label class="form-label fw-bold fst-italic text-danger">Bạn muốn khôi phục sản phẩm!</label>
+            <input type="text" class="form-control" name="productId" value="${id}" hidden="true">
+            <div></div>
+        </div>
+        `;
+    showModal("formProductDeletedReturn", "post", "Khôi phục sản phẩm", xhtml, function(data) {
+        var error = {};
+        // xử lý sự kiện khi có lỗi
+        if (Object.keys(error).length > 0) {
+            throw JSON.stringify(error);
+        }
+        // call ajax to do something...
+        let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+        $.ajax({
+            url: `/admin/product/${data.productId}/restore`,
+            type: "PUT",
+            headers: {
+                "Authorization": token.token
+            },
+            beforeSend: function() {
+                addLoadingPage();
+            },
+            success: function() {
+                removeLoadingPage();
+
+            }
+        }).done(function(data) {
+            setTimeout(function() {
+                $('#myModal').modal('hide');
+                if (data.status) {
+                    showToast(data.message, "success");
+                    setTimeout(function() {
+                        renderTableProductDeleted();
+                    }, 1000);
+                } else {
+                    showToast(data.message, "error");
+                    setTimeout(function() {
+                        renderTableProductDeleted();
+                    }, 1000);
+                }
+            }, 1000);
+        });
+    });
 }

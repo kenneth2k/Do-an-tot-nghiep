@@ -71,12 +71,14 @@ router.get('/order/:id/edit', adminOrderController.edit);
 router.put('/order/:id/update', adminOrderController.update);
 //Product
 router.get('/product/search', adminProductController.search);
+router.get('/product/delete/search', adminProductController.searchDeleted);
 router.delete('/product/:id/delete', adminProductController.delete);
 router.post('/product/images', uploadProduct.single('upload'), adminProductController.updateImages);
 router.get('/product/create', adminProductController.createGet);
 router.post('/product/create', uploadProduct.fields([{ name: 'images1', maxCount: 4 }, { name: 'images2', maxCount: 4 }]), adminProductController.create);
 router.get('/product/:id/edit', adminProductController.edit);
 router.put('/product/:id/update', uploadProduct.fields([{ name: 'images1', maxCount: 4 }, { name: 'images2', maxCount: 4 }]), adminProductController.update);
+router.put('/product/:id/restore', adminProductController.restore);
 
 router.get('/*', adminController.notfound);
 

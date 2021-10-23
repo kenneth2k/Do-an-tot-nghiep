@@ -57,6 +57,56 @@ class AdminProductController {
             })
         }
     };
+    // [GET] /admin/product/delete/search
+    searchDeleted(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            let page = parseInt(req.query.page) || 1;
+
+            let skip = (page - 1) * process.env.LIMIT_DOS;
+            let limit = parseInt(process.env.LIMIT_DOS);
+            let arrSearch = [{ name: new RegExp((req.query.q ? req.query.q : ''), "i") }];
+            if (((req.query.q) != undefined) && ((req.query.q) != '') && (req.query.q.length == 24)) {
+                arrSearch.push({ _id: req.query.q });
+            }
+            Promise.all([
+                    Product.findDeleted({
+                        categori: (req.query.categori == 'all') ? new RegExp((''), "i") : req.query.categori,
+                        $or: arrSearch
+                    }).sort({ createdAt: -1 }),
+                    Category.find({ slug: { $nin: ['', 'lien-he'] } }),
+                    Product.countDocuments({}).sort({ createdAt: -1 }),
+                    Product.countDocumentsDeleted({})
+                ])
+                .then(([products, categories, sumProduct, sumDeleted]) => {
+                    let pageMax = Math.ceil((products.length / limit));
+                    let pagePre = ((page > 0) ? page - 1 : 0);
+                    let pageNext = ((page < pageMax) ? page + 1 : page);
+                    return res.send({
+                        productsList: multipleMongooseToObjectOnLimit(products, limit, skip),
+                        STT: (((page - 1) * limit) + 1),
+                        sumProduct,
+                        sumDeleted,
+                        pagePre,
+                        pageActive: page,
+                        pageNext,
+                        limit: process.env.LIMIT_DOS,
+                        categories
+                    })
+                })
+                .catch((err) => {
+                    throw new Error(err.message);
+                })
+
+        } catch (e) {
+            let err = (e.message) ? e.message : e;
+            return res.send({
+                message: err
+            })
+        }
+    };
     // [DELETE] /admin/product/:id/delete
     delete(req, res, next) {
         try {
@@ -322,6 +372,32 @@ class AdminProductController {
                 status: true,
                 message: 'Cập nhật sản phẩm thất bại!',
                 error: e
+            });
+        }
+    };
+    // [PUT] /admin/product/:id/restore
+    restore(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+            Product.restore({ _id: req.params.id })
+                .then((product) => {
+                    return res.send({
+                        status: true,
+                        message: 'Khôi phục sản phẩm thành công!'
+                    });
+                })
+                .catch((err) => {
+                    return res.send({
+                        status: false,
+                        message: 'Khôi phục sản phẩm thất bại!'
+                    });
+                })
+        } catch (e) {
+            return res.send({
+                status: false,
+                message: e
             });
         }
     };
