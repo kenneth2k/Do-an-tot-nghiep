@@ -108,7 +108,7 @@ function renderListProduct(data, search, categori) {
     btnAddNew(apiFormProductCreate);
     btnDeleted(formProductDeleted);
     btnEditer(apiFormProductEditer);
-    renderTableProducerSearch();
+    renderTableProductSearch();
 }
 
 function imagesPreviewProduct(input, placeToInsertImagePreview) {
@@ -565,7 +565,7 @@ function formProductEditer(data, productId) {
         nameColor1 = data.product.colors[0].name,
         nameColor2 = ((data.product.colors.length > 1) ? data.product.colors[1].name : ''),
         arrSelected = [];
-    data.selectProducer.forEach((item, index) => {
+    data.selectProduct.forEach((item, index) => {
         if (item.checked) {
             arrSelected.push(item._id)
         }
@@ -858,7 +858,7 @@ function renderProductDeletedPageOnClick(page) {
 }
 
 // Tìm kiếm sản phẩm
-function renderTableProducerSearch() {
+function renderTableProductSearch() {
     const search = $('#table-role #formSearchProduct');
     const searchDeleted = $('#table-role #formSearchProductDeleted');
     if (search) {
@@ -985,7 +985,7 @@ function renderListProductDeleted(data, search, categori) {
     $('.selectpicker').selectpicker('val', [categori]);
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProductDeletedPageOnClick');
     btnDeletedReturn(formProductDeletedReturn);
-    renderTableProducerSearch();
+    renderTableProductSearch();
 }
 
 function formProductDeletedReturn(id) {

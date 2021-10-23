@@ -230,7 +230,7 @@ function renderListUserDeleted(data, search) {
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderUserPageOnClick');
     btnDeleted(formUserDeleted);
     btnDeletedReturn(formUserDeletedReturn);
-    renderTableProducerDeletedSearch();
+    renderTableUserDeletedSearch();
 }
 
 function formUserDeletedReturn(id) {
@@ -274,7 +274,7 @@ function formUserDeletedReturn(id) {
     });
 }
 
-function renderTableProducerDeletedSearch() {
+function renderTableUserDeletedSearch() {
     const search = $('#table-role #formSearchUserDeleted');
     if (search) {
         search.submit(function(e) {
