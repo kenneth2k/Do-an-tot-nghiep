@@ -313,7 +313,6 @@ function renderProducerPageOnClick(page) {
 
 function renderTableProducerSearch() {
     const search = $('#table-role #formSearchProducer');
-    console.log(search)
     if (search) {
         search.submit(function(e) {
             e.preventDefault();

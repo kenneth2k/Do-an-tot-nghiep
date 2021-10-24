@@ -92,6 +92,7 @@
                     }
                 case 'warehouse':
                     {
+                        renderTableWarehouse();
                         break;
                     }
                 case 'supplier':
