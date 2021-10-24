@@ -88,10 +88,15 @@ return xhtml;
             else{
                 history.pushState({},"","all");
             }
+            
             $.ajax({
                 type: "GET",
                 url: `/api/mutipleSearch?mf=${JSON.stringify(arrMF)}&price=${JSON.stringify(price)}&name=${valSearch}&page=${page}`,
+                beforeSend: function() {
+                    showSpinner();
+                },
                 success: function(data) {
+                    hideSpinner();
                     if(data.products.length > 0) {
                         $("#content-products").find(".product-sec1").show();
                         $("#content-products").find(".product-sec2").hide();

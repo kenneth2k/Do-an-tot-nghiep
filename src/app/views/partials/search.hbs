@@ -1,28 +1,33 @@
 <div class="col-lg-9">
-  <div class="wrapper" id="content-products">
-      <div class="product-sec1 px-sm-4 px-3 py-sm-5 py-3 mb-4"
-      {{#if products}}
-      style="display: block"
-      {{else}}
-      style="display: none"
-      {{/if}}
-      >
-        <h3 class="heading-tittle text-center font-italic">Tìm kiếm sản phẩm</h3>
-        <div class="row m-1" id="viewed-products">
-          {{{productSearch products}}}
-        </div>
-        {{{viewMoreBtn products totalProduct}}}
+  <div class="position-relative">
+      <div class="wrapper" id="content-products">
+          <div class="product-sec1 px-sm-4 px-3 py-sm-5 py-3 mb-4"
+          {{#if products}}
+          style="display: block"
+          {{else}}
+          style="display: none"
+          {{/if}}
+          >
+            <h3 class="heading-tittle text-center font-italic">Tìm kiếm sản phẩm</h3>
+            <div class="row m-1" id="viewed-products">
+              {{{productSearch products}}}
+            </div>
+            {{{viewMoreBtn products totalProduct}}}
+          </div>
+        
+          <div class="product-sec1 product-sec2 px-sm-4 px-3 py-sm-5 py-3 mb-4"
+          {{#if products}}
+          style="background: transparent;display: none;"
+          {{else}}
+          style="background: transparent;display: block"
+          {{/if}}
+          >
+            <div>Rất tiếc, Ephone Store không tìm thấy kết quả nào phù hợp với từ khóa</div>
+          </div>
+        
       </div>
-    
-      <div class="product-sec1 product-sec2 px-sm-4 px-3 py-sm-5 py-3 mb-4"
-      {{#if products}}
-      style="background: transparent;display: none;"
-      {{else}}
-      style="background: transparent;display: block"
-      {{/if}}
-      >
-        <div>Rất tiếc, Ephone Store không tìm thấy kết quả nào phù hợp với từ khóa</div>
+      <div class="wrapper product-sec1 position-absolute d-none" style="height: 100px;top: 0;left: 0;right: 0;background-color: white;" id="spinner-search">
+          <img src="/public/images/svg/spinner.gif" alt="spinner" style="width: 200px; height: 100%;"/>
       </div>
-    
   </div>
 </div>
