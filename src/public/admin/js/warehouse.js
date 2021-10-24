@@ -1,3 +1,106 @@
+function renderTableWarehouseMain(dateBefore = undefined, dateAfter = undefined, page = undefined) {
+    if (!dateBefore && !dateBefore) {
+        dateBefore = dateAfter = new Date().toISOString().slice(0, 10);
+    }
+    // call ajax to do something...
+    let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));
+    $.ajax({
+        url: `/admin/warehouse/search?dateBefore=${dateBefore}&dateAfter=${dateAfter}&page=${page}`,
+        type: "GET",
+        headers: {
+            "Authorization": token.token
+        },
+        beforeSend: function() {
+            addLoadingPage();
+        },
+        success: function() {
+            removeLoadingPage();
+        }
+    }).done(function(data) {
+        renderListWarehouseMain(data, dateBefore, dateAfter);
+    });
+};
+
+function renderListWarehouseMain(data, dateBefore, dateAfter) {
+    dateBefore = dateAfter;
+    // return;
+    var xquery = `
+    <div class="nav-content d-flex justify-content-between p-2">
+        <div class="nav-content-1 d-flex">
+            <div class="nav-item position-relative p-2">
+                <div>Tìm kiếm theo ngày:</div>
+            </div>
+            <div class="nav-item position-relative p-2">
+                <div class="before">
+                    <input type="date" value="${dateBefore}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+    var xthead = `
+                <thead>
+                    <tr class="scrollable-wrapper">
+                        <th scope="col">STT</th>
+                        <th scope="col">Ảnh sản phẩm</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Màu/Số lượng(Tồn - Nhập thêm - Tổng)</th>
+                    </tr>
+                </thead>`;
+    var xtbody = '<tbody>';
+    if (data.warehouseList.length > 0) {
+        data.warehouseList.map((item, index) => {
+            let listImg = '';
+            item.product[0].colors.map((val, index) => {
+                listImg += `<img class="border border-dark p-1" src="/public/images/products/${val.bigImg}" width="100" height="70"/>`;
+            })
+            let listColor = '';
+            let countColors = item.colors.length;
+            item.colors.map((val, index) => {
+
+                listColor += "- " + val.name + `(Tồn: ${val.quantityAfter} | Nhập thêm: ${val.quantityPlus} | Tổng: ${val.sum} )`;
+                if (index < countColors - 1) {
+                    listColor += "<br/>";
+                }
+            })
+            xtbody += `
+                            <tr>
+                                <th class="td-center" scope="row">${data.STT + index}</th>
+                                <td class="td-center" >${listImg}</td>
+                                <td class="td-center"><div clas="text-wrap">${item.product[0].name}</div></td>
+                                <td class="td-center">${listColor}</td>
+                            </tr>
+                            `;
+        });
+    } else {
+        xtbody += `
+                                <tr>
+                                    <td colspan="5">Không tìm thấy tài liệu</td>
+                                </tr>
+                            `;
+    }
+    xtbody += '</tbody>';
+    //Check page hide or show
+    let pagePre = (data.warehouseList.length > 0) ? data.pagePre : 1;
+    //Show table
+    contentTable("Quản lý nhập kho - Phiếu nhập", xquery, xthead, xtbody, true);
+    pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderWarehousePageOnClickMain');
+    renderWarehouseOnChangeDate();
+    btnAddNew(renderTableWarehouse);
+};
+
+function renderWarehousePageOnClickMain(page) {
+    let before = $('.before input[type="date"]').val();
+    renderTableWarehouseMain(before, before, page);
+};
+
+function renderWarehouseOnChangeDate() {
+    let before = $('.before input[type="date"]');
+    before.change(function() {
+        renderTableWarehouseMain(before.val(), before.val());
+    });
+};
+// Hiên thị sản phẩm cần nhập số lượng
 function renderTableWarehouse(search = '', page = undefined, categori = 'all') {
     // call ajax to do something...
     let token = JSON.parse(decodeURIComponent(window.sessionStorage.getItem('user_token')));

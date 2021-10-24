@@ -5,7 +5,7 @@ const slug = require('mongoose-slug-generator');
 const mongooseDelete = require('mongoose-delete');
 
 const Warehouse = new Schema({
-    idProduct: { type: String, required: true },
+    slugProduct: { type: String, required: true },
     colors: [{
         _id: { type: String, required: true },
         name: { type: String, required: true },

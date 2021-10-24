@@ -90,6 +90,7 @@ router.get('/category/:id/edit', adminCategoryController.edit);
 router.put('/category/:id/update', adminCategoryController.update);
 router.post('/category/create', adminCategoryController.create);
 //Warehouse
+router.get('/warehouse/search', adminWarehouseController.search);
 router.post('/warehouse/create', adminWarehouseController.create);
 
 router.get('/*', adminController.notfound);

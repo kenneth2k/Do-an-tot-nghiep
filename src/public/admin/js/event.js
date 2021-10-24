@@ -92,7 +92,7 @@
                     }
                 case 'warehouse':
                     {
-                        renderTableWarehouse();
+                        renderTableWarehouseMain();
                         break;
                     }
                 case 'supplier':
