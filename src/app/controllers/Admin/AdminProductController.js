@@ -18,7 +18,7 @@ class AdminProductController {
             let skip = (page - 1) * process.env.LIMIT_DOS;
             let limit = parseInt(process.env.LIMIT_DOS);
             let arrSearch = [{ name: new RegExp((req.query.q ? req.query.q : ''), "i") }];
-            if (((req.query.q) != undefined) && ((req.query.q) != '') && (req.query.q.length == 24)) {
+            if (ObjectId.isValid(req.query.q)) {
                 arrSearch.push({ _id: req.query.q });
             }
             Promise.all([
