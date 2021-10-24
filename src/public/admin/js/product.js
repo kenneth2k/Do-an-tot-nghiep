@@ -108,7 +108,7 @@ function renderListProduct(data, search, categori) {
     btnAddNew(apiFormProductCreate);
     btnDeleted(formProductDeleted);
     btnEditer(apiFormProductEditer);
-    renderTableProducerSearch();
+    renderTableProductSearch();
 }
 
 function imagesPreviewProduct(input, placeToInsertImagePreview) {
@@ -830,7 +830,6 @@ function formProductEditer(data, productId) {
                 removeLoadingPage();
             }
         }).done(function(data) {
-            console.log(data);
             setTimeout(function() {
                 if (data.status) {
                     showToast(data.message, "success");
@@ -858,7 +857,7 @@ function renderProductDeletedPageOnClick(page) {
 }
 
 // Tìm kiếm sản phẩm
-function renderTableProducerSearch() {
+function renderTableProductSearch() {
     const search = $('#table-role #formSearchProduct');
     const searchDeleted = $('#table-role #formSearchProductDeleted');
     if (search) {
@@ -985,7 +984,7 @@ function renderListProductDeleted(data, search, categori) {
     $('.selectpicker').selectpicker('val', [categori]);
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderProductDeletedPageOnClick');
     btnDeletedReturn(formProductDeletedReturn);
-    renderTableProducerSearch();
+    renderTableProductSearch();
 }
 
 function formProductDeletedReturn(id) {

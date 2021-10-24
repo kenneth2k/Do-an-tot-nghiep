@@ -317,6 +317,7 @@ function renderTableProducerSearch() {
         search.submit(function(e) {
             e.preventDefault();
             let input = search.find('input').val();
+            console.log("vào")
             renderTableProducer(input);
         });
     }

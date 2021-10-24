@@ -65,6 +65,11 @@
                         });
                         break;
                     }
+                case 'category':
+                    {
+                        renderTableCategory();
+                        break;
+                    }
                 case 'cart':
                     {
                         renderTableOder();
@@ -87,6 +92,7 @@
                     }
                 case 'warehouse':
                     {
+                        renderTableWarehouseMain();
                         break;
                     }
                 case 'supplier':

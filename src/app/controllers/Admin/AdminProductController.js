@@ -18,7 +18,7 @@ class AdminProductController {
             let skip = (page - 1) * process.env.LIMIT_DOS;
             let limit = parseInt(process.env.LIMIT_DOS);
             let arrSearch = [{ name: new RegExp((req.query.q ? req.query.q : ''), "i") }];
-            if (((req.query.q) != undefined) && ((req.query.q) != '') && (req.query.q.length == 24)) {
+            if (ObjectId.isValid(req.query.q)) {
                 arrSearch.push({ _id: req.query.q });
             }
             Promise.all([
@@ -323,6 +323,7 @@ class AdminProductController {
                         secImg: images1,
                     });
                 } else {
+                    product.colors[0].name = req.body.nameColor1;
                     colors.push(product.colors[0]);
                 }
                 if (req.files.images2) {
@@ -335,6 +336,7 @@ class AdminProductController {
                         secImg: images2,
                     });
                 } else if (product.colors.length > 1) {
+                    product.colors[1].name = req.body.nameColor2;
                     colors.push(product.colors[1]);
                 }
 

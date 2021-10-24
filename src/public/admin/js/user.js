@@ -96,7 +96,7 @@ function formUserDeleted(id) {
             <div></div>
         </div>
         `;
-    showModal("formUserDeleted", "post", "Xóa đánh giá", xhtml, function(data) {
+    showModal("formUserDeleted", "post", "Xóa người dùng", xhtml, function(data) {
         var error = {};
         // xử lý sự kiện khi có lỗi
         if (Object.keys(error).length > 0) {
@@ -230,7 +230,7 @@ function renderListUserDeleted(data, search) {
     pageNavigation(pagePre, data.pageActive, data.pageNext, 'renderUserPageOnClick');
     btnDeleted(formUserDeleted);
     btnDeletedReturn(formUserDeletedReturn);
-    renderTableProducerDeletedSearch();
+    renderTableUserDeletedSearch();
 }
 
 function formUserDeletedReturn(id) {
@@ -274,7 +274,7 @@ function formUserDeletedReturn(id) {
     });
 }
 
-function renderTableProducerDeletedSearch() {
+function renderTableUserDeletedSearch() {
     const search = $('#table-role #formSearchUserDeleted');
     if (search) {
         search.submit(function(e) {
