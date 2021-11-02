@@ -9,7 +9,7 @@ const Warehouse = new Schema({
     colors: [{
         _id: { type: String, required: true },
         name: { type: String, required: true },
-        quantityAfter: { type: Number, default: 0 },
+        quantityBefore: { type: Number, default: 0 },
         quantityPlus: { type: Number, default: 0 },
         sum: { type: Number, default: 0 },
     }, ],

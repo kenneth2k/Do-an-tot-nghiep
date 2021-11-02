@@ -58,7 +58,7 @@ function renderListWarehouseMain(data, dateBefore, dateAfter) {
             let countColors = item.colors.length;
             item.colors.map((val, index) => {
 
-                listColor += "- " + val.name + `(Tồn: ${val.quantityAfter} | Nhập thêm: ${val.quantityPlus} | Tổng: ${val.sum} )`;
+                listColor += "- " + val.name + `(Tồn: ${val.quantityBefore} | Nhập thêm: ${val.quantityPlus} | Tổng: ${val.sum} )`;
                 if (index < countColors - 1) {
                     listColor += "<br/>";
                 }

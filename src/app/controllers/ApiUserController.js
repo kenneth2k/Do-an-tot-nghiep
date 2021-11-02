@@ -50,7 +50,7 @@ class ApiUserController {
                         let isValid = bcrypt.compareSync(req.body.password, user.password);
                         if (!isValid) {
                             return res.send({ login: false, message: "Tài khoản hoặc mật khẩu không chính xác!" });
-                        } else if (user.decentralization == 1) {
+                        } else if (user.role == 1) {
                             return res.send({
                                 _slug: user.slug,
                                 type: 'user',
@@ -59,7 +59,7 @@ class ApiUserController {
                                 login: true,
                                 message: "Đăng nhập thành công!"
                             });
-                        } else if (user.decentralization == 2) {
+                        } else if (user.role == 2) {
                             return res.send({
                                 _slug: user.slug,
                                 type: 'admin',
