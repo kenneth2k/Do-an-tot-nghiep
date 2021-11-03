@@ -123,5 +123,65 @@ class AdminOrderController {
             })
         }
     };
+    // [GET] /admin/statistical/:status/search
+    searchStatistical(req, res, next) {
+        try {
+            const token = req.header('Authorization').replace("Bearer ", "");
+            const decoded = jwt.verify(token, process.env.EPHONE_STORE_PRIMARY_KEY);
+            if (!decoded) throw new Error('TOKEN UNDEFINED!');
+
+            let page = parseInt(req.query.page) || 1;
+            let skip = (page - 1) * process.env.LIMIT_DOS;
+            let limit = parseInt(process.env.LIMIT_DOS);
+            Promise.all([
+                    Order.aggregate(
+                        [{
+                            $match: {
+                                createdAt: {
+                                    $gte: new Date(`${req.query.dateBefore}T00:00:00+00:00`),
+                                    $lte: new Date(`${req.query.dateAfter}T23:59:59+00:00`)
+                                },
+                                status: 1
+                            }
+                        }, { $sort: { createdAt: -1 } }])
+                    .skip(skip)
+                    .limit(limit),
+                ])
+                .then(([orderFinished]) => {
+                    let totalRevenue = 0,
+                        TotalDiscount = 0,
+                        TotalQuantity = 0;
+
+                    for (let i = 0; i < orderFinished.length; i++) {
+                        totalRevenue += parseInt(orderFinished[i].sumPrice);
+                        TotalQuantity += parseInt(orderFinished[i].sumQuantity);
+                        for (let j = 0; j < orderFinished[i].details.length; j++) {
+                            TotalDiscount += parseInt(orderFinished[i].details[j].price) / (1 - (parseInt(orderFinished[i].details[j].sale) / 100));
+                        }
+                    }
+                    let pageMax = Math.ceil((orderFinished.length / process.env.LIMIT_DOS));
+                    let pagePre = ((page > 0) ? page - 1 : 0);
+                    let pageNext = ((page < pageMax) ? page + 1 : page);
+                    return res.send({
+                        orderFinishedList: orderFinished,
+                        STT: (((page - 1) * process.env.LIMIT_DOS) + 1),
+                        pagePre,
+                        pageActive: page,
+                        pageNext,
+                        limit: process.env.LIMIT_DOS,
+                        totalRevenue,
+                        TotalDiscount,
+                        TotalQuantity
+                    })
+                })
+                .catch((err) => {
+                    throw new Error(err.message);
+                })
+        } catch (e) {
+            return res.send({
+                message: e
+            })
+        }
+    }
 }
 module.exports = new AdminOrderController;

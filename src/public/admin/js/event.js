@@ -102,6 +102,7 @@
                     }
                 case 'statistical':
                     {
+                        renderTableStatistics();
                         break;
                     }
 

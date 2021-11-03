@@ -69,6 +69,7 @@ router.get('/user/delete/search', adminUserController.searchDeleted);
 router.put('/user/:id/restore', adminUserController.restore);
 //Order
 router.get('/order/:status/search', adminOrderController.search);
+router.get('/statistical/:status/search', adminOrderController.searchStatistical);
 router.get('/order/:id/edit', adminOrderController.edit);
 router.put('/order/:id/update', adminOrderController.update);
 //Product
