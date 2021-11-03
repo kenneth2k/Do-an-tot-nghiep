@@ -221,7 +221,8 @@ class AdminProductController {
                 content: req.body.textContent[1],
                 reducers: reducers,
                 colors: colors,
-                sale: req.body.sale
+                sale: req.body.sale,
+                hot: req.body.hot ? true : false,
             });
             product.save()
                 .then((pro) => {
@@ -356,6 +357,7 @@ class AdminProductController {
                 product.reducers = reducers;
                 product.colors = colors;
                 product.sale = req.body.sale;
+                product.hot = req.body.hot ? true : false;
                 let updateOneProduct = Product.updateOne({ _id: req.params.id }, product);
                 return Promise.all([product, updateOneProduct]);
             };
