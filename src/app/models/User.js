@@ -13,14 +13,13 @@ const User = new Schema({
     gender: { type: String, default: null },
     dateOfBirth: { type: Date, default: null },
     addresses: [{
-        _id: { type: String, default: Date.now() },
         name: { type: String, required: true },
         address: { type: String, required: true },
         phone: { type: String, required: true },
         active: { type: Boolean, default: false }
     }, ],
     otp: { type: String, default: null },
-    decentralization: { type: String, default: 1 },
+    role: { type: String, default: 1 },
     active: { type: Boolean, default: false },
     activeToken: { type: String, default: null },
     token: { type: String },

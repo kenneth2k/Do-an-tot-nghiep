@@ -184,7 +184,7 @@ function formProductCreate(data) {
                     <div></div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <label class="form-label">Màng hình</label>
+                    <label class="form-label">Màn hình</label>
                     <input type="text" class="form-control" name="sreen" value="">
                     <div></div>
                 </div>
@@ -246,6 +246,16 @@ function formProductCreate(data) {
                         ${categori}
                     </select>
                     <div id="select-messege"></div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="form-control">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" name="hot" value="true" type="checkbox" id="flexSwitchCheckDefault">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Sản phẩm hot</label>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -326,9 +336,9 @@ function formProductCreate(data) {
             error.sale = "Giảm giá sản phẩm không quá 3 kí tự!";
         }
         if (data.sreen.length < 1) {
-            error.sreen = "Màng hình không được rỗng!";
+            error.sreen = "Màn hình không được rỗng!";
         } else if (data.sreen.length > 255) {
-            error.sreen = "Màng hình không quá 255 kí tự!";
+            error.sreen = "Màn hình không quá 255 kí tự!";
         }
         if (data.HDH.length < 1) {
             error.HDH = "Hệ điều hành không được rỗng!";
@@ -412,7 +422,6 @@ function formProductCreate(data) {
             },
             success: function() {
                 removeLoadingPage();
-
             }
         }).done(function(data) {
             setTimeout(function() {
@@ -452,6 +461,13 @@ function formSubmitProduct(idForm, callback) {
                 data[`${input.name}`] = input.value;
             });
             listInput.forEach((input, index) => {
+                if (input.type === "radio" && input.checked == false) {
+                    return;
+                }
+                if (input.type === "checkbox") {
+                    $(input).closest('.form-control')[0].classList = "form-control is-valid";
+                    return;
+                }
                 if (input.type === "search") {
                     return;
                 }
@@ -602,7 +618,7 @@ function formProductEditer(data, productId) {
                     <div></div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <label class="form-label">Màng hình</label>
+                    <label class="form-label">Màn hình</label>
                     <input type="text" class="form-control" name="sreen" value="${data.product.sreen}">
                     <div></div>
                 </div>
@@ -664,6 +680,16 @@ function formProductEditer(data, productId) {
                         ${categori}
                     </select>
                     <div id="select-messege"></div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <label class="form-label">&nbsp;</label>
+                    <div class="form-control">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" name="hot" value="true" type="checkbox" id="flexSwitchCheckDefault" ${data.product.hot?'checked':''}>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Sản phẩm hot</label>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -744,9 +770,9 @@ function formProductEditer(data, productId) {
             error.sale = "Giảm giá sản phẩm không quá 3 kí tự!";
         }
         if (data.sreen.length < 1) {
-            error.sreen = "Màng hình không được rỗng!";
+            error.sreen = "Màn hình không được rỗng!";
         } else if (data.sreen.length > 255) {
-            error.sreen = "Màng hình không quá 255 kí tự!";
+            error.sreen = "Màn hình không quá 255 kí tự!";
         }
         if (data.HDH.length < 1) {
             error.HDH = "Hệ điều hành không được rỗng!";

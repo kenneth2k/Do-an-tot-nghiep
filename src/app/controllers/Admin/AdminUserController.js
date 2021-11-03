@@ -14,8 +14,8 @@ class AdminUserController {
             let skip = (page - 1) * process.env.LIMIT_DOS;
 
             Promise.all([
-                    User.find({ fullname: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") }, decentralization: 1 }).sort({ createdAt: -1 }),
-                    User.countDocuments({ fullname: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") }, decentralization: 1 }).sort({ createdAt: -1 }),
+                    User.find({ fullname: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") }, role: 1 }).sort({ createdAt: -1 }),
+                    User.countDocuments({ fullname: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") }, role: 1 }).sort({ createdAt: -1 }),
                     User.countDocumentsDeleted({})
                 ])
                 .then(([user, sumUser, sumDeleted]) => {
@@ -52,7 +52,7 @@ class AdminUserController {
 
             let skip = (page - 1) * process.env.LIMIT_DOS;
 
-            User.findDeleted({ fullname: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") }, decentralization: 1 }).sort({ createdAt: -1 })
+            User.findDeleted({ fullname: { $regex: new RegExp((req.query.q ? req.query.q : ''), "i") }, role: 1 }).sort({ createdAt: -1 })
                 .then((user) => {
                     let pageMax = Math.ceil((user.length / process.env.LIMIT_DOS));
                     let pagePre = ((page > 0) ? page - 1 : 0);

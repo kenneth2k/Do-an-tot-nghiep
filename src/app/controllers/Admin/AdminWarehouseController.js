@@ -101,7 +101,7 @@ class AdminWarehouseController {
                     colors.push({
                         _id: product.colors[k]._id,
                         name: product.colors[k].name,
-                        quantityAfter: parseInt(oldColors[k].quantity),
+                        quantityBefore: parseInt(oldColors[k].quantity),
                         quantityPlus: parseInt(req.body[`${product.colors[k]._id}`]),
                         sum: parseInt(oldColors[k].quantity) + parseInt(req.body[`${product.colors[k]._id}`])
                     })

@@ -21,12 +21,10 @@ const Product = new Schema({
     content: { type: String, default: null },
     hot: { type: Boolean, default: false },
     sale: { type: Number, default: 0 },
-    qtySeller: { type: Number, default: 0 },
     reducers: [{
         _id: { type: String },
     }],
     colors: [{
-        _id: { type: String, default: Date.now() },
         name: { type: String },
         quantity: { type: Number, default: 0 },
         bigImg: { type: String, default: null },
