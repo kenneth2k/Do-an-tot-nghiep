@@ -184,7 +184,7 @@ function formProductCreate(data) {
                     <div></div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <label class="form-label">Màng hình</label>
+                    <label class="form-label">Màn hình</label>
                     <input type="text" class="form-control" name="sreen" value="">
                     <div></div>
                 </div>
@@ -336,9 +336,9 @@ function formProductCreate(data) {
             error.sale = "Giảm giá sản phẩm không quá 3 kí tự!";
         }
         if (data.sreen.length < 1) {
-            error.sreen = "Màng hình không được rỗng!";
+            error.sreen = "Màn hình không được rỗng!";
         } else if (data.sreen.length > 255) {
-            error.sreen = "Màng hình không quá 255 kí tự!";
+            error.sreen = "Màn hình không quá 255 kí tự!";
         }
         if (data.HDH.length < 1) {
             error.HDH = "Hệ điều hành không được rỗng!";
@@ -618,7 +618,7 @@ function formProductEditer(data, productId) {
                     <div></div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <label class="form-label">Màng hình</label>
+                    <label class="form-label">Màn hình</label>
                     <input type="text" class="form-control" name="sreen" value="${data.product.sreen}">
                     <div></div>
                 </div>
@@ -770,9 +770,9 @@ function formProductEditer(data, productId) {
             error.sale = "Giảm giá sản phẩm không quá 3 kí tự!";
         }
         if (data.sreen.length < 1) {
-            error.sreen = "Màng hình không được rỗng!";
+            error.sreen = "Màn hình không được rỗng!";
         } else if (data.sreen.length > 255) {
-            error.sreen = "Màng hình không quá 255 kí tự!";
+            error.sreen = "Màn hình không quá 255 kí tự!";
         }
         if (data.HDH.length < 1) {
             error.HDH = "Hệ điều hành không được rỗng!";

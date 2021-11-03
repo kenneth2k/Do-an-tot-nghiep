@@ -245,3 +245,8 @@ function btnDeletedHigh(callback) {
         callback($(this).data('id'));
     });
 }
+
+function logoutAdmin() {
+    window.sessionStorage.removeItem('user_token');
+    window.location.href = "/";
+}
