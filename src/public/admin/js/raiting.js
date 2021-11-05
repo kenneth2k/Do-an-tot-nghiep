@@ -27,7 +27,7 @@ function renderListRaiting(data, dateBefore, dateAfter) {
     <div class="nav-content d-flex justify-content-between p-2">
         <div class="nav-content-1 d-flex">
         <div class="nav-item position-relative p-2">
-                <div>FROM:</div>
+                <div>Từ ngày:</div>
             </div>
             <div class="nav-item position-relative p-2">
                 <div class="before">
@@ -35,7 +35,7 @@ function renderListRaiting(data, dateBefore, dateAfter) {
                 </div>
             </div>
             <div class="nav-item position-relative p-2">
-                <div>TO:</div>
+                <div>Đến ngày:</div>
             </div>
             <div class="nav-item position-relative p-2">
                 <div class="after">
