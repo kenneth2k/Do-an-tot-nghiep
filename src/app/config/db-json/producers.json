@@ -1,0 +1,17 @@
+[{
+  "_id": {
+    "$oid": "615c66b8335275080491165a"
+  },
+  "deleted": false,
+  "name": "Samsung",
+  "email": "Samsung@gmail.com",
+  "phone": "088755744",
+  "address": "Korea",
+  "createdAt": {
+    "$date": "2021-10-05T14:52:40.521Z"
+  },
+  "updatedAt": {
+    "$date": "2021-10-05T14:52:40.521Z"
+  },
+  "__v": 0
+}]
