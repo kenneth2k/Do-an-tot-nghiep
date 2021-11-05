@@ -1,0 +1,45 @@
+[{
+  "_id": {
+    "$oid": "60d2dfcf818899e9a6a21b3b"
+  },
+  "title": "Nhận 10% hoàn tiền",
+  "content": "Nhận ngay hôm nay",
+  "images": "b1.jpg",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2021-10-03T15:13:46.776Z"
+  }
+},{
+  "_id": {
+    "$oid": "60d2e0238bb0a603b8ba1677"
+  },
+  "title": "Nhận 10% hoàn tiền",
+  "content": "Nhận ngay hôm nay",
+  "images": "b2.jpg",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2021-10-03T15:13:50.033Z"
+  }
+},{
+  "_id": {
+    "$oid": "60d2e0298bb0a603b8ba1678"
+  },
+  "title": "Nhận 10% hoàn tiền",
+  "content": "Nhận ngay hôm nay",
+  "images": "b3.jpg",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2021-10-03T15:13:53.675Z"
+  }
+},{
+  "_id": {
+    "$oid": "60d2e02f8bb0a603b8ba1679"
+  },
+  "title": "Nhận 10% hoàn tiền",
+  "content": "Nhận ngay hôm nay",
+  "images": "b4.jpg",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2021-10-03T15:13:57.003Z"
+  }
+}]

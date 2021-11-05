@@ -112,7 +112,7 @@ function sendCancelOrderMail(email, id) {
         },
         subject: 'Cancel order to Ephone Store',
         text: 'Send Cancel order to the Ephone Store',
-        html: `Bạn đã hủy đơn hàng: ${id} cảm ơn bạn đã mua sắm tại Ephone Store.`,
+        html: `Bạn đã hủy đơn hàng: <h5>${id}</h5> cảm ơn bạn đã mua sắm tại Ephone Store.`,
     };
     //ES6
     return sgMail
@@ -141,6 +141,35 @@ function sendNewPasswordMail(email, password) {
         .send(msg)
         .then(() => {
             console.log('Email sent new password to: ' + email);
+        })
+        .catch((error) => {
+            console.error(error)
+        });
+}
+
+function sendOrderFinishMail(user, id, status) {
+    let xhtml1 = `<div>
+    <h1 style="font-size:14px;font-weight:bold;color:#444;padding:0 0 5px 0;margin:0">Đơn hàng <span style="font-size:14px;font-weight:bold;">${id}</span> đã sẵn sàng để giao đến quý khách ${user.fullname}!</h1>
+    <div style="margin:auto"><a style="border: 1px solid rgba(52, 142, 218, 1); font-weight: 400; text-decoration: none; display: inline-block; margin: 0; color: rgba(255, 255, 255, 1); background-color: rgba(52, 142, 218, 1); border-radius: 2px; font-size: 14px; padding: 12px 45px;" href="${process.env.ADDRESS_WEB}profile/${user.slug}">Kiểm tra trạng thái đơn hàng</a></div>
+</div>`;
+    let xhtml2 = `<div>
+    <h1 style="font-size:17px;font-weight:bold;color:#444;padding:0 0 5px 0;margin:0">Cảm ơn quý khách ${user.fullname} đã đặt hàng tại <span class="il">Ephone Store</span>,</h1>
+    </div>`;
+    const msg = {
+        to: user.email,
+        from: {
+            name: 'EPHONE STORE',
+            email: `${process.env.SENDGRID_EMAIL}`
+        },
+        subject: 'New password of the Ephone Store',
+        text: 'Send new password of the Ephone Store',
+        html: (status == 3) ? xhtml1 : xhtml2,
+    };
+    //ES6
+    return sgMail
+        .send(msg)
+        .then(() => {
+            console.log('Email sent new password to: ' + user.email);
         })
         .catch((error) => {
             console.error(error)
@@ -259,5 +288,6 @@ module.exports = {
     sendNewPasswordMail,
     sendActiveMail,
     sendOrderSuccessMail,
-    sendCancelOrderMail
+    sendCancelOrderMail,
+    sendOrderFinishMail
 }

@@ -1,0 +1,101 @@
+[{
+  "_id": {
+    "$oid": "60bb69192fc6f41cc4bb3ad0"
+  },
+  "deleted": false,
+  "name": "Trang chủ",
+  "createdAt": {
+    "$date": "2021-06-05T12:07:53.871Z"
+  },
+  "updatedAt": {
+    "$date": "2021-06-05T12:07:53.871Z"
+  },
+  "slug": "",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60bb6963e6e3472cd459cb1d"
+  },
+  "deleted": false,
+  "name": "iPhone",
+  "createdAt": {
+    "$date": "2021-06-05T12:09:07.023Z"
+  },
+  "updatedAt": {
+    "$date": "2021-06-05T12:09:07.023Z"
+  },
+  "slug": "iphone",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60bb696db2c62c3724cf2488"
+  },
+  "deleted": false,
+  "name": "Samsung",
+  "createdAt": {
+    "$date": "2021-06-05T12:09:17.494Z"
+  },
+  "updatedAt": {
+    "$date": "2021-06-05T12:09:17.494Z"
+  },
+  "slug": "samsung",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60bb69799ce4810d2c4ba531"
+  },
+  "deleted": false,
+  "name": "Oppo",
+  "createdAt": {
+    "$date": "2021-06-05T12:09:29.876Z"
+  },
+  "updatedAt": {
+    "$date": "2021-10-23T15:40:25.266Z"
+  },
+  "slug": "oppo",
+  "__v": 0,
+  "deletedAt": null
+},{
+  "_id": {
+    "$oid": "60bb6983f230da01942fd483"
+  },
+  "deleted": false,
+  "name": "Xiaomi",
+  "createdAt": {
+    "$date": "2021-06-05T12:09:39.441Z"
+  },
+  "updatedAt": {
+    "$date": "2021-06-05T12:09:39.441Z"
+  },
+  "slug": "xiaomi",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "60bb698da97b52355cccbb08"
+  },
+  "deleted": false,
+  "name": "Realme",
+  "createdAt": {
+    "$date": "2021-06-05T12:09:49.276Z"
+  },
+  "updatedAt": {
+    "$date": "2021-10-23T15:58:35.926Z"
+  },
+  "slug": "realme",
+  "__v": 0,
+  "deletedAt": null
+},{
+  "_id": {
+    "$oid": "60bf8b124cef852dacdfa35f"
+  },
+  "deleted": false,
+  "name": "Vsmart",
+  "createdAt": {
+    "$date": "2021-06-05T12:09:07.023Z"
+  },
+  "updatedAt": {
+    "$date": "2021-06-05T12:09:07.023Z"
+  },
+  "slug": "vsmart",
+  "__v": 0
+}]

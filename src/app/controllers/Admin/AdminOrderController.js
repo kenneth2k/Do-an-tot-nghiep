@@ -2,8 +2,9 @@ const Order = require('../../models/Order');
 const Product = require('../../models/Product');
 const User = require('../../models/User');
 const jwt = require('jsonwebtoken');
+const ObjectId = require('mongodb').ObjectId;
 const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../../util/mongoose');
-
+const { sendOrderSuccessMail, sendCancelOrderMail, sendOrderFinishMail } = require('../../../util/email/email');
 class AdminOrderController {
     // [GET] /admin/oder/:status/search
     search(req, res, next) {
@@ -14,8 +15,12 @@ class AdminOrderController {
             let page = parseInt(req.query.page) || 1;
 
             let skip = (page - 1) * process.env.LIMIT_DOS;
-
-            let searchID = (req.query.q) ? { status: req.params.status, _id: req.query.q } : { status: req.params.status };
+            let searchID;
+            if (ObjectId.isValid(req.query.q)) {
+                searchID = { status: req.params.status, _id: req.query.q };
+            } else {
+                searchID = { status: req.params.status, userName: new RegExp((req.query.q ? req.query.q : ''), "i") };
+            }
             Promise.all([
                     Order.find(searchID).sort({ createdAt: -1 }),
                     Order.countDocuments({ status: 1 }).sort({ createdAt: -1 }),
@@ -43,7 +48,7 @@ class AdminOrderController {
                     })
                 })
                 .catch((err) => {
-                    throw new Error('Error connecting DB!');
+                    throw new Error(err.message);
                 })
         } catch (e) {
             return res.send({
@@ -88,6 +93,7 @@ class AdminOrderController {
 
             const result = async() => {
                 const order = await Order.findOne({ _id: req.params.id });
+                const user = await User.findOne({ slug: order.slugUser });
                 // Thay đổi trạng thái đơn hàng
                 order.status = req.body.status;
                 if (req.body.status == 1) {
@@ -103,6 +109,10 @@ class AdminOrderController {
                         }
                         updateProduct = await Product.updateOne({ slug: order.details[i].slug }, product);
                     }
+                } else if (req.body.status == 3) {
+                    sendOrderFinishMail(user, order._id, 3);
+                } else if (req.body.status == 0) {
+                    sendCancelOrderMail(user.email, order._id);
                 }
                 // Cập nhật trạng thái đơn hàng
                 const updateOrder = await Order.updateOne({ _id: req.params.id }, order);

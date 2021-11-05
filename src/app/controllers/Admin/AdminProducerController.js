@@ -91,7 +91,9 @@ class AdminProducerController {
             });
             producer.save()
                 .then((producer) => {
-                    return res.send({ producer });
+                    return res.send({
+                        message: 'Thêm nhà cung cấp thành công!'
+                    });
                 })
                 .catch((e) => {
                     throw new Error('CREATE FAILUARE!');
