@@ -283,6 +283,7 @@ function formProductCreate(data) {
                 </div>
             </div>
             <div class="row color-mutiple">
+                <label class="form-label">Bài viết</label>
                 <textarea name="textContent" id="textContent" rows="10" cols="80">
                 </textarea>
             </div>
@@ -717,6 +718,7 @@ function formProductEditer(data, productId) {
                 </div>
             </div>
             <div class="row color-mutiple">
+                <label class="form-label">Bài viết</label>
                 <textarea name="textContent" id="textContent" rows="10" cols="80">
                 ${data.product.content}
                 </textarea>
