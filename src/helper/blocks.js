@@ -105,7 +105,7 @@ module.exports = {
             var MM = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1).toString();
             // 1970, 1971, ... 2015, 2016, ...
             var yyyy = date.getFullYear();
-            return `${yyyy}-${MM}-${dd}`;
+            return `${dd}-${MM}-${yyyy}`;
         },
         timeSpanToString: (date) => {
             if (date == null) {
