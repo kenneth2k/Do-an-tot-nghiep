@@ -107,6 +107,17 @@ module.exports = {
             var yyyy = date.getFullYear();
             return `${dd}-${MM}-${yyyy}`;
         },
+        dateToString2: (date) => {
+            if (date == null) {
+                return '';
+            }
+            var dd = (date.getDate() < 10 ? '0' : '') + date.getDate().toString();
+            // 01, 02, 03, ... 10, 11, 12
+            var MM = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1).toString();
+            // 1970, 1971, ... 2015, 2016, ...
+            var yyyy = date.getFullYear();
+            return `${yyyy}-${MM}-${dd}`;
+        },
         timeSpanToString: (date) => {
             if (date == null) {
                 return '';
