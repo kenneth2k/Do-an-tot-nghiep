@@ -1,0 +1,36 @@
+[{
+  "_id": {
+    "$oid": "61889dd30a75fb11fcec6ac1"
+  },
+  "gender": null,
+  "dateOfBirth": null,
+  "otp": null,
+  "role": "2",
+  "active": true,
+  "activeToken": null,
+  "deleted": false,
+  "fullname": "Nguyễn Văn Trọng",
+  "email": "vtvantrong272@gmail.com",
+  "phone": "0326440266",
+  "addresses": [
+    {
+      "active": true,
+      "_id": {
+        "$oid": "61851969617aa01fa4d99abe"
+      },
+      "address": "ấp long châu, xã long vĩnh, huyện châu thành, tỉnh tây ninh",
+      "phone": "0326440233",
+      "name": "Nguyễn Văn Trọng"
+    }
+  ],
+  "password": "$2a$08$xY8rfBJrr2T3tlAKJyXGDu5Y1i1kIdZ//xq2yVO1qEZO4gtw7MqaC",
+  "createdAt": {
+    "$date": "2021-11-05T11:45:45.720Z"
+  },
+  "updatedAt": {
+    "$date": "2021-11-05T11:45:54.670Z"
+  },
+  "slug": "nguyen-van-trong",
+  "__v": 0,
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJuZ3V5ZW4tdmFuLWN1dGUiLCJpYXQiOjE2MzYxMTI3NDV9.n8V90KHSFfcKObbGu97prglHgJ6yGG8Kxy0_VvH_JB8"
+}]

@@ -144,6 +144,7 @@ class HomeController {
             })
             .catch(next)
     };
+
     // [POST] /payment/success
     showPaymentSuccess(req, res, next) {
         try {

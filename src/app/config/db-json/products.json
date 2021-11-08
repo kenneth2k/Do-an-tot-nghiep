@@ -40,7 +40,7 @@
       "name": "Đỏ"
     },
     {
-      "_id": "12323",
+      "_id": "60b4a8e4f120fc15a67df175",
       "quantity": 10,
       "bigImg": "iphone-12-xanh-duong-5-1-org.jpg",
       "secImg": [
@@ -105,7 +105,7 @@
       "name": "Xanh Dương"
     },
     {
-      "_id": "12132",
+      "_id": "615c7a8baf86cd0ae82bc360",
       "quantity": 10,
       "bigImg": "iphone-12-pro-max-1-org.jpg",
       "secImg": [
@@ -166,7 +166,7 @@
       "name": "Vàng đồng"
     },
     {
-      "_id": "12132",
+      "_id": "615c7a8baf86cd0ae82bc360",
       "quantity": 10,
       "bigImg": "iphone-12-pro-max-512gb-xanh-duong-1-org.jpg",
       "secImg": [
@@ -228,7 +228,7 @@
       "name": "Đỏ"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "iphone-11-xanh-la-1-1-org.jpg",
       "secImg": [
@@ -290,7 +290,7 @@
       "name": "Tím"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-s21-trang-1-org.jpg",
       "secImg": [
@@ -402,7 +402,7 @@
       "name": "Xanh Dương"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-a02-den-1-org.jpg",
       "secImg": [
@@ -464,7 +464,7 @@
       "name": "Trắng"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 12,
       "bigImg": "galaxym51-black-1020x680-org.jpg",
       "secImg": [
@@ -523,9 +523,7 @@
         "samsung-galaxy-note-20-ultra-5g-trang-4-org.jpg",
         "samsung-galaxy-note-20-ultra-5g-trang-5-org.jpg"
       ],
-      "_id": {
-        "$oid": "60b4a8e4f120fc15a67df172"
-      },
+      "_id": "60b4a8e4f120fc15a67df175",
       "name": "Trắng"
     }
   ],
@@ -579,7 +577,7 @@
       "name": "Xanh Dương"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 12,
       "bigImg": "samsung-galaxy-s10-lite-den-1-org.jpg",
       "secImg": [
@@ -641,7 +639,7 @@
       "name": "Trắng"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "oppo-a93-den-1-org.jpg",
       "secImg": [
@@ -703,7 +701,7 @@
       "name": "Xanh Dương"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 12,
       "bigImg": "xiaomi-redmi-note-10-5g-xanh-la-1-org.jpg",
       "secImg": [
@@ -761,9 +759,7 @@
         "xiaomi-mi-11-xanhduong-3-org.jpg",
         "xiaomi-mi-11-xanhduong-4-org.jpg"
       ],
-      "_id": {
-        "$oid": "60b4a8e4f120fc15a67df172"
-      },
+	  "_id": "60b4a8e4f120fc15a67df172",
       "name": "Xanh Dương"
     },
     {
@@ -775,9 +771,7 @@
         "xiaomi-mi-11-xamdam-3-org.jpg",
         "xiaomi-mi-11-xamdam-4-org.jpg"
       ],
-      "_id": {
-        "$oid": "6182ae6642b7b7282436dc68"
-      },
+      "_id": "6182ae6642b7b7282436dc68",
       "name": "Xám đậm"
     }
   ],
@@ -831,7 +825,7 @@
       "name": "Xám"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 12,
       "bigImg": "xiaomi-redmi-note-10-pro-1-2-org.jpg",
       "secImg": [
@@ -893,7 +887,7 @@
       "name": "Tím"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-joy-3-den-1-org.jpg",
       "secImg": [
@@ -951,9 +945,7 @@
         "vsmart-star-4-den-3-org.jpg",
         "vsmart-star-4-den-4-org.jpg"
       ],
-      "_id": {
-        "$oid": "60b4a8e4f120fc15a67df172"
-      },
+      "_id": "6182ae6642b7b7282436dc68",
       "name": "Đen"
     },
     {
@@ -965,9 +957,7 @@
         "vsmart-star-4-3gb-xanh-duong-3-org.jpg",
         "vsmart-star-4-3gb-xanh-duong-4-org.jpg"
       ],
-      "_id": {
-        "$oid": "6182c64c8a23cb0838a54aa8"
-      },
+      "_id": "6182c64c8a23cb0838a54aa8",
       "name": "Xanh Dương"
     }
   ],
@@ -1021,7 +1011,7 @@
       "name": "Đen"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-joy-4-xanh-duong-1-org.jpg",
       "secImg": [
@@ -1083,7 +1073,7 @@
       "name": "Xanh lá"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-aris-pro-xam-1-org.jpg",
       "secImg": [
@@ -1145,7 +1135,7 @@
       "name": "Xanh Dương"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-aris-8gb-128gb-xanhla-1-org.jpg",
       "secImg": [
@@ -1207,7 +1197,7 @@
       "name": "Xanh lá"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-live-4-1-org.jpg",
       "secImg": [
@@ -1269,7 +1259,7 @@
       "name": "Xanh ngọc"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-star-5-64gb-den-1-org.jpg",
       "secImg": [
@@ -1331,7 +1321,7 @@
       "name": "Xanh Dương"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-bee-3-den-1-org.jpg",
       "secImg": [
@@ -1443,7 +1433,7 @@
       "name": "Tím"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-active-3-6gb-den-1-org.jpg",
       "secImg": [
@@ -1555,7 +1545,7 @@
       "name": "Xanh Dương"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-star-3-den-1-org.jpg",
       "secImg": [
@@ -1617,7 +1607,7 @@
       "name": "Xanh lá"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-star-4-16gb-xanh-duong-1-org.jpg",
       "secImg": [
@@ -1679,7 +1669,7 @@
       "name": "Đen"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "vsmart-star-5-64gb-xanh-ngoc-1-org.jpg",
       "secImg": [
@@ -1741,7 +1731,7 @@
       "name": "Tím"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-a32-4g-xanh-1-org.jpg",
       "secImg": [
@@ -1803,7 +1793,7 @@
       "name": "Xanh Dương"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-a11-trang-1-org.jpg",
       "secImg": [
@@ -1865,7 +1855,7 @@
       "name": "Trắng"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-a31-xanh-1-org.jpg",
       "secImg": [
@@ -1927,7 +1917,7 @@
       "name": "Đen"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-a02s-trang-1-org.jpg",
       "secImg": [
@@ -1989,7 +1979,7 @@
       "name": "Trắng"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-a12-6gb-den-1-org.jpg",
       "secImg": [
@@ -2139,7 +2129,7 @@
   ],
   "colors": [
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-note-9-512gb-1-org.jpg",
       "secImg": [
@@ -2200,7 +2190,7 @@
       "name": "Xanh lá"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-s10-trang-1-1-org.jpg",
       "secImg": [
@@ -2296,7 +2286,7 @@
   ],
   "colors": [
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-s10-plus-128gb-bac-da-sac-1-2-org.jpg",
       "secImg": [
@@ -2357,7 +2347,7 @@
       "name": "Xanh Dương"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-a30-blue-600x600.jpg",
       "secImg": [
@@ -2418,7 +2408,7 @@
       "name": "Bạc"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-s21-ultra-den-1-org.jpg",
       "secImg": [
@@ -2479,7 +2469,7 @@
       "name": "Trắng"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "samsung-galaxy-a30s-xanh-la-1-org.jpg",
       "secImg": [
@@ -2540,7 +2530,7 @@
       "name": "Đen"
     },
     {
-      "_id": "12132",
+      "_id": "60b4a8e4f120fc15a67df222",
       "quantity": 10,
       "bigImg": "iphone-11-xanh-la-1-org.jpg",
       "secImg": [
@@ -2592,9 +2582,7 @@
       "secImg": [
         "1635953903348.jpg"
       ],
-      "_id": {
-        "$oid": "6182acef4a5f90055029057e"
-      },
+      "_id": "6182acef4a5f90055029057e",
       "name": "Nguyễn Văn Trọng"
     },
     {
@@ -2603,9 +2591,7 @@
       "secImg": [
         "1635953903349.jpg"
       ],
-      "_id": {
-        "$oid": "6182acef4a5f90055029057f"
-      },
+      "_id": "6182acef4a5f90055029057f",
       "name": "Xám lè"
     }
   ],
