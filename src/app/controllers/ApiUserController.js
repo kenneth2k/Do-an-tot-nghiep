@@ -237,10 +237,6 @@ class ApiUserController {
                             message: 'Mật khẩu cũ không chính xác!'
                         });
                     }
-                    return res.send({
-                        changePassword: false,
-                        message: 'Cập nhật mật khẩu thất bại!'
-                    });
                 })
                 .catch(next)
         } catch (e) {
