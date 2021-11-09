@@ -112,7 +112,7 @@ function sendCancelOrderMail(email, id) {
         },
         subject: 'Cancel order to Ephone Store',
         text: 'Send Cancel order to the Ephone Store',
-        html: `Bạn đã hủy đơn hàng: <h5>${id}</h5> cảm ơn bạn đã mua sắm tại Ephone Store.`,
+        html: `<div style="display:flex;">Bạn đã hủy đơn hàng:    <div style="font-size: 18px;">${id}</div>    cảm ơn bạn đã mua sắm tại Ephone Store.</div>`,
     };
     //ES6
     return sgMail
@@ -153,7 +153,7 @@ function sendOrderFinishMail(user, id, status) {
     <div style="margin:auto"><a style="border: 1px solid rgba(52, 142, 218, 1); font-weight: 400; text-decoration: none; display: inline-block; margin: 0; color: rgba(255, 255, 255, 1); background-color: rgba(52, 142, 218, 1); border-radius: 2px; font-size: 14px; padding: 12px 45px;" href="${process.env.ADDRESS_WEB}profile/${user.slug}">Kiểm tra trạng thái đơn hàng</a></div>
 </div>`;
     let xhtml2 = `<div>
-    <h1 style="font-size:17px;font-weight:bold;color:#444;padding:0 0 5px 0;margin:0">Cảm ơn quý khách ${user.fullname} đã đặt hàng tại <span class="il">Ephone Store</span>,</h1>
+    <h1 style="font-size:17px;font-weight:bold;color:#444;padding:0 0 5px 0;margin:0">Cảm ơn quý khách ${user.fullname} đã đặt hàng tại <span class="il">Ephone Store</span>.</h1>
     </div>`;
     const msg = {
         to: user.email,
@@ -161,15 +161,15 @@ function sendOrderFinishMail(user, id, status) {
             name: 'EPHONE STORE',
             email: `${process.env.SENDGRID_EMAIL}`
         },
-        subject: 'New password of the Ephone Store',
-        text: 'Send new password of the Ephone Store',
+        subject: 'Cám ơn bạn đã đặt hàng tại cửa hàng iPhone!',
+        text: 'Cám ơn bạn đã đặt hàng tại cửa hàng iPhone!',
         html: (status == 3) ? xhtml1 : xhtml2,
     };
     //ES6
     return sgMail
         .send(msg)
         .then(() => {
-            console.log('Email sent new password to: ' + user.email);
+            console.log('Email sent order to: ' + user.email);
         })
         .catch((error) => {
             console.error(error)
@@ -230,7 +230,7 @@ function sendOrderSuccessMail(order, user, products) {
                 </div>
             </div>
             <div style="border-bottom: 2px solid #f0f0f0;">
-                <h3 style="margin: 10px 0px 0px 0px;">Mã đơn hàng#${order._id}</h3>
+                <h3 style="margin: 10px 0px 0px 0px;">Mã đơn hàng#${order.slug}</h3>
                 <table>
                     <thead>
                         <tr>

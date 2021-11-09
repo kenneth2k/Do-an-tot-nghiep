@@ -252,7 +252,7 @@ $(document).ready(function() {
             },
             success: function(data) {
                 if (data.status == 200) {
-                    $("#order-details .id-order").text(data.order._id);
+                    $("#order-details .id-order").text(data.order.slug);
                     $("#order-details .status-order").text(`${data.order.status == 2 ? 'Đang chờ duyệt' : (data.order.status == 0) ? 'Đã hủy' : (data.order.status == 1) ? 'Giao hàng thành công' : 'Đang giao hàng'}`);
                     $("#order-details .user-name").text(data.order.userName);
                     $("#order-details .user-address").text(data.order.userAddress);

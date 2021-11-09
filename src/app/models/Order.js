@@ -20,7 +20,8 @@ const Order = new Schema({
         price: { type: Number, required: true },
         sale: { type: Number, required: true, default: 0 },
     }],
-    status: { type: Number, default: 2, required: true }
+    status: { type: Number, default: 2, required: true },
+    slug: { type: String, required: true }
 }, {
     timestamps: true,
 });

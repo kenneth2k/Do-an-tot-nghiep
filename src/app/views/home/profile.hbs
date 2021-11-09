@@ -135,7 +135,7 @@
                 {{#each orders}}
                   <tr>
                     <td class="text-center pt-2 pb-2" id="order-detail">
-                      <a href="#" data-id="{{this._id}}">{{this._id}}</a>
+                      <a href="#" data-id="{{this._id}}">{{this.slug}}</a>
                     </td>
                     <td class="text-center pt-2 pb-2">{{dateToString
                         this.createdAt

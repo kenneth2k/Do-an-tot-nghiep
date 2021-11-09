@@ -7,7 +7,7 @@ const Order = require('../models/Order');
 const Banner = require('../models/Banner');
 const { sendOrderSuccessMail, sendCancelOrderMail } = require('../../util/email/email');
 const { multipleMongooseToObject, singleMongooseToObject, multipleMongooseToObjectOnLimit } = require('../../util/mongoose');
-const { randomToBetween } = require('../../helper/random');
+const { randomToBetween, randomIdInDate } = require('../../helper/random');
 class HomeController {
     // [GET] /
     index(req, res, next) {
@@ -202,6 +202,7 @@ class HomeController {
                             // vị trí address active
                             let idx = user.addresses.findIndex(address => address.active === true);
                             let order = new Order({
+                                slug: randomIdInDate(),
                                 userName: user.addresses[idx].name,
                                 userPhone: user.addresses[idx].phone,
                                 userAddress: user.addresses[idx].address,
@@ -216,7 +217,7 @@ class HomeController {
                             sendOrderSuccessMail(order, user, productTemp);
                             return res.send({
                                 status: 200,
-                                _id: order._id
+                                _id: order.slug
                             });
                         })
                         .catch(next)
@@ -265,7 +266,7 @@ class HomeController {
                 .then(([user, order]) => {
                     if (user !== null && order !== null) {
                         emailUser = user.email;
-                        idOder = order._id;
+                        idOder = order.slug;
                         order.status = 0;
                         return Order.updateOne({ _id: order._id }, order);
                     }

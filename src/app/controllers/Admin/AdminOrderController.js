@@ -109,10 +109,11 @@ class AdminOrderController {
                         }
                         updateProduct = await Product.updateOne({ slug: order.details[i].slug }, product);
                     }
+                    sendOrderFinishMail(user, order.slug, 1);
                 } else if (req.body.status == 3) {
-                    sendOrderFinishMail(user, order._id, 3);
+                    sendOrderFinishMail(user, order.slug, 3);
                 } else if (req.body.status == 0) {
-                    sendCancelOrderMail(user.email, order._id);
+                    sendCancelOrderMail(user.email, order.slug);
                 }
                 // Cập nhật trạng thái đơn hàng
                 const updateOrder = await Order.updateOne({ _id: req.params.id }, order);
