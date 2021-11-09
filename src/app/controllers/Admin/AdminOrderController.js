@@ -16,10 +16,10 @@ class AdminOrderController {
 
             let skip = (page - 1) * process.env.LIMIT_DOS;
             let searchID;
-            if (ObjectId.isValid(req.query.q)) {
-                searchID = { status: req.params.status, _id: req.query.q };
+            if (req.params.status) {
+                searchID = { status: req.params.status, slug: new RegExp((req.query.q ? req.query.q : ''), "i") };
             } else {
-                searchID = { status: req.params.status, userName: new RegExp((req.query.q ? req.query.q : ''), "i") };
+                searchID = { slug: new RegExp((req.query.q ? req.query.q : ''), "i") };
             }
             Promise.all([
                     Order.find(searchID).sort({ createdAt: -1 }),
