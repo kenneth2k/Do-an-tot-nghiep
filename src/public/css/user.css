@@ -946,7 +946,6 @@ span.item_price {
     padding: 10px;
 }
 
-body,
-* {
-    font-family: 'Open Sans', sans-serif !important;
+body {
+    font-family: 'Open Sans', sans-serif;
 }
