@@ -96,7 +96,6 @@ function renderListDelete(data, search) {
                         <td class="td-center"><img width=100 height=70 src="/public/images/background/${item.images}"/></td>
                         <td class="td-center impact-event">
                             <button type="button" class="btn btn-primary btn-sm return" data-id="${item._id}">Khôi phục</button>
-                            <button type="button" class="btn btn-danger btn-sm high" data-id="${item._id}">Xóa vĩnh viễn</button>
                         </td>
                     </tr>
                 `;

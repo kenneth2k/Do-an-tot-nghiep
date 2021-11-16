@@ -382,7 +382,6 @@ function renderListProducerDeleted(data, search) {
                         <td class="td-center" width=250>${item.address}</td>
                         <td class="td-center impact-event">
                             <button type="button" class="btn btn-primary btn-sm return" data-id="${item._id}">Khôi phục</button>
-                            <button type="button" class="btn btn-danger btn-sm high" data-id="${item._id}">Xóa vĩnh viễn</button>
                         </td>
                     </tr>
                 `;

@@ -100,12 +100,19 @@ module.exports = {
             if (date == null) {
                 return '';
             }
+            // Hours
+            var h = (date.getHours() < 10 ? '0' : '') + date.getHours().toString();
+            // Minutes
+            var m = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes().toString();
+            // Seconds
+            var ss = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds().toString();
+            // Day
             var dd = (date.getDate() < 10 ? '0' : '') + date.getDate().toString();
-            // 01, 02, 03, ... 10, 11, 12
+            // Month
             var MM = ((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1).toString();
-            // 1970, 1971, ... 2015, 2016, ...
+            // Year
             var yyyy = date.getFullYear();
-            return `${dd}-${MM}-${yyyy}`;
+            return `${dd}-${MM}-${yyyy} ${h}:${m}:${ss}`;
         },
         dateToString2: (date) => {
             if (date == null) {

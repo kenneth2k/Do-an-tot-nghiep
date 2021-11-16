@@ -205,6 +205,8 @@ $(document).ready(function(c) {
             listProd.value.items = cartItem;
             setSaveProd(listProd.value);
             resetCart();
+            var divSumTotal = $('#sumTotal');
+            divSumTotal.text(sumTotal().toLocaleString('it-IT', { style: 'currency', currency: 'VND' }));
         });
 
     });

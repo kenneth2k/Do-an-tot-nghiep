@@ -42,7 +42,7 @@ function renderListOder(data, search) {
                 <thead>
                     <tr class="scrollable-wrapper">
                         <th scope="col">STT</th>
-                        <th scope="col">ID</th>
+                        <th scope="col">Mã đơn hàng</th>
                         <th scope="col">Khách hàng</th>
                         <th scope="col">Tổng tiền</th>
                         <th scope="col">Trạng thái</th>
@@ -70,7 +70,7 @@ function renderListOder(data, search) {
             xtbody += `
                     <tr>
                         <th class="td-center" scope="row">${parseInt(data.STT) + index}</th>
-                        <td class="td-center" >${item._id}</td>
+                        <td class="td-center" >${item.slug}</td>
                         <td class="td-center">${item.userName}</td>
                         <td class="td-center">${(new Intl.NumberFormat().format((item.sumPrice)))} VNĐ</td>
                         <td class="td-center" >${status}</td>
@@ -141,7 +141,7 @@ function formOderEditer({ token, id }) {
                 var xhtml = `
         <div >
             <label style="font-weight: 500;">Mã đơn hàng</label>
-            <h5>&nbsp;&nbsp;&nbsp;&nbsp;${data._id}</h5>
+            <h5>&nbsp;&nbsp;&nbsp;&nbsp;${data.slug}</h5>
         </div>
         <div >
             <label style="font-weight: 500;">Tên người nhận</label>
