@@ -64,7 +64,7 @@ function renderListStatistics(data, dateBefore, dateAfter) {
                 <thead>
                 <tr class="scrollable-wrapper">
                     <th scope="col">STT</th>
-                    <th scope="col">ID</th>
+                    <th scope="col">Mã đơn hàng</th>
                     <th scope="col">Khách hàng</th>
                     <th scope="col">Tổng tiền</th>
                     <th scope="col">Trạng thái</th>
@@ -92,7 +92,7 @@ function renderListStatistics(data, dateBefore, dateAfter) {
             xtbody += `
                     <tr>
                         <th class="td-center" scope="row">${parseInt(data.STT) + index}</th>
-                        <td class="td-center" >${item._id}</td>
+                        <td class="td-center" >${item.slug}</td>
                         <td class="td-center">${item.userName}</td>
                         <td class="td-center">${(new Intl.NumberFormat().format((item.sumPrice)))} VNĐ</td>
                         <td class="td-center" >${status}</td>
