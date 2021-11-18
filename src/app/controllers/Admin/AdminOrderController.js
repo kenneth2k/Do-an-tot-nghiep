@@ -167,7 +167,7 @@ class AdminOrderController {
                         totalRevenue += parseInt(orderFinished[i].sumPrice);
                         TotalQuantity += parseInt(orderFinished[i].sumQuantity);
                         for (let j = 0; j < orderFinished[i].details.length; j++) {
-                            TotalDiscount += parseInt(orderFinished[i].details[j].price) / (1 - (parseInt(orderFinished[i].details[j].sale) / 100));
+                            TotalDiscount += (parseInt(orderFinished[i].details[j].price) / (1 - (parseInt(orderFinished[i].details[j].sale) / 100))) * orderFinished[i].details[j].quantity;
                         }
                     }
                     let pageMax = Math.ceil((orderFinished.length / process.env.LIMIT_DOS));
