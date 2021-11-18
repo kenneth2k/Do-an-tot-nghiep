@@ -150,7 +150,7 @@ function formStatisticsEditer({ token, id }) {
                 var xhtml = `
         <div >
             <label style="font-weight: 500;">Mã đơn hàng</label>
-            <h5>&nbsp;&nbsp;&nbsp;&nbsp;${data._id}</h5>
+            <h5>&nbsp;&nbsp;&nbsp;&nbsp;${data.slug}</h5>
         </div>
         <div >
             <label style="font-weight: 500;">Tên người nhận</label>
