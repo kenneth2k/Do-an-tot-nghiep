@@ -1,44 +1,45 @@
 {
-    "name": "blog",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "node src/index.js",
-        "stop": "taskkill -f -im node.exe",
-        "dev": "nodemon  src/index.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/galalang113/blog.git"
-    },
-    "keywords": [
-        "blog"
-    ],
-    "author": "Nguyễn Trọng",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/galalang113/blog/issues"
-    },
-    "homepage": "https://github.com/galalang113/blog#readme",
-    "dependencies": {
-        "@sendgrid/mail": "^7.4.4",
-        "axios": "^0.21.4",
-        "bcryptjs": "^2.4.3",
-        "dotenv": "^10.0.0",
-        "express": "^4.17.1",
-        "express-handlebars": "^5.2.0",
-        "fs": "0.0.1-security",
-        "jsonwebtoken": "^8.5.1",
-        "method-override": "^3.0.0",
-        "moment": "^2.29.1",
-        "mongoose": "^5.11.15",
-        "mongoose-delete": "^0.5.3",
-        "mongoose-slug-generator": "^1.0.4",
-        "multer": "^1.4.2"
-    },
-    "devDependencies": {
-        "morgan": "^1.10.0",
-        "nodemon": "^2.0.7"
-    }
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "build": "",
+    "stop": "taskkill -f -im node.exe",
+    "dev": "nodemon  src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/galalang113/blog.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "Nguyễn Trọng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/galalang113/blog/issues"
+  },
+  "homepage": "https://github.com/galalang113/blog#readme",
+  "dependencies": {
+    "@sendgrid/mail": "^7.4.4",
+    "axios": "^0.21.4",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.2.0",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.15",
+    "mongoose-delete": "^0.5.3",
+    "mongoose-slug-generator": "^1.0.4",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.7"
+  }
 }
