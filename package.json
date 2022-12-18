@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "16.x"
+  },
   "scripts": {
     "start": "node src/index.js",
     "build": "",
     "stop": "taskkill -f -im node.exe",
-    "dev": "nodemon  src/index.js"
+    "dev": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
